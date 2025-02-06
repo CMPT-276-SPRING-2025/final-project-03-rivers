@@ -4,4 +4,4 @@ Rivers Project
 
 Members: Lucian Chen, Laraib Yousfani, Raghav Arora, Chau Bui
 
-Brief Description: TODO
+Brief Description: This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.  This project aims to help split lives up into manageable chunks and get through the day.
