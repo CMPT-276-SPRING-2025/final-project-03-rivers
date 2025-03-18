@@ -4,13 +4,8 @@ export const Soundcloud = () => {
     const [volume, setVolume] = useState(100);
     const [progress, setProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isRepeated, setIsRepeated] = useState(false);
     const [songName, setSongName] = useState('');
-    const isRepeatedRef = useRef(isRepeated);
-
-    useEffect(() => {
-        isRepeatedRef.current = isRepeated;
-    }, [isRepeated]);
+    const [totalSongs, setTotalSongs] = useState(0);
 
     useEffect(() => {
         const script = document.createElement('script');
@@ -27,6 +22,9 @@ export const Soundcloud = () => {
                 widget.getCurrentSound((sound) => {
                     setSongName(sound.title);
                 });
+                widget.getSounds((sounds) => {
+                    setTotalSongs(sounds.length);
+                });
                 setInterval(() => {
                     widget.getPosition((position) => {
                         widget.getDuration((duration) => {
@@ -36,15 +34,17 @@ export const Soundcloud = () => {
                 }, 1000);
             });
 
+            widget.bind(SC.Widget.Events.PLAY, function() {
+                console.log('SoundCloud Widget has started playing');
+
+                widget.getCurrentSound((sound) => {
+                    setSongName(sound.title);
+                });
+                setIsPlaying(true);
+            });
+
             widget.bind(SC.Widget.Events.FINISH, function() {
                 console.log('SoundCloud Widget has finished playing');
-                console.log('Repeat is', isRepeatedRef.current);
-                if (isRepeatedRef.current) {
-                    if (!isPlaying) {
-                        widget.play();
-                        console.log('SoundCloud Widget is now playing');
-                    }
-                }
             });
         };
 
@@ -61,7 +61,7 @@ export const Soundcloud = () => {
                 height="0"
                 style={{ overflow: 'hidden', border: 'none' }}
                 allow="autoplay"
-                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1787245513"
+                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&"
             ></iframe>
 
             {/* Song Name */}
@@ -117,16 +117,27 @@ export const Soundcloud = () => {
                 >
                     {isPlaying ? 'Pause' : 'Play'}
                 </button>
+            
+            {/* Next Button */}
             <button 
                 className={'btn btn-soft btn-info'}
                 onClick={() => {
-                    setIsRepeated(!isRepeated);
-                    console.log(`Repeat is now ${!isRepeated ? 'enabled' : 'disabled'}`);
+                    const iframeElement = document.querySelector('iframe');
+                    const widget = SC.Widget(iframeElement);
+                    widget.next();
+                    console.log('Next Song');
                 }}
-            >
-                {isRepeated ? 'Repeat On' : 'Repeat Off'}
-            </button>
-
+            > Next </button>
+            {/* Previous Button */}
+            <button 
+                className={'btn btn-soft btn-info'}
+                onClick={() => {
+                    const iframeElement = document.querySelector('iframe');
+                    const widget = SC.Widget(iframeElement);
+                    widget.prev();
+                    console.log('Previous Song');
+                }}
+            > Previous </button>
         </div>
     );
 };
