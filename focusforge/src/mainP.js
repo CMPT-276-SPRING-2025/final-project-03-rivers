@@ -5,18 +5,20 @@ const NavBar = () => {
 
     return (
         <nav className = "navBar">
+        <div className='tabs'>
         <ul className='focusF'>
             <li>FocusForge</li>
         </ul>
-        <div>
+   
         <ul className='themes'>
             <li>Themes</li>
         </ul>
-        <img src = {logout}></img>
+        <button className='navBar'><img src = {logout} style = {{width: '30px', height: '30px'}} ></img></button>
         </div>
         </nav>
     );
 }
+
 
 
 
