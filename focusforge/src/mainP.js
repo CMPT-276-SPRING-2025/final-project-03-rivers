@@ -1,5 +1,5 @@
 import React from 'react';
-// import './MainP.css'
+import './MainP.css'
 import logout from './MPimgs/logout.png';
 const NavBar = () => {
 
