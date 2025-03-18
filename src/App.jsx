@@ -1,11 +1,11 @@
 import './App.css'
 import Login from './Pages/Login'
-
+import LoadingPage from './Pages/LoadingPage'
 function App() {
   return (
     <>
       <div>
-        <Login />
+        <LoadingPage />
       </div>
     </>
   )
