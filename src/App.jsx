@@ -2,7 +2,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './Pages/Components/LoginPage';
 import Login from './Pages/Login'
-
+import LoadingPage from './Pages/LoadingPage'
 function App() {
   return (
     <BrowserRouter>
