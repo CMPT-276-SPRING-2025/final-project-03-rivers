@@ -5,6 +5,7 @@ export const Soundcloud = () => {
     const [progress, setProgress] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isRepeated, setIsRepeated] = useState(false);
+    const [songName, setSongName] = useState('');
     const isRepeatedRef = useRef(isRepeated);
 
     useEffect(() => {
@@ -23,6 +24,9 @@ export const Soundcloud = () => {
 
             widget.bind(SC.Widget.Events.READY, function() {
                 console.log('SoundCloud Widget is ready');
+                widget.getCurrentSound((sound) => {
+                    setSongName(sound.title);
+                });
                 setInterval(() => {
                     widget.getPosition((position) => {
                         widget.getDuration((duration) => {
@@ -50,15 +54,18 @@ export const Soundcloud = () => {
     }, [isPlaying]);
 
     return (
-        <div className="fixed bottom-0 left-0 w-full bg-gray-800 p-4 flex items-center justify-between">
+        <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex justify-between" style={{ height: '15%' }}>
             {/* Soundcloud Widget */}
             <iframe
-                width="80%"
-                height="60"
+                width="0%"
+                height="0"
                 style={{ overflow: 'hidden', border: 'none' }}
                 allow="autoplay"
                 src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1787245513"
             ></iframe>
+
+            {/* Song Name */}
+            <div className="text-white">{songName}</div>
 
             {/* Progress bar */}
             <progress 
@@ -77,7 +84,6 @@ export const Soundcloud = () => {
                     });
                 }}
             ></progress>
-            
             {/* Volume Control */}
             <input 
                 type="range" 
@@ -92,9 +98,25 @@ export const Soundcloud = () => {
                     const widget = SC.Widget(iframeElement);
                     widget.setVolume(newVolume);
                 }} 
-            />
-
-            {/* Repeat Button */}
+            />            
+            {/* Play Button */}
+            <button 
+                className={'btn btn-soft btn-info'}
+                onClick={() => {
+                    const iframeElement = document.querySelector('iframe');
+                    const widget = SC.Widget(iframeElement);
+                    if (isPlaying) {
+                        widget.pause();
+                        setIsPlaying(false);
+                        console.log('SoundCloud Widget is now paused');
+                    } else {
+                        widget.play();
+                        setIsPlaying(true);
+                        console.log('SoundCloud Widget is now playing');
+                    }}}
+                >
+                    {isPlaying ? 'Pause' : 'Play'}
+                </button>
             <button 
                 className={'btn btn-soft btn-info'}
                 onClick={() => {
@@ -102,10 +124,8 @@ export const Soundcloud = () => {
                     console.log(`Repeat is now ${!isRepeated ? 'enabled' : 'disabled'}`);
                 }}
             >
-                Repeat
+                {isRepeated ? 'Repeat On' : 'Repeat Off'}
             </button>
-
-            <button className="btn btn-soft btn-primary">Primary</button>
 
         </div>
     );

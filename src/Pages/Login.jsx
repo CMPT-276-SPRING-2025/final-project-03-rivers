@@ -4,7 +4,6 @@ import Soundcloud from './Components/Soundcloud'
 const Login = () => {
   return (
     <>
-        <div>Home</div>
         <Soundcloud />
     </>
   )
