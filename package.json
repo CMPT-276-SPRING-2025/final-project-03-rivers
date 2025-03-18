@@ -12,6 +12,7 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "soundcloud": "^3.3.2",
     "soundcloud-widget": "^0.2.1"
   },
   "devDependencies": {
