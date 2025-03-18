@@ -12,7 +12,8 @@
   "dependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "soundcloud": "^3.3.2",
+    "react-router-dom": "^7.3.0",
+    "soundcloud": "^0.2.0",
     "soundcloud-widget": "^0.2.1"
   },
   "devDependencies": {
