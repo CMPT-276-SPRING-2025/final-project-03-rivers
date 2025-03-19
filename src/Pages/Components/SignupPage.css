@@ -1,0 +1,42 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* disable scrolling */
+    background-color: rgb(204, 223, 243);
+}
+
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.left-nav {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin: 0;
+}
+
+.right-nav {
+    display: flex;
+    align-items: center;
+}
+
+.question {
+    width: 24px;
+    height: 24px;
+}

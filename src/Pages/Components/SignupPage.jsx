@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './SignupPage.css';
+import question from '../../assets/question.png';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -15,10 +16,14 @@ const Signup = () => {
   };
 
   return (
-    <div className="signup-container">
-      {/*Testing*/}
-      <h1>Hello World</h1>
-      <img src = {logo} alt="logo" className="logo" />
+    <div className="top-nav-bar">
+        <div className="left-nav">
+            <img src = {logo} alt="logo" className="logo" />
+            <h1>FocusForge</h1>
+        </div>
+        <div className="right-nav">
+            <img src={question} alt="question icon about project" className="question" />
+        </div>
     </div>
   );
 }
