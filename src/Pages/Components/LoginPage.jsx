@@ -1,5 +1,7 @@
+import './LoginPage.css'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import question from "../../assets/question.png";
 
 
 const LoginPage = () => {
@@ -16,10 +18,12 @@ const LoginPage = () => {
   return (
     <div className="login-container">
       <section className="nav-bar">
-        <div className="logo">
+        <div className="left-nav">
           <a>Logo</a>
           <a>Focus Forge</a>
-          <a>about button here</a>
+        </div>
+        <div className ="right-nav">
+          <img src={question} alt="question icon about project" className="question" />
         </div>
       </section>
 
@@ -41,6 +45,7 @@ const LoginPage = () => {
             required 
           />
           <button type="submit" onClick={handleLogin}>Login</button>
+          <button type="signup"> Sign Up</button>
         </form>
       </section>
 
