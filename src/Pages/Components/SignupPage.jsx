@@ -30,6 +30,33 @@ const Signup = () => {
                 </div>
             </div>
         </div>
+        <div className = "signupUI">
+            <form action="signup.php" method="post">
+                <h1>Sign Up For Your Account</h1>
+                <label htmlFor="username">Username:</label>
+                <input 
+                    type="text" 
+                    name="username" 
+                    id="username" 
+                    required 
+                />
+                <label htmlFor="password">Password:</label>
+                <input 
+                    type="password" 
+                    name="password" 
+                    id="password" 
+                    required 
+                />
+                <label htmlFor="email">Email:</label>
+                <input 
+                    type="email" 
+                    name="email" 
+                    id="email" 
+                    required 
+                />
+                <button type="submit" onClick={handleSignup}>Sign Up</button>
+            </form>
+        </div>
     </div>
   );
 }

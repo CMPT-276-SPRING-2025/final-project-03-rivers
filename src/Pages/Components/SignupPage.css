@@ -1,8 +1,7 @@
-html,
-body {
-    height: 100%;
+.signup-container {
+    height: 100vh;
     margin: 0;
-    overflow: hidden; /* disable scrolling */
+    overflow: hidden;
     background-color: rgb(204, 223, 243);
 }
 
