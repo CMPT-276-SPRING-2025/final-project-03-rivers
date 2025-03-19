@@ -5,7 +5,7 @@ function App() {
   return (
     <>
       <div>
-        <LoadingPage />
+        <Login />
       </div>
     </>
   )
