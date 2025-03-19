@@ -1,12 +1,12 @@
 import React from 'react';
 import './App.css'
-import Login from './Pages/Login'
+import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 function App() {
   return (
     <>
       <div>
-        <Login />
+        <Music />
       </div>
     </>
   )
