@@ -89,7 +89,7 @@ export const Soundcloud = () => {
                 type="range" 
                 min="0" 
                 max="100" 
-                className="range" 
+                className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]" 
                 value={volume} 
                 onChange={(e) => {
                     const newVolume = e.target.value;
@@ -130,7 +130,7 @@ export const Soundcloud = () => {
             > Next </button>
             {/* Previous Button */}
             <button 
-                className={'btn btn-soft btn-info'}
+                className={'btn btn-soft btn-primary'}
                 onClick={() => {
                     const iframeElement = document.querySelector('iframe');
                     const widget = SC.Widget(iframeElement);
