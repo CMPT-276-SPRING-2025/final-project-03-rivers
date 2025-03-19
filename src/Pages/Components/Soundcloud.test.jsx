@@ -1,8 +1,24 @@
+import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Soundcloud from './Soundcloud';
 
+// Mock SC object
+global.SC = {
+    Widget: vi.fn().mockImplementation(() => ({
+        prev: vi.fn(),
+        next: vi.fn(),
+    })),
+};
+
 describe('Soundcloud Component', () => {
+    beforeEach(() => {
+        vi.spyOn(console, 'log').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        console.log.mockRestore();
+    });
     it('renders without crashing', () => {
         render(<Soundcloud />);
         expect(screen.getByText('Play')).toBeInTheDocument();
@@ -45,7 +61,7 @@ describe('Soundcloud Component', () => {
 
     it('navigates to the previous song', () => {
         render(<Soundcloud />);
-        const prevButton = screen.getByText('Previous');
+        const prevButton = screen.getAllByText('Previous')[0];
         fireEvent.click(prevButton);
         expect(console.log).toHaveBeenCalledWith('Previous Song');
     });
