@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 export const Soundcloud = () => {
     const [volume, setVolume] = useState(100);
     const [progress, setProgress] = useState(0);
