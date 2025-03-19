@@ -6,6 +6,7 @@ export const Soundcloud = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songName, setSongName] = useState('');
     const [totalSongs, setTotalSongs] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
     const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
         'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
     );
@@ -135,109 +136,129 @@ export const Soundcloud = () => {
         }, 500);
     };
 
+    const playlists = [
+        {
+            name: 'Mori',
+            url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1493436424&'
+        },
+        {
+            name: 'Country',
+            url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
+        }
+    ];
+
+    const filteredPlaylists = playlists.filter(playlist =>
+        playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
     return (
-        <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex justify-between items-center" style={{ height: '15%' }}>
-            {/* Soundcloud Widget */}
-            <iframe
-                width="0%"
-                height="0"
-                style={{ overflow: 'hidden', border: 'none' }}
-                allow="autoplay"
-                src={currentPlaylistUrl}
-            ></iframe>
+        <>
+            {/* Search Bar */}
+            <div className="relative w-48 mb-2">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search playlists..."
+                    className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                />
+            </div>
 
-            {/* Previous Button */}
-            <button 
-                className={'btn btn-soft btn-primary'}
-                onClick={() => handleTrackChange('prev')}
-            >
-                Previous
-            </button>
+            {/* Playlist Buttons */}
+            <div className="flex gap-2 mb-2">
+                {filteredPlaylists.map(playlist => (
+                    <button 
+                        key={playlist.name}
+                        className="btn btn-soft btn-warning"
+                        onClick={() => switchToPlaylist(playlist.url)}
+                    >
+                        {playlist.name}
+                    </button>
+                ))}
+            </div>
+            <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
+                {/* Controls */}
+                <div className="flex justify-between items-center w-full">
+                    {/* Previous Button */}
+                    <button 
+                        className={'btn btn-soft btn-primary'}
+                        onClick={() => handleTrackChange('prev')}
+                    >
+                        Previous
+                    </button>
 
-            {/* Song Name */}
-            <div className="text-white flex-grow text-center">{songName || 'Loading...'}</div>
+                    {/* Song Name */}
+                    <div className="text-white flex-grow text-center">{songName}</div>
 
-            {/* Progress bar */}
-            <progress 
-                className="progress progress-info w-56 mx-4" 
-                max="100" 
-                value={progress}
-                onClick={(e) => {
-                    const rect = e.target.getBoundingClientRect();
-                    const clickX = e.clientX - rect.left;
-                    const newProgress = (clickX / rect.width) * 100;
-                    setProgress(newProgress);
-                    
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    widget.getCurrentSound((sound) => {
-                        widget.seekTo((newProgress / 100) * sound.duration);
-                    });
-                }}
-            ></progress>
+                    {/* Progress bar */}
+                    <progress 
+                        className="progress progress-info w-56 mx-4" 
+                        max="100" 
+                        value={progress}
+                        onClick={(e) => {
+                            const rect = e.target.getBoundingClientRect();
+                            const clickX = e.clientX - rect.left;
+                            const newProgress = (clickX / rect.width) * 100;
+                            setProgress(newProgress);
+                            
+                            const iframeElement = document.querySelector('iframe');
+                            const widget = SC.Widget(iframeElement);
+                            widget.getCurrentSound((sound) => {
+                                widget.seekTo((newProgress / 100) * sound.duration);
+                            });
+                        }}
+                    ></progress>
 
-            {/* Play/Pause Button */}
-            <button 
-                className={'btn btn-soft btn-info'}
-                onClick={() => {
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    
-                    if (isPlaying) {
-                        widget.pause();
-                        setIsPlaying(false);
-                        console.log('SoundCloud Widget is now paused');
-                    } else {
-                        widget.play();
-                        setIsPlaying(true);
-                        console.log('SoundCloud Widget is now playing');
-                    }
-                }}
-            >
-                {isPlaying ? 'Pause' : 'Play'}
-            </button>
+                    {/* Play/Pause Button */}
+                    <button 
+                        className={'btn btn-soft btn-info'}
+                        onClick={() => {
+                            const iframeElement = document.querySelector('iframe');
+                            const widget = SC.Widget(iframeElement);
+                            
+                            if (isPlaying) {
+                                widget.pause();
+                                setIsPlaying(false);
+                                console.log('SoundCloud Widget is now paused');
+                            } else {
+                                widget.play();
+                                setIsPlaying(true);
+                                console.log('SoundCloud Widget is now playing');
+                            }
+                        }}
+                    >
+                        {isPlaying ? 'Pause' : 'Play'}
+                    </button>
 
-            {/* Next Button */}
-            <button 
-                className="btn btn-soft btn-info"
-                onClick={() => handleTrackChange('next')}
-            >
-                Next
-            </button>
+                    {/* Next Button */}
+                    <button 
+                        className="btn btn-soft btn-info"
+                        onClick={() => handleTrackChange('next')}
+                    >
+                        Next
+                    </button>
 
-            {/* Switch Playlist Button */}
-            <button 
-                className="btn btn-soft btn-warning"
-                onClick={switchToMori}
-            >
-                Switch to Mori
-            </button>
+                    {/* Volume Control */}
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]" 
+                        value={volume} 
+                        onChange={(e) => {
+                            const newVolume = e.target.value;
+                            setVolume(newVolume);
+                            
+                            const iframeElement = document.querySelector('iframe');
+                            const widget = SC.Widget(iframeElement);
+                            widget.setVolume(newVolume);
+                        }} 
+                    />
+                </div>
+            </div>
 
-            {/* country button */}
-            <button 
-                className="btn btn-soft btn-warning"
-                onClick={switchToCountry}
-            >
-                Switch to Country
-            </button>
-
-            {/* Volume Control */}
-            <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]" 
-                value={volume} 
-                onChange={(e) => {
-                    const newVolume = e.target.value;
-                    setVolume(newVolume);
-                    
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    widget.setVolume(newVolume);
-                }} 
-            />
-        </div>
+        </>
+        
     );
 };
 
