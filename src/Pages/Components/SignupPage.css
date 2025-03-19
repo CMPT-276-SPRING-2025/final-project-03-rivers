@@ -39,8 +39,18 @@ h1 {
 .question {
     width: 24px;
     height: 24px;
+    position: absolute;
 }
 
-.popup{
+.popup {
+    width: 300px;
+    height: auto;
     color: white; 
+    background-color: grey;
+    border-radius: 10px;
+    position: fixed; 
+    top: 7%; 
+    right: 40px;
+    padding: 15px;
+    z-index: 10;
 }
