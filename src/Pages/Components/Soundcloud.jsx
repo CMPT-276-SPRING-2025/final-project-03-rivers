@@ -78,8 +78,8 @@ export const Soundcloud = () => {
                     setProgress(newProgress);
                     const iframeElement = document.querySelector('iframe');
                     const widget = SC.Widget(iframeElement);
-                    widget.getDuration((duration) => {
-                        widget.seekTo((newProgress / 100) * duration);
+                    widget.getCurrentSound((sound) => {
+                        widget.seekTo((newProgress / 100) * sound.duration);
                     });
                 }}
             ></progress>
