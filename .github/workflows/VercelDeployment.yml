@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - testingWorkflow
-  pull:
-    branches:
-      - testingWorkflow
 
 jobs:
   deploy:
