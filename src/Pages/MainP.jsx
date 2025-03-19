@@ -23,7 +23,7 @@ const NavBar = () => {
         <ul className='themes'>
             <li>Themes</li>
         </ul>
-        <button className='navBar'><img src = {logout} style = {{width: '30px', height: '30px'}} ></img></button>
+        <button className='logout'><img src = {logout} style = {{width: '35px', height: '35px'}} ></img></button>
         </div>
         </nav>
     );

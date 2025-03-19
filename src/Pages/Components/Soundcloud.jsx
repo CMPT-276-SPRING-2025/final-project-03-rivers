@@ -54,7 +54,7 @@ export const Soundcloud = () => {
     }, [isPlaying]);
 
     return (
-        <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex justify-between" style={{ height: '15%' }}>
+        <div className="fixed bottom-0 left-0 w-full h-15 bg-blue-200 p-4 flex justify-between" style={{ height: '15%' }}>
             {/* Soundcloud Widget */}
             <iframe
                 width="0%"
