@@ -27,6 +27,7 @@ body {
 h1 {
     font-size: 24px;
     font-weight: bold;
+    font-family: 'Poppins', sans-serif;
     color: white;
     margin: 0;
 }
@@ -42,10 +43,11 @@ h1 {
     position: absolute;
 }
 
-.popup {
+.popup{
     width: 300px;
     height: auto;
     color: white; 
+    font-family: 'Poppins', sans-serif;
     background-color: grey;
     border-radius: 10px;
     position: fixed; 
@@ -53,4 +55,14 @@ h1 {
     right: 40px;
     padding: 15px;
     z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.right-nav:hover .popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
