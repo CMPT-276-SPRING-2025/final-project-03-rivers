@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 export const Soundcloud = () => {
     const [volume, setVolume] = useState(100);
@@ -120,7 +120,7 @@ export const Soundcloud = () => {
             
             {/* Next Button */}
             <button 
-                className={'btn btn-soft btn-info'}
+                className={"btn btn-soft btn-info"}
                 onClick={() => {
                     const iframeElement = document.querySelector('iframe');
                     const widget = SC.Widget(iframeElement);
