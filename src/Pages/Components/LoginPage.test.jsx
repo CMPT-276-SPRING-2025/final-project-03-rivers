@@ -1,101 +1,103 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import LoginPage from './LoginPage';
 
-// Mock the `useNavigate` function from react-router-dom
+// Mock react-router-dom
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual('react-router-dom');
+  const actual = await import('react-router-dom');
+  
   return {
     ...actual,
     useNavigate: vi.fn(),
+    MemoryRouter: actual.MemoryRouter,
   };
 });
 
 describe('LoginPage', () => {
-  it('renders login form correctly', () => {
+  const setup = () => {
     render(
       <MemoryRouter>
         <LoginPage />
       </MemoryRouter>
     );
+  };
 
-    // Check if login form elements exist
-    expect(screen.getByText('Log In To Your Account')).toBeInTheDocument();
-    expect(screen.getByLabelText('Username:')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password:')).toBeInTheDocument();
-    expect(screen.getByText('Login')).toBeInTheDocument();
+  it('should render login page', () => {
+    setup();
+    const loginPage = screen.getByTestId('login-container');
+    expect(loginPage).toBeInTheDocument();
   });
 
-  it('navigates to /loading and then to /home on login click', async () => {
-    const mockNavigate = vi.fn();
-    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+  it('should render login form with username and password fields', () => {
+    setup();
 
-    // Use fake timers to control the timing of setTimeout
-    vi.useFakeTimers();
+    const usernameLabel = screen.getByTestId('username-label');
+    expect(usernameLabel).toBeInTheDocument();
+    expect(usernameLabel).toHaveTextContent('Username:');
 
-    render(
-      <MemoryRouter>
-        <LoginPage />
-      </MemoryRouter>
-    );
+    const usernameInput = screen.getByTestId('username-input');
+    expect(usernameInput).toBeInTheDocument();
+    expect(usernameInput).toHaveAttribute('type', 'text');
 
-    // Click login button
-    fireEvent.click(screen.getByText('Login'));
+    const passwordLabel = screen.getByTestId('password-label');
+    expect(passwordLabel).toBeInTheDocument();
+    expect(passwordLabel).toHaveTextContent('Password:');
 
-    // Check if navigate was called with /loading
-    expect(mockNavigate).toHaveBeenCalledWith('/loading');
-
-    // Fast-forward timers by 5 seconds to trigger the timeout
-    vi.advanceTimersByTime(5000);
-
-    // Check if navigate was called with /home
-    expect(mockNavigate).toHaveBeenCalledWith('/home');
+    const passwordInput = screen.getByTestId('password-input');
+    expect(passwordInput).toBeInTheDocument();
+    expect(passwordInput).toHaveAttribute('type', 'password');
   });
 
-  it('renders navigation bar correctly', async () => {
-    render(
-      <MemoryRouter>
-        <LoginPage />
-      </MemoryRouter>
-    );
+  it('should navigate to /loading when login button is clicked', () => {
+    const navigateMock = vi.fn();
+    vi.mocked(useNavigate).mockReturnValue(navigateMock);
+    
+    setup();
 
-    // Check if navigation bar elements exist
-    expect(screen.getByText('Logo')).toBeInTheDocument();
-    expect(screen.getByText('Focus Forge')).toBeInTheDocument();
-    expect(screen.getByAltText('question icon about project')).toBeInTheDocument();
-  });
+    const loginButton = screen.getByTestId('login-button');
+    fireEvent.click(loginButton);
 
-  it('renders about section correctly', async () => {
-    render(
-      <MemoryRouter>
-        <LoginPage />
-      </MemoryRouter>
-    );
+    expect(navigateMock).toHaveBeenCalledWith('/loading');
 
-    // Check if about section text exists
-    expect(
-      screen.getByText(
-        /This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time./
-      )
-    ).toBeInTheDocument();
-  });
-
-  it('renders signup section correctly', async () => {
-    render(
-      <MemoryRouter>
-        <LoginPage />
-      </MemoryRouter>
-    );
-  
-    // Log the entire HTML to inspect
-    screen.debug();
-  
-    await waitFor(() => {
-        expect(screen.getByText('Welcome Back!')).toBeInTheDocument();
-        expect(screen.getByText('Ready to focus?')).toBeInTheDocument();
-        expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
+    return new Promise(resolve => {
+      setTimeout(() => {
+        expect(navigateMock).toHaveBeenCalledWith('/home');
+        resolve();
+      }, 5000);
     });
-});
+  });
+
+  it('should render signup button', () => {
+    setup();
+    const signupButton = screen.getByTestId('signup-button');
+    expect(signupButton).toBeInTheDocument();
+    expect(signupButton).toHaveTextContent('Sign Up');
+  });
+
+  it('should handle form submission', () => {
+    setup();
+
+    const usernameInput = screen.getByTestId('username-input');
+    const passwordInput = screen.getByTestId('password-input');
+    const loginButton = screen.getByTestId('login-button');
+
+    fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+    fireEvent.change(passwordInput, { target: { value: 'testpassword' } });
+
+    fireEvent.click(loginButton);
+  });
+
+  it('should show hover text on question mark', () => {
+    setup();
+    const questionIcon = screen.getByTestId('question-icon');
+    fireEvent.mouseOver(questionIcon);
+
+    const hoverText = screen.getByTestId('about-text'); 
+    expect(hoverText).toBeInTheDocument();
+    expect(hoverText).toHaveTextContent(
+      'This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time. This project aims to help split lives up into manageable chunks and get through the day.'
+    );
+  });
 });
