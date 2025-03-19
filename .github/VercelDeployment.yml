@@ -1,0 +1,38 @@
+# .github/VercelDeployment.yml
+
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - testingWorkflow
+  pull:
+    branches:
+      - testingWorkflow
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Load environment variables
+        run: |
+          npm install dotenv
+          echo "VERCEL_TOKEN=$(grep VERCEL_TOKEN .env | cut -d '=' -f2)" >> $GITHUB_ENV
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Vercel
+        run: npx vercel --prod --token ${{ env.VERCEL_TOKEN }}
