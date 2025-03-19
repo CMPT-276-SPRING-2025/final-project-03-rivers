@@ -1,8 +1,8 @@
 import React from 'react';
-
+import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import LoginPage from './Pages/Components/LoginPage'
-import Login from './Pages/Login'
+import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/loading" element={<LoadingPage />} />
-        <Route path="/home" element={<Login />} />
+        <Route path="/home" element={<Music />} />
       </Routes>
     </BrowserRouter>
   );
