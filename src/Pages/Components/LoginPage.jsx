@@ -15,6 +15,10 @@ const LoginPage = () => {
     }, 5000);
   };
 
+  const handleSignUp = () => {
+    navigate('/signup');
+  }; 
+
   return (
     <div className="login-container">
       <section className="nav-bar">
@@ -45,7 +49,7 @@ const LoginPage = () => {
             required 
           />
           <button type="submit" onClick={handleLogin}>Login</button>
-          <button type="signup"> Sign Up</button>
+          <button type="signup" onClick={handleSignUp}> Sign Up</button>
         </form>
       </section>
 
