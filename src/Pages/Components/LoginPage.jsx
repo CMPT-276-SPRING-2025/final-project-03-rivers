@@ -27,6 +27,12 @@ const LoginPage = () => {
         </div>
       </section>
 
+      <section className="about">
+        {/* pop up when hover on the question mark */}
+        <p>This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.
+        This project aims to help split lives up into manageable chunks and get through the day.</p>
+      </section>
+
       <section className="login">
         <form action="login.php" method="post">
           <h1>Log In To Your Account</h1>
@@ -49,11 +55,7 @@ const LoginPage = () => {
         </form>
       </section>
 
-      <section className="about">
-        {/* pop up when hover on the question mark */}
-        <p>This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.
-        This project aims to help split lives up into manageable chunks and get through the day.</p>
-      </section>
+      
 
       <section className="signup">
         <h1>Welcome Back!</h1>
