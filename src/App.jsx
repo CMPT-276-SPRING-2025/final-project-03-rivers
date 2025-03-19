@@ -1,15 +1,20 @@
 import React from 'react';
-import './App.css'
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import LoginPage from './Pages/Components/LoginPage'
 import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
+
 function App() {
   return (
-    <>
-      <div>
-        <Music />
-      </div>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/loading" element={<LoadingPage />} />
+        <Route path="/home" element={<Music />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
