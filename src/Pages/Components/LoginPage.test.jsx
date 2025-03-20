@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LoginPage from './LoginPage';
@@ -36,4 +36,19 @@ describe('LoginPage Component', () => {
     expect(screen.getByTestId('no-account-text')).toBeInTheDocument();
     expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
   });
+
+  it('handles login button click', () => {
+    const loginButton = screen.getByTestId('login-button');
+    fireEvent.click(loginButton);
+
+    expect(window.location.pathname).toBe('/loading'); 
+  });
+
+  it('handles signup button click', () => {
+    const signupButton = screen.getByTestId('signup-button');
+    fireEvent.click(signupButton);
+
+    expect(window.location.pathname).toBe('/signup'); 
+  });
+
 });
