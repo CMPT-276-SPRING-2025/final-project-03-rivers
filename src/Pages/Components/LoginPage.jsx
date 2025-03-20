@@ -1,67 +1,104 @@
-import './LoginPage.css'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import './LoginPage.css';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import question from "../../assets/question.png";
-
+import logo from '../../assets/logo.png';
 
 const LoginPage = () => {
   const navigate = useNavigate();
- 
-  const handleLogin = () => {
-    navigate('/loading');
+
+  const handleLogin = (e) => {
+    e.preventDefault(); // Prevent form submission, so login action is handled by React
+
+    navigate('/loading'); // Navigate to loading page
 
     setTimeout(() => {
-      navigate('/home'); 
+      navigate('/home'); // After 5 seconds, navigate to home page
     }, 5000);
   };
 
+  const handleSignUp = () => {
+    navigate('/signup'); // Navigate to signup page
+  };
+
   return (
-    <div className="login-container">
-      <section className="nav-bar">
-        <div className="left-nav">
-          <a>Logo</a>
-          <a>Focus Forge</a>
+    <div className="login-container" data-testid="login-container">
+      {/* Navigation Bar */}
+      <div className="nav-bar" data-testid="nav-bar">
+        
+        <div className="left-nav" data-testid="left-nav">
+          <img src={logo} alt="logo" className="logo" data-testid="logo"/>
+          <h1 data-testid="focus-forge">FocusForge</h1>
         </div>
-        <div className ="right-nav">
-          <img src={question} alt="question icon about project" className="question" />
+
+        <div className="right-nav" data-testid="right-nav">
+          <img src={question} alt="question icon about project" className="question" data-testid="question-icon" />
+
+          {/* Pop-Up / About Section */}
+          <div className="popup" data-testid="about">
+            {/* Pop-up when hover on the question mark */}
+            <p data-testid="about-text">
+              This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.
+              This project aims to help split lives up into manageable chunks and get through the day.
+            </p>
+          </div>
+
         </div>
-      </section>
+      </div>
 
-      <section className="login">
-        <form action="login.php" method="post">
-          <h1>Log In To Your Account</h1>
-          <label htmlFor="username">Username:</label>
-          <input 
-            type="text" 
-            name="username" 
-            id="username" 
-            required 
-          />
-          <label htmlFor="password">Password:</label>
-          <input 
-            type="password" 
-            name="password" 
-            id="password" 
-            required 
-          />
-          <button type="submit" onClick={handleLogin}>Login</button>
-          <button type="signup"> Sign Up</button>
-        </form>
-      </section>
+      <div className="box" data-testid="box"> 
+        {/* Login Form Section */}
+        <section className="login" data-testid="login-section">
+              <form data-testid="login-form">
+                <h1 data-testid="login-header">Log In To Your Account</h1>
 
-      <section className="about">
-        {/* pop up when hover on the question mark */}
-        <p>This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.
-        This project aims to help split lives up into manageable chunks and get through the day.</p>
-      </section>
+                <div className="input-group">
+                    <input type="text" placeholder="Email" className="input" />
+                    <input type="password" placeholder="Password" className="input" />
+                </div>
+                
+                {/*<label htmlFor="username" data-testid="username-label">Username:</label>
+                <input 
+                  type="text" 
+                  name="username" 
+                  id="username" 
+                  required 
+                  data-testid="username-input"
+                />
+                {/*<label htmlFor="password" data-testid="password-label">Password:</label>
+                <input 
+                  type="password" 
+                  name="password" 
+                  id="password" 
+                  required 
+                  data-testid="password-input"
+                />*/}
 
-      <section className="signup">
-        <h1>Welcome Back!</h1>
-        <p>Ready to focus?</p>
-        <p>Don't have an account?</p>
-      </section>
+                <div className="login-button">
+                  <button className="btn" data-testid="login-button" onClick={handleLogin}>Login</button>
+                </div>
+
+              </form>
+            </section>
+
+            {/* Sign-Up Information Section */}
+            <section className="signup" data-testid="signup-section">
+              
+              <div className="greet">
+                <h1 data-testid="welcome-back-header">Welcome Back!</h1>
+                <p data-testid="ready-to-focus-text">Ready to focus?</p>
+              </div>
+
+              <div className="signup-button">
+                <p data-testid="no-account-text">Don't have an account?</p>
+                <button className="btn btn-outline" data-testid="signup-button" onClick={handleSignUp}>Sign Up</button>
+              </div>
+
+            </section>
+        </div>
+      
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;

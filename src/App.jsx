@@ -5,12 +5,14 @@ import LoginPage from './Pages/Components/LoginPage'
 import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 import MainP from './Pages/MainP';
+import SignupPage from './Pages/Components/SignupPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
         {/*Changed Music to MainP */} 
         <Route path="/home" element={<MainP />} />
