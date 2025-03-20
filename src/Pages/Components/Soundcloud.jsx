@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export const Soundcloud = () => {
     const [volume, setVolume] = useState(100);
@@ -6,238 +6,257 @@ export const Soundcloud = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [songName, setSongName] = useState('');
     const [totalSongs, setTotalSongs] = useState(0);
+    const [searchTerm, setSearchTerm] = useState('');
     const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
         'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
     );
+    const iframeRef = useRef(null);
+    const widgetRef = useRef(null);
+    const eventsRef = useRef(new Set());
+    const isWidgetReady = useRef(false);
 
     useEffect(() => {
+        const iframeElement = document.createElement('iframe');
+        iframeElement.id = 'soundcloud-player';
+        iframeElement.src = currentPlaylistUrl;
+        iframeElement.width = '100%'; // Set to 0 to make it vanish
+        iframeElement.height = '166'; // Set this to 0 too so it doesn't give an error when vanished
+        iframeElement.allow = 'autoplay';
+        
+        document.body.appendChild(iframeElement);
+        iframeRef.current = iframeElement;
+
         const script = document.createElement('script');
         script.src = "https://w.soundcloud.com/player/api.js";
         script.async = true;
         document.body.appendChild(script);
 
         script.onload = () => {
-            const iframeElement = document.querySelector('iframe');
-            const widget = SC.Widget(iframeElement);
-
-            widget.bind(SC.Widget.Events.READY, function() {
-                console.log('SoundCloud Widget is ready');
-                updateCurrentSong(widget);
-                widget.getSounds((sounds) => {
-                    setTotalSongs(sounds.length);
-                });
+            if (iframeRef.current) {
+                widgetRef.current = SC.Widget(iframeRef.current);
                 
-                setInterval(() => {
-                    widget.getPosition((position) => {
-                        widget.getDuration((duration) => {
-                            setProgress((position / duration) * 100);
-                        });
+                const handleReady = () => {
+                    console.log('SoundCloud Widget is ready');
+                    isWidgetReady.current = true;
+                    updateCurrentSong();
+                    widgetRef.current.getSounds((sounds) => {
+                        setTotalSongs(sounds.length);
                     });
-                }, 1000);
+                    
+                    const progressInterval = setInterval(() => {
+                        if (isWidgetReady.current) {
+                            widgetRef.current.getPosition((position) => {
+                                widgetRef.current.getDuration((duration) => {
+                                    setProgress((position / duration) * 100);
+                                });
+                            });
+                        }
+                    }, 1000);
 
-                widget.bind(SC.Widget.Events.FINISH, function() {
-                    console.log('Track finished playing');
-                    widget.next();
-                });
-            });
+                    eventsRef.current.add(() => clearInterval(progressInterval));
+                };
 
-            widget.bind(SC.Widget.Events.PLAY, function() {
-                console.log('SoundCloud Widget has started playing');
-                updateCurrentSong(widget);
-                setIsPlaying(true);
-            });
+                const handlePlay = () => {
+                    console.log('SoundCloud Widget has started playing');
+                    updateCurrentSong();
+                    setIsPlaying(true);
+                };
 
-            widget.bind(SC.Widget.Events.PAUSE, function() {
-                console.log('SoundCloud Widget has paused playing');
-                setIsPlaying(false);
-            });
+                const handlePause = () => {
+                    console.log('SoundCloud Widget has paused playing');
+                    setIsPlaying(false);
+                };
 
-            return () => {
-                widget.unbind(SC.Widget.Events.READY);
-                widget.unbind(SC.Widget.Events.PLAY);
-                widget.unbind(SC.Widget.Events.PAUSE);
-                widget.unbind(SC.Widget.Events.FINISH);
-            };
+                eventsRef.current.add(
+                    widgetRef.current.bind(SC.Widget.Events.READY, handleReady),
+                    widgetRef.current.bind(SC.Widget.Events.PLAY, handlePlay),
+                    widgetRef.current.bind(SC.Widget.Events.PAUSE, handlePause)
+                );
+            }
         };
 
         return () => {
             document.body.removeChild(script);
-        };
-    }, []);
-
-    const updateCurrentSong = (widget) => {
-        widget.getCurrentSound((sound) => {
-            if (sound) {
-                setSongName(sound.title);
-            }
-        });
-    };
-
-    const handleTrackChange = (direction) => {
-        const iframeElement = document.querySelector('iframe');
-        const widget = SC.Widget(iframeElement);
-
-        if (direction === 'next') {
-            widget.getCurrentSoundIndex((currentIndex) => {
-                if (currentIndex < totalSongs - 1) {
-                    widget.next();
+            document.body.removeChild(iframeElement);
+            
+            eventsRef.current.forEach(eventId => {
+                if (widgetRef.current) {
+                    widgetRef.current.unbind(eventId);
                 }
             });
-        } else if (direction === 'prev') {
-            widget.getCurrentSoundIndex((currentIndex) => {
-                if (currentIndex > 0) {
-                    widget.prev();
+            eventsRef.current.clear();
+            widgetRef.current = null;
+            isWidgetReady.current = false;
+        };
+    }, [currentPlaylistUrl]);
+
+    const updateCurrentSong = () => {
+        if (widgetRef.current && isWidgetReady.current) {
+            widgetRef.current.getCurrentSound((sound) => {
+                if (sound) {
+                    setSongName(sound.title);
                 }
             });
         }
-
-        // Update song name after a delay to ensure track change is complete
-        setTimeout(() => {
-            updateCurrentSong(widget);
-        }, 500);
     };
 
-    const switchToMoriHelp = () => {
-        const newPlaylistUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1493436424&';
+    const switchToPlaylist = (playlistUrl) => {
+        if (widgetRef.current) {
+            widgetRef.current.pause();
+            eventsRef.current.forEach(eventId => {
+                widgetRef.current.unbind(eventId);
+            });
+            eventsRef.current.clear();
+            widgetRef.current = null;
+            isWidgetReady.current = false;
+        }
 
-        setCurrentPlaylistUrl(newPlaylistUrl);
+        setCurrentPlaylistUrl(playlistUrl);
         setProgress(0);
-        setSongName('MERA MERA');
-        setTotalSongs(46);
+        setSongName('');
         setIsPlaying(false);
-        const iframeElement = document.querySelector('iframe');
-        const widget = SC.Widget(iframeElement);
-        widget.pause();
-        widget.seek(1);
     };
 
-    const switchToMori = () => {
-        switchToMoriHelp();
-        setTimeout(() => {
-            switchToMoriHelp();
-        }, 500);
+    const handlePlayPause = () => {
+        if (widgetRef.current && isWidgetReady.current) {
+            if (isPlaying) {
+                widgetRef.current.pause();
+            } else {
+                widgetRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
     };
 
-    const switchToCountryHelp = () => {
-        const newPlaylistUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&';
-
-        setCurrentPlaylistUrl(newPlaylistUrl);
-        setProgress(0);
-        setSongName("I'm The Problem");
-        setTotalSongs(50);
-        setIsPlaying(true);
-    }
-
-    const switchToCountry = () => {
-        switchToCountryHelp();
-        setTimeout(() => {
-            switchToCountryHelp();
-        }, 500);
+    const handleTrackChange = (direction) => {
+        if (widgetRef.current && isWidgetReady.current) {
+            if (direction === 'next') {
+                widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+                    if (currentIndex < totalSongs - 1) {
+                        widgetRef.current.next();
+                        console.log('Next Song');
+                    }
+                });
+            } else if (direction === 'prev') {
+                widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+                    if (currentIndex > 0) {
+                        widgetRef.current.prev();
+                        console.log('Previous Song');
+                    }
+                });
+            }
+            setTimeout(updateCurrentSong, 500);
+        }
     };
+
+    const playlists = [
+        {
+            name: 'Mori',
+            url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1493436424&'
+        },
+        {
+            name: 'Country',
+            url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
+        }
+    ];
+
+    const filteredPlaylists = playlists.filter(playlist =>
+        playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
-        <div className="fixed bottom-0 left-0 w-full h-15 bg-blue-200 p-4 flex justify-between" style={{ height: '15%' }}>
-            {/* Soundcloud Widget */}
-            <iframe
-                width="0%"
-                height="0"
-                style={{ overflow: 'hidden', border: 'none' }}
-                allow="autoplay"
-                src={currentPlaylistUrl}
-            ></iframe>
+        <>
+            {/* Search Bar */}
+            <div className="relative w-48 mb-2">
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search playlists..."
+                    className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                />
+            </div>
 
-            {/* Previous Button */}
-            <button 
-                className={'btn btn-soft btn-primary'}
-                onClick={() => handleTrackChange('prev')}
-            >
-                Previous
-            </button>
+            {/* Playlist Buttons */}
+            <div className="flex gap-2 mb-2">
+                {filteredPlaylists.map(playlist => (
+                    <button 
+                        key={playlist.name}
+                        className="btn btn-soft btn-warning"
+                        onClick={() => switchToPlaylist(playlist.url)}
+                    >
+                        {playlist.name}
+                    </button>
+                ))}
+            </div>
 
-            {/* Song Name */}
-            <div className="text-white flex-grow text-center">{songName || 'Loading...'}</div>
+            <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
+                {/* Controls */}
+                <div className="flex justify-between items-center w-full">
+                    {/* Previous Button */}
+                    <button 
+                        className={'btn btn-soft btn-primary'}
+                        onClick={() => handleTrackChange('prev')}
+                    >
+                        Previous
+                    </button>
 
-            {/* Progress bar */}
-            <progress 
-                className="progress progress-info w-56 mx-4" 
-                max="100" 
-                value={progress}
-                onClick={(e) => {
-                    const rect = e.target.getBoundingClientRect();
-                    const clickX = e.clientX - rect.left;
-                    const newProgress = (clickX / rect.width) * 100;
-                    setProgress(newProgress);
-                    
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    widget.getCurrentSound((sound) => {
-                        widget.seekTo((newProgress / 100) * sound.duration);
-                    });
-                }}
-            ></progress>
+                    {/* Song Name */}
+                    <div className="text-white flex-grow text-center">{songName}</div>
 
-            {/* Play/Pause Button */}
-            <button 
-                className={'btn btn-soft btn-info'}
-                onClick={() => {
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    
-                    if (isPlaying) {
-                        widget.pause();
-                        setIsPlaying(false);
-                        console.log('SoundCloud Widget is now paused');
-                    } else {
-                        widget.play();
-                        setIsPlaying(true);
-                        console.log('SoundCloud Widget is now playing');
-                    }
-                }}
-            >
-                {isPlaying ? 'Pause' : 'Play'}
-            </button>
+                    {/* Progress bar */}
+                    <progress 
+                        className="progress progress-info w-56 mx-4" 
+                        max="100" 
+                        value={progress}
+                        onClick={(e) => {
+                            const rect = e.target.getBoundingClientRect();
+                            const clickX = e.clientX - rect.left;
+                            const newProgress = (clickX / rect.width) * 100;
+                            setProgress(newProgress);
+                            
+                            if (widgetRef.current && isWidgetReady.current) {
+                                widgetRef.current.getCurrentSound((sound) => {
+                                    widgetRef.current.seekTo((newProgress / 100) * sound.duration);
+                                });
+                            }
+                        }}
+                    ></progress>
 
-            {/* Next Button */}
-            <button 
-                className="btn btn-soft btn-info"
-                onClick={() => handleTrackChange('next')}
-            >
-                Next
-            </button>
+                    {/* Play/Pause Button */}
+                    <button 
+                        className={'btn btn-soft btn-info'}
+                        onClick={handlePlayPause}
+                    >
+                        {isPlaying ? 'Pause' : 'Play'}
+                    </button>
 
-            {/* Switch Playlist Button */}
-            <button 
-                className="btn btn-soft btn-warning"
-                onClick={switchToMori}
-            >
-                Switch to Mori
-            </button>
+                    {/* Next Button */}
+                    <button 
+                        className="btn btn-soft btn-info"
+                        onClick={() => handleTrackChange('next')}
+                    >
+                        Next
+                    </button>
 
-            {/* country button */}
-            <button 
-                className="btn btn-soft btn-warning"
-                onClick={switchToCountry}
-            >
-                Switch to Country
-            </button>
-
-            {/* Volume Control */}
-            <input 
-                type="range" 
-                min="0" 
-                max="100" 
-                className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]" 
-                value={volume} 
-                onChange={(e) => {
-                    const newVolume = e.target.value;
-                    setVolume(newVolume);
-                    
-                    const iframeElement = document.querySelector('iframe');
-                    const widget = SC.Widget(iframeElement);
-                    widget.setVolume(newVolume);
-                }} 
-            />
-        </div>
+                    {/* Volume Control */}
+                    <input 
+                        type="range" 
+                        min="0" 
+                        max="100" 
+                        className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]" 
+                        value={volume} 
+                        onChange={(e) => {
+                            const newVolume = e.target.value;
+                            setVolume(newVolume);
+                            if (widgetRef.current && isWidgetReady.current) {
+                                widgetRef.current.setVolume(newVolume);
+                            }
+                        }} 
+                    />
+                </div>
+            </div>
+        </>
     );
 };
 
