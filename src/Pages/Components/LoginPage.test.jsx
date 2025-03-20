@@ -3,9 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { BrowserRouter as Router } from 'react-router-dom';
 import LoginPage from './LoginPage';
-import "@testing-library/jest-dom/vitest";
-
-
 
 describe('LoginPage Component', () => {
     it('renders without crashing', () => {
