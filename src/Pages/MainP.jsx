@@ -2,7 +2,7 @@ import React from 'react';
 import './MainP.css'
 import logout from '../assets/logout.png';
 import Soundcloud from './Components/Soundcloud'
-
+import { SidebarData } from './SidebarData';
 const Login = () => {
   return (
     <>
@@ -30,7 +30,30 @@ const NavBar = () => {
 }
 
 
-
+const SideBar = () => {
+    return (
+      <div className="Sidebar">
+        <ul>
+          {SidebarData.map((val, key) => {
+            return (
+              <li
+                key={key}
+                onClick={() => {
+                  window.location.pathname = val.link;
+                }}
+                className="sidebar-item"
+              >
+                <div className="sidebar-icon">{val.icon}</div>
+                <div className="sidebar-title">{val.title}</div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  };
+  
+  
 
 const MainP = () => {
 
@@ -39,8 +62,8 @@ const MainP = () => {
         <div className = "mainP">
         {/* <h1>MAIN PAGE</h1> */}
         <NavBar />
+        <SideBar />
         <Login />
-
 
 
         </div>
