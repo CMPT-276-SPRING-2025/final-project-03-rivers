@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 export const Soundcloud = () => {
     const [volume, setVolume] = useState(100);
@@ -10,130 +10,141 @@ export const Soundcloud = () => {
     const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
         'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
     );
+    const iframeRef = useRef(null);
+    const widgetRef = useRef(null);
+    const eventsRef = useRef(new Set());
+    const isWidgetReady = useRef(false);
 
     useEffect(() => {
+        const iframeElement = document.createElement('iframe');
+        iframeElement.id = 'soundcloud-player';
+        iframeElement.src = currentPlaylistUrl;
+        iframeElement.width = '100%'; // Set to 0 to make it vanish
+        iframeElement.height = '166'; // Set this to 0 too so it doesn't give an error when vanished
+        iframeElement.allow = 'autoplay';
+        
+        document.body.appendChild(iframeElement);
+        iframeRef.current = iframeElement;
+
         const script = document.createElement('script');
         script.src = "https://w.soundcloud.com/player/api.js";
         script.async = true;
         document.body.appendChild(script);
 
         script.onload = () => {
-            const iframeElement = document.querySelector('iframe');
-            const widget = SC.Widget(iframeElement);
-
-            widget.bind(SC.Widget.Events.READY, function() {
-                console.log('SoundCloud Widget is ready');
-                updateCurrentSong(widget);
-                widget.getSounds((sounds) => {
-                    setTotalSongs(sounds.length);
-                });
+            if (iframeRef.current) {
+                widgetRef.current = SC.Widget(iframeRef.current);
                 
-                setInterval(() => {
-                    widget.getPosition((position) => {
-                        widget.getDuration((duration) => {
-                            setProgress((position / duration) * 100);
-                        });
+                const handleReady = () => {
+                    console.log('SoundCloud Widget is ready');
+                    isWidgetReady.current = true;
+                    updateCurrentSong();
+                    widgetRef.current.getSounds((sounds) => {
+                        setTotalSongs(sounds.length);
                     });
-                }, 1000);
+                    
+                    const progressInterval = setInterval(() => {
+                        if (isWidgetReady.current) {
+                            widgetRef.current.getPosition((position) => {
+                                widgetRef.current.getDuration((duration) => {
+                                    setProgress((position / duration) * 100);
+                                });
+                            });
+                        }
+                    }, 1000);
 
-                widget.bind(SC.Widget.Events.FINISH, function() {
-                    console.log('Track finished playing');
-                    widget.next();
-                });
-            });
+                    eventsRef.current.add(() => clearInterval(progressInterval));
+                };
 
-            widget.bind(SC.Widget.Events.PLAY, function() {
-                console.log('SoundCloud Widget has started playing');
-                updateCurrentSong(widget);
-                setIsPlaying(true);
-            });
+                const handlePlay = () => {
+                    console.log('SoundCloud Widget has started playing');
+                    updateCurrentSong();
+                    setIsPlaying(true);
+                };
 
-            widget.bind(SC.Widget.Events.PAUSE, function() {
-                console.log('SoundCloud Widget has paused playing');
-                setIsPlaying(false);
-            });
+                const handlePause = () => {
+                    console.log('SoundCloud Widget has paused playing');
+                    setIsPlaying(false);
+                };
 
-            return () => {
-                widget.unbind(SC.Widget.Events.READY);
-                widget.unbind(SC.Widget.Events.PLAY);
-                widget.unbind(SC.Widget.Events.PAUSE);
-                widget.unbind(SC.Widget.Events.FINISH);
-            };
+                eventsRef.current.add(
+                    widgetRef.current.bind(SC.Widget.Events.READY, handleReady),
+                    widgetRef.current.bind(SC.Widget.Events.PLAY, handlePlay),
+                    widgetRef.current.bind(SC.Widget.Events.PAUSE, handlePause)
+                );
+            }
         };
 
         return () => {
             document.body.removeChild(script);
-        };
-    }, []);
-
-    const updateCurrentSong = (widget) => {
-        widget.getCurrentSound((sound) => {
-            if (sound) {
-                setSongName(sound.title);
-            }
-        });
-    };
-
-    const handleTrackChange = (direction) => {
-        const iframeElement = document.querySelector('iframe');
-        const widget = SC.Widget(iframeElement);
-
-        if (direction === 'next') {
-            widget.getCurrentSoundIndex((currentIndex) => {
-                if (currentIndex < totalSongs - 1) {
-                    widget.next();
+            document.body.removeChild(iframeElement);
+            
+            eventsRef.current.forEach(eventId => {
+                if (widgetRef.current) {
+                    widgetRef.current.unbind(eventId);
                 }
             });
-        } else if (direction === 'prev') {
-            widget.getCurrentSoundIndex((currentIndex) => {
-                if (currentIndex > 0) {
-                    widget.prev();
+            eventsRef.current.clear();
+            widgetRef.current = null;
+            isWidgetReady.current = false;
+        };
+    }, [currentPlaylistUrl]);
+
+    const updateCurrentSong = () => {
+        if (widgetRef.current && isWidgetReady.current) {
+            widgetRef.current.getCurrentSound((sound) => {
+                if (sound) {
+                    setSongName(sound.title);
                 }
             });
         }
-
-        // Update song name after a delay to ensure track change is complete
-        setTimeout(() => {
-            updateCurrentSong(widget);
-        }, 500);
     };
 
-    const switchToMoriHelp = () => {
-        const newPlaylistUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1493436424&';
+    const switchToPlaylist = (playlistUrl) => {
+        if (widgetRef.current) {
+            widgetRef.current.pause();
+            eventsRef.current.forEach(eventId => {
+                widgetRef.current.unbind(eventId);
+            });
+            eventsRef.current.clear();
+            widgetRef.current = null;
+            isWidgetReady.current = false;
+        }
 
-        setCurrentPlaylistUrl(newPlaylistUrl);
+        setCurrentPlaylistUrl(playlistUrl);
         setProgress(0);
-        setSongName('MERA MERA');
-        setTotalSongs(46);
+        setSongName('');
         setIsPlaying(false);
-        const iframeElement = document.querySelector('iframe');
-        const widget = SC.Widget(iframeElement);
-        widget.pause();
-        widget.seek(1);
     };
 
-    const switchToMori = () => {
-        switchToMoriHelp();
-        setTimeout(() => {
-            switchToMoriHelp();
-        }, 500);
+    const handlePlayPause = () => {
+        if (widgetRef.current && isWidgetReady.current) {
+            if (isPlaying) {
+                widgetRef.current.pause();
+            } else {
+                widgetRef.current.play();
+            }
+            setIsPlaying(!isPlaying);
+        }
     };
 
-    const switchToCountryHelp = () => {
-        const newPlaylistUrl = 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&';
-
-        setCurrentPlaylistUrl(newPlaylistUrl);
-        setProgress(0);
-        setSongName("I'm The Problem");
-        setTotalSongs(50);
-        setIsPlaying(true);
-    }
-
-    const switchToCountry = () => {
-        switchToCountryHelp();
-        setTimeout(() => {
-            switchToCountryHelp();
-        }, 500);
+    const handleTrackChange = (direction) => {
+        if (widgetRef.current && isWidgetReady.current) {
+            if (direction === 'next') {
+                widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+                    if (currentIndex < totalSongs - 1) {
+                        widgetRef.current.next();
+                    }
+                });
+            } else if (direction === 'prev') {
+                widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+                    if (currentIndex > 0) {
+                        widgetRef.current.prev();
+                    }
+                });
+            }
+            setTimeout(updateCurrentSong, 500);
+        }
     };
 
     const playlists = [
@@ -176,6 +187,7 @@ export const Soundcloud = () => {
                     </button>
                 ))}
             </div>
+
             <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
                 {/* Controls */}
                 <div className="flex justify-between items-center w-full">
@@ -201,31 +213,18 @@ export const Soundcloud = () => {
                             const newProgress = (clickX / rect.width) * 100;
                             setProgress(newProgress);
                             
-                            const iframeElement = document.querySelector('iframe');
-                            const widget = SC.Widget(iframeElement);
-                            widget.getCurrentSound((sound) => {
-                                widget.seekTo((newProgress / 100) * sound.duration);
-                            });
+                            if (widgetRef.current && isWidgetReady.current) {
+                                widgetRef.current.getCurrentSound((sound) => {
+                                    widgetRef.current.seekTo((newProgress / 100) * sound.duration);
+                                });
+                            }
                         }}
                     ></progress>
 
                     {/* Play/Pause Button */}
                     <button 
                         className={'btn btn-soft btn-info'}
-                        onClick={() => {
-                            const iframeElement = document.querySelector('iframe');
-                            const widget = SC.Widget(iframeElement);
-                            
-                            if (isPlaying) {
-                                widget.pause();
-                                setIsPlaying(false);
-                                console.log('SoundCloud Widget is now paused');
-                            } else {
-                                widget.play();
-                                setIsPlaying(true);
-                                console.log('SoundCloud Widget is now playing');
-                            }
-                        }}
+                        onClick={handlePlayPause}
                     >
                         {isPlaying ? 'Pause' : 'Play'}
                     </button>
@@ -248,15 +247,13 @@ export const Soundcloud = () => {
                         onChange={(e) => {
                             const newVolume = e.target.value;
                             setVolume(newVolume);
-                            
-                            const iframeElement = document.querySelector('iframe');
-                            const widget = SC.Widget(iframeElement);
-                            widget.setVolume(newVolume);
+                            if (widgetRef.current && isWidgetReady.current) {
+                                widgetRef.current.setVolume(newVolume);
+                            }
                         }} 
                     />
                 </div>
             </div>
-
         </>
     );
 };
