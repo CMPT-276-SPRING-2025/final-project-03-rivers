@@ -1,22 +1,23 @@
 import React from 'react'
-
+import StickyNote2Icon from '@mui/icons-material/StickyNote2';
+import AudiotrackIcon from '@mui/icons-material/Audiotrack';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 export const SidebarData = [
     {
-        title: "music",
-        icon: <Icon />,
-        link: "/music"
-    },
-    {
-        title: "stickyNotes",
-        icon: <Icon />,
+        title: "Music",
+        icon: <AudiotrackIcon />,
         link: "/stickyN"
     },
     {
-        title: "toDoList",
-        icon: <Icon />,
+        title: "Sticky Notes",
+        icon: <StickyNote2Icon />,
+        link: "/stickyN"
+    },
+    {
+        title: "ToDoList",
+        icon: <ChecklistIcon />,
         link: "/toDoL"
     }
 ];
 
-
-export default SidebarData
+export default SidebarData;
