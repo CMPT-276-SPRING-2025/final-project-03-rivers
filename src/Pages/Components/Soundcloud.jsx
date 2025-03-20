@@ -7,6 +7,7 @@ export const Soundcloud = () => {
     const [songName, setSongName] = useState('');
     const [totalSongs, setTotalSongs] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
+    const [isOpen, setIsOpen] = useState(true);
     const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
         'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
     );
@@ -166,30 +167,58 @@ export const Soundcloud = () => {
 
     return (
         <>
-            {/* Search Bar */}
-            <div className="relative w-48 mb-2">
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search playlists..."
-                    className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
-                />
-            </div>
-
-            {/* Playlist Buttons */}
-            <div className="flex gap-2 mb-2">
-                {filteredPlaylists.map(playlist => (
-                    <button 
-                        key={playlist.name}
-                        className="btn btn-soft btn-warning"
-                        onClick={() => switchToPlaylist(playlist.url)}
+            <div>
+                {/* Panel Container */}
+                <div className={`fixed top-0 right-0 h-screen transition-all duration-300 ease-in-out ${
+                    isOpen ? 'translate-x-0' : 'translate-x-[90%]'
+                }`}>
+                    {/* Close Button */}
+                    <button
+                    onClick={() => setIsOpen(false)}
+                    className="absolute left-[-32px] top-4 -rotate-90 bg-black/80 hover:bg-black/90 text-white px-3 py-1 rounded-r-lg"
+                    aria-label="Close panel"
                     >
-                        {playlist.name}
+                    X
                     </button>
-                ))}
-            </div>
 
+                    {/* Panel Content */}
+                    <div className="h-full bg-black/90 p-6">
+                    {/* Your existing search components */}
+                    <div className="relative w-48 mb-2">
+                        <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search playlists..."
+                        className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                        />
+                    </div>
+
+                    <div className="flex gap-2 mb-2">
+                        {filteredPlaylists.map(playlist => (
+                        <button
+                            key={playlist.name}
+                            className="btn btn-soft btn-warning"
+                            onClick={() => switchToPlaylist(playlist.url)}
+                        >
+                            {playlist.name}
+                        </button>
+                        ))}
+                    </div>
+                    </div>
+                </div>
+
+                {/* Reopen Tab */}
+                {!isOpen && (
+                    <button
+                    onClick={() => setIsOpen(true)}
+                    className="fixed top-1/2 right-0 -translate-y-1/2 bg-black/80 hover:bg-black/90 text-white px-3 py-1 rounded-l-lg"
+                    aria-label="Open panel"
+                    >
+                    ▶️
+                    </button>
+                )}
+            </div>
             <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
                 {/* Controls */}
                 <div className="flex justify-between items-center w-full">
