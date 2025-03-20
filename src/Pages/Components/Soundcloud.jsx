@@ -134,12 +134,14 @@ export const Soundcloud = () => {
                 widgetRef.current.getCurrentSoundIndex((currentIndex) => {
                     if (currentIndex < totalSongs - 1) {
                         widgetRef.current.next();
+                        console.log('Next Song');
                     }
                 });
             } else if (direction === 'prev') {
                 widgetRef.current.getCurrentSoundIndex((currentIndex) => {
                     if (currentIndex > 0) {
                         widgetRef.current.prev();
+                        console.log('Previous Song');
                     }
                 });
             }
