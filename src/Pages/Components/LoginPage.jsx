@@ -16,6 +16,10 @@ const LoginPage = () => {
     }, 5000);
   };
 
+  const handleSignUp = () => {
+    navigate('/signup');
+  }; 
+
   return (
     <div className="login-container" data-testid="login-container">
       <section className="nav-bar" data-testid="nav-bar">
@@ -56,7 +60,7 @@ const LoginPage = () => {
             data-testid="password-input"
           />
           <button type="submit" onClick={handleLogin} data-testid="login-button">Login</button>
-          <button type="signup" data-testid="signup-button"> Sign Up</button>
+          <button type="signup" data-testid="signup-button" onClick={handleSignUp}> Sign Up</button>
         </form>
       </section>
 

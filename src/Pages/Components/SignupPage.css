@@ -1,0 +1,93 @@
+.signup-container {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background-color: rgb(204, 223, 243);
+}
+
+.top-nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.left-nav {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    margin: 0;
+}
+
+.question {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+}
+
+.popup{
+    width: 300px;
+    height: auto;
+    color: white; 
+    font-family: 'Poppins', sans-serif;
+    background-color: grey;
+    border-radius: 10px;
+    position: fixed; 
+    top: 7%; 
+    right: 40px;
+    padding: 15px;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.right-nav:hover .popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.signup-UI{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.left-signup {
+    width: 400px; 
+    height: 550px;
+    background: linear-gradient(to right, red, yellow);
+    text-align: center;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.right-signup {
+    width: 600px;
+    height: 550px;
+    background-color: white;
+    text-align: center; 
+    padding: 20px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.right-signup h1{
+    color: black;
+}
