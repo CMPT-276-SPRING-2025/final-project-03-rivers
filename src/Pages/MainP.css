@@ -1,4 +1,11 @@
 
+html, body, .mainP {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
 .navBar {
 
     background: linear-gradient(to bottom, #9fb3cf, #ffff);
@@ -66,3 +73,9 @@ ul li{
     font-size: 24px;
 }
 
+.Sidebar{
+    height: 100%;
+    width: 250px;
+    background-color: whitesmoke;
+    position: fixed;
+}

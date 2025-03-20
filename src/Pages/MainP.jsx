@@ -30,7 +30,16 @@ const NavBar = () => {
 }
 
 
+const SideBar = () =>{
 
+
+    return(
+        <div className='Sidebar'>
+
+
+        </div>
+    )
+}
 
 const MainP = () => {
 
@@ -39,8 +48,8 @@ const MainP = () => {
         <div className = "mainP">
         {/* <h1>MAIN PAGE</h1> */}
         <NavBar />
+        <SideBar />
         <Login />
-
 
 
         </div>
