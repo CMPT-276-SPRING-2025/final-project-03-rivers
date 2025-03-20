@@ -92,6 +92,7 @@ ul li{
   }
   
   .Sidebar .sidebar-item {
+    color: black;
     display: flex;
     align-items: center; 
     margin: 10px 0; 
