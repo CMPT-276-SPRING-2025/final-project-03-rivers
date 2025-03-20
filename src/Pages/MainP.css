@@ -79,15 +79,13 @@ ul li{
     background-color: whitesmoke;
     position: fixed;
 }
-.Sidebar {
-    width: 200px; /* Adjust width as necessary */
-  }
+
   
   .Sidebar ul {
     padding: 0;
     list-style-type: none;
     display: flex;
-    flex-direction: column; /* Stack the list items vertically */
+    flex-direction: column; 
     align-items: flex-start;
     width: 100%;
 
@@ -95,28 +93,29 @@ ul li{
   
   .Sidebar .sidebar-item {
     display: flex;
-    align-items: center; /* Ensure icons and text are aligned side by side */
-    margin: 10px 0; /* Space between list items */
-    cursor: pointer; /* Pointer cursor on hover */
+    align-items: center; 
+    margin: 10px 0; 
+    cursor: pointer; 
     padding: 20px;
   }
 
   .Sidebar .sidebar-item:hover{
-    background-color: rgba(0, 0, 0, 0.1); /* Hover background color */
+    background-color: rgba(0, 0, 0, 0.1); 
     width: 100%;
+    transition: 0.8s ease;
   }
   
   .Sidebar .sidebar-icon {
-    font-size: 24px; /* Adjust the icon size as needed */
-    margin-right: 10px; /* Space between the icon and text */
+    font-size: 24px; 
+    margin-right: 10px;
     display: flex;
-    align-items:center; /* Vertically align icons in case they vary in size */
+    align-items:center;
   }
   
   .Sidebar .sidebar-title {
-    font-size: 14px; /* Adjust the text size as needed */
+    font-size: 14px; 
     display: flex;
-    align-items: center; /* Vertically align text with the icon */
+    align-items: center; 
     margin-right: 20px;
   }
   
