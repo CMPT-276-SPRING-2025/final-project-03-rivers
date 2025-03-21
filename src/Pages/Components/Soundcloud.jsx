@@ -84,7 +84,12 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       eventsRef.current.clear();
       widgetRef.current = null;
     }
-    document.body.removeChild(iframeRef.current);
+  
+    // Safely remove the iframe only if it exists
+    if (iframeRef.current && iframeRef.current.parentNode) {
+      iframeRef.current.parentNode.removeChild(iframeRef.current);
+    }
+    
     isWidgetReady.current = false;
   };
 
@@ -147,6 +152,10 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     {
       name: 'Country',
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
+    },
+    {
+      name: 'TikTok',
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/333345223&'
     }
   ];
 
@@ -157,16 +166,16 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   return (
     <>
       <div>
-        <div className={`fixed left-[50vw] top-1/2 -translate-x-1/2 -translate-y-1/2 h-screen transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+        <div className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="absolute right-[-32px] top-4 rotate-0 bg-black/80 hover:bg-black/90 text-white px-3 py-1 rounded-l-lg"
+            className="absolute top-4 right-4 bg-black/80 hover:bg-black/90 text-white px-3 py-1 rounded-l-lg"
             aria-label="Close panel"
           >
             X
           </button>
-          <div className="h-full bg-black/90 p-6">
-            <div className="relative w-48 mb-2">
+          <div className="rounded-lg  h-full bg-blue-500 p-6">
+            <div className="relative w-48 mb-2 top-[2.5vh]">
               <input
                 type="text"
                 value={searchTerm}
@@ -175,7 +184,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
-            <div className="flex gap-2 mb-2">
+
+            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 bg-blue-500">
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
@@ -188,6 +198,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </div>
           </div>
         </div>
+
+        {/*
         {!isOpen && (
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -197,8 +209,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             ▶️
           </button>
         )}
+        */}
       </div>
-      <div className="fixed bottom-0 left-0 w-full h-15 bg-red-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
+      <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-blue-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
         <div className="flex justify-between items-center w-full">
           <button
             className="btn btn-soft btn-primary"
