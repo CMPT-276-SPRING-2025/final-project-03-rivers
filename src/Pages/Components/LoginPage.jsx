@@ -13,7 +13,7 @@ const LoginPage = () => {
     navigate('/loading'); // Navigate to loading page
 
     setTimeout(() => {
-      navigate('/home'); // After 5 seconds, navigate to home page
+      navigate('/todolist'); // After 5 seconds, navigate to home page
     }, 5000);
   };
 

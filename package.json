@@ -11,6 +11,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@doist/todoist-api-typescript": "^4.0.0-alpha.4",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.4.8",

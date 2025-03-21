@@ -6,6 +6,7 @@ import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 import MainP from './Pages/MainP';
 import SignupPage from './Pages/Components/SignupPage';
+import TodoList from "./Pages/Components/TodoList";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         {/*Changed Music to MainP */} 
         <Route path="/home" element={<MainP />} />
         <Route path="/home" element={<Music />} />
+        <Route path="/todolist" element={<TodoList />} />
 
       </Routes>
     </BrowserRouter>
