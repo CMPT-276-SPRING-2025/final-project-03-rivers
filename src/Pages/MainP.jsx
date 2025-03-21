@@ -37,7 +37,10 @@ const SideBar = () => {
           {SidebarData.map((val, key) => {
             return (
               <li
-                key={key}
+                // key={key}
+
+                // {onClick must be changed to accomodate feature and not page}
+
                 onClick={() => {
                   window.location.pathname = val.link;
                 }}
