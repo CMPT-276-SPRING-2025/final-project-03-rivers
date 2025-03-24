@@ -6,7 +6,7 @@ import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 import MainP from './Pages/MainP';
 import SignupPage from './Pages/Components/SignupPage';
-import Todo from './Pages/Components/Todo';
+import TaskManager from './Pages/Components/TaskManager';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         {/*Changed Music to MainP */} 
         {/*<Route path="/home" element={<MainP />} />
         <Route path="/home" element={<Music />} />*/}
-        <Route path="/home" element={<Todo />} />
+        <Route path="/home" element={<TaskManager />} />
 
       </Routes>
     </BrowserRouter>

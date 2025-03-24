@@ -20,6 +20,7 @@ const LoginPage = () => {
   const handleSignUp = () => {
     navigate('/signup'); // Navigate to signup page
   };
+  console.log("LoginPage loaded");
 
   return (
     <div className="login-container" data-testid="login-container">

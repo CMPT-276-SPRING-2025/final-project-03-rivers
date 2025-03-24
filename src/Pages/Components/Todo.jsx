@@ -1,45 +1,15 @@
-import { useState, useEffect } from "react";
-import { TodoistApi } from "@doist/todoist-api-typescript";
+const API_URL = "https://api.todoist.com/rest/v2/tasks";
+const API_TOKEN = import.meta.env.VITE_TODOIST_API_TOKEN;
 
-const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_TOKEN);
-
-export default function TodoList() {
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    // Log the API token to make sure it's correctly loaded
-    console.log("API Token:", import.meta.env.VITE_TODOIST_API_TOKEN);
-
-    api.getProjects()
-      .then((projects) => {
-        console.log("Fetched projects:", projects); // Log the fetched projects
-        setProjects(projects);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching projects:", error);
-        setError(error);
-        setLoading(false);
-      });
-  }, []);
-
-  if (loading) return <p>Loading projects...</p>;
-  if (error) return <p>Error loading projects: {error.message}</p>;
-
-  return (
-    <div>
-      <h2>Your Todoist Projects</h2>
-      <ul>
-        {projects.length > 0 ? (
-          projects.map((project) => (
-            <li key={project.id}>{project.name}</li>
-          ))
-        ) : (
-          <p>No projects available</p>
-        )}
-      </ul>
-    </div>
-  );
-}
+// Function to add a new task
+export const addTask = async (taskContent) => {
+    const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer ${API_TOKEN}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: taskContent })
+    });
+    return response.json();
+};
