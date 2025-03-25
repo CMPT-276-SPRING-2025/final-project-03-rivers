@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
 .signup-container {
     height: 100vh;
     margin: 0;
     overflow: hidden;
-    background-color: rgb(204, 223, 243);
+    background-image: 
+    radial-gradient(rgb(241, 241, 242) 15.6%, transparent 15.6%),
+    radial-gradient(rgb(241, 241, 242) 15.6%, transparent 15.6%);
+    background-position: 0px 0px, 32px 32px;
+    background-size: 64px 64px;
+    background-color: rgb(247, 248, 248);
 }
 
 .top-nav-bar {
@@ -71,11 +78,17 @@ h1 {
 .left-signup {
     width: 400px; 
     height: 550px;
-    background: linear-gradient(to right, red, yellow);
+    background: linear-gradient(to right, #37425D, #748BC3);
     text-align: center;
-    padding: 20px;
+    padding: 60px;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+}
+
+.left-signup h1{
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px; 
 }
 
 .right-signup {
@@ -83,11 +96,13 @@ h1 {
     height: 550px;
     background-color: white;
     text-align: center; 
-    padding: 20px;
+    padding: 50px;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
 }
 
 .right-signup h1{
     color: black;
+    font-family: 'Poppins', sans-serif;
+    font-size: 30px;
 }
