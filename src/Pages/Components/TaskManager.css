@@ -1,0 +1,78 @@
+body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    background-image: linear-gradient(#eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px)), linear-gradient(90deg, #eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px));
+    background-size: 40px 40px;
+    border: 0.5px solid #eeefef;
+}
+
+/* Style for the task manager container */
+.task-manager-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  /* Task creation container style */
+  .task-creation-container {
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* Task input box styling */
+  .task-input-box {
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task-input-box input {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    width: 100%;
+  }
+  
+  .task-input-box button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .task-input-box button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* TASK LIST */
+  .task-list-container {
+    margin-top: 200px;
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: linear-gradient(#C1E5FB, #E5EDF2);
+    border-radius: 10px;
+  }
+  
+  .task-list-container ul {
+    display: flex;
+    flex-direction: column;  /* Stack items vertically */
+    gap: 10px; /* Adds spacing between items */
+    padding: 0;
+  }
+  
+  .task-list-container li {
+    background-color: #ffffff;
+    padding: 12px;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  
