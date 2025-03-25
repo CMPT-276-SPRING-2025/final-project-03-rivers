@@ -20,7 +20,7 @@ const Signup = () => {
         <div className="top-nav-bar">
             <div className="left-nav">
                 <img src = {logo} alt="logo" className="logo" />
-                <h1>FocusForge</h1>
+                <h1 className = "gradient-text">FocusForge</h1>
             </div>
             <div className="right-nav">
                 <img src={question} alt="question icon about project" className="question" />
@@ -35,7 +35,12 @@ const Signup = () => {
                 <h1>Welcome To<br></br>FocusForge!</h1>
             </div>
             <div className = "right-signup">
-                <h1>Create Account</h1>
+                <h1 className = "gradient-text">Create Account</h1>
+                <div className = "signupForm">
+                  <input type="text" placeholder="Name" className="input" />
+                  <input type="email" placeholder="Email" className="input" />
+                  <input type="password" placeholder="Password" className="input" />
+                </div>
             </div>
         </div>
     </div>
