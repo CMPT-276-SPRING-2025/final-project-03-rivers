@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './SignupPage.css';
 import question from '../../assets/question.png';
+import logout from '../../assets/logout.png';
+import Lock from '../../assets/lock.png';
+import Email from '../../assets/email.png';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -50,7 +53,7 @@ const Signup = () => {
                   <input type="email" placeholder="Email" className="input" />
                   <input type="password" placeholder="Password" className="input" />
                   <div className = "btnToSignup">
-                    <button className="btnToSignup">Sign Up</button>
+                    <button className="btnToSignup" onClick = {handleSignup}>Sign Up</button>
                   </div>
                 </div>
             </div>
