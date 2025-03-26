@@ -162,4 +162,20 @@ h1 {
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
     font-size: 1.2em;
+    cursor: pointer;
+}
+
+
+.btnToSignup button{
+    background: linear-gradient(to right, #37425D, #748BC3);
+    height: 50px;
+    width: 220px;
+    border-radius: 15px;
+    border: 2px solid white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-right: 130px;
+    margin-top: 105px;
+    cursor: pointer;
 }
