@@ -7,6 +7,10 @@ import question from '../../assets/question.png';
 const Signup = () => {
   const navigate = useNavigate();
 
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
   const handleSignup = () => {
     navigate('/loading');
 
@@ -36,7 +40,7 @@ const Signup = () => {
                 <h3>The Solution To Procrastination</h3>
                 <div className = "signUpButton">
                   <h2>Already Have An<br></br>Account?</h2>
-                  <button className="btnToLogin">Log In</button>
+                  <button className="btnToLogin" onClick = {handleLogin}>Log In</button>
                 </div>
             </div>
             <div className = "right-signup">
