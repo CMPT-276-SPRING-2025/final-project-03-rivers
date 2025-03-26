@@ -33,6 +33,8 @@ const Signup = () => {
         <div className="signup-UI">
             <div className = "left-signup">
                 <h1>Welcome To<br></br>FocusForge!</h1>
+                <h3>The Solution To Procrastination</h3>
+                <h2>Already Have An<br></br>Account?</h2>
             </div>
             <div className = "right-signup">
                 <h1 className = "gradient-text">Create Account</h1>
