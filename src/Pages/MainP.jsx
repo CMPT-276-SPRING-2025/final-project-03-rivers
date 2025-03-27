@@ -3,7 +3,7 @@ import './MainP.css';
 import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
-
+import Chatbot from "./Components/Chatbot"
 const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>
@@ -73,6 +73,7 @@ const MainP = () => {
   return (
     <div className="mainP">
       <NavBar />
+      <Chatbot />
       <SideBar 
         isOpen={isOpen}
         onTogglePanel={handleTogglePanel}
