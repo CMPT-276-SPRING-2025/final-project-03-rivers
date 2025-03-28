@@ -146,7 +146,8 @@ h1 {
 .signupForm input {
     background-color: #F3F3F3;
     font-family: 'Roboto Condensed', sans-serif;
-    color: #B3B3B3; 
+    color: #4b4b4b; 
+    font-weight: bold;
     font-size: 1em;
     padding: 10px;
     border: none;
