@@ -60,6 +60,19 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       });
     };
 
+    const handlePlayProgress = () => {
+      if (widgetRef.current && isWidgetReady.current) {
+        widgetRef.current.getDuration((duration) => {
+          widgetRef.current.getPosition((position) => {
+            if (position !== null && duration !== null) {
+              setProgress(position / duration * 100)
+            }
+          });
+        })
+
+      }
+    }
+
     const handlePlay = () => {
       setIsPlaying(true);
       updateCurrentSong();
@@ -72,7 +85,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     eventsRef.current.add(
       widgetRef.current.bind(SC.Widget.Events.READY, handleReady),
       widgetRef.current.bind(SC.Widget.Events.PLAY, handlePlay),
-      widgetRef.current.bind(SC.Widget.Events.PAUSE, handlePause)
+      widgetRef.current.bind(SC.Widget.Events.PAUSE, handlePause),
+      widgetRef.current.bind(SC.Widget.Events.PLAY_PROGRESS, handlePlayProgress)
     );
   };
 
@@ -166,6 +180,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   return (
     <>
       <div>
+        {/* Playlist Box */}
         <div className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -213,6 +228,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         )}
         */}
       </div>
+
+      {/* This is the Control Bar */}
       <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex flex-col items-center" style={{ height: '15%' }}>
         <div className="flex justify-between items-center w-full">
           <button
