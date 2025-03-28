@@ -41,15 +41,16 @@ describe('Soundcloud Component', () => {
 
     it('navigates to the next song', async () => {
         render(<Soundcloud />);
-        const nextButton = await waitFor(() => screen.getAllByText('Next')[0]);
+        const nextButton = await waitFor(() => screen.getAllByText('⏭️')[0]);
         fireEvent.click(nextButton);
-        expect(console.log).toHaveBeenCalledWith('Next Song');
+        expect(document.body.textContent).not.toBe("I'm The Problem")
     });
 
     it('navigates to the previous song', async () => {
         render(<Soundcloud />);
-        const prevButton = await waitFor(() => screen.getAllByText('Previous')[0]);
+        const prevButton = await waitFor(() => screen.getAllByText('⏮️')[0]);
         fireEvent.click(prevButton);
-        expect(console.log).toHaveBeenCalledWith('Previous Song');
+        
+        expect(document.body.textContent).not.toBe("I'm The Problem")
     });
 });

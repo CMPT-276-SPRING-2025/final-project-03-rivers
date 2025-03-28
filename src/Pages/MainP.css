@@ -1,4 +1,11 @@
 
+html, body, .mainP {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
 .navBar {
 
     background: linear-gradient(to bottom, #9fb3cf, #ffff);
@@ -66,3 +73,50 @@ ul li{
     font-size: 24px;
 }
 
+.Sidebar{
+    height: 100%;
+    width: 200px;
+    background-color: whitesmoke;
+    position: fixed;
+}
+
+  
+  .Sidebar ul {
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    width: 100%;
+
+  }
+  
+  .Sidebar .sidebar-item {
+    color: black;
+    display: flex;
+    align-items: center; 
+    margin: 10px 0; 
+    cursor: pointer; 
+    padding: 20px;
+  }
+
+  .Sidebar .sidebar-item:hover{
+    background-color: rgba(0, 0, 0, 0.1); 
+    width: 100%;
+    transition: 0.8s ease;
+  }
+  
+  .Sidebar .sidebar-icon {
+    font-size: 24px; 
+    margin-right: 10px;
+    display: flex;
+    align-items:center;
+  }
+  
+  .Sidebar .sidebar-title {
+    font-size: 14px; 
+    display: flex;
+    align-items: center; 
+    margin-right: 20px;
+  }
+  
