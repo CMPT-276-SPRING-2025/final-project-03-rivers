@@ -231,16 +231,49 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
 
       {/* This is the Control Bar */}
       <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex flex-col items-center" style={{ height: '15%' }}>
-        <div className="flex justify-between items-center w-full">
-          <button
-            className="btn btn-soft btn-primary"
-            onClick={() => handleTrackChange('prev')}
-          >
-            Previous
-          </button>
-          <div className="text-white flex-grow text-center">{songName}</div>
-          <progress
-            className="progress progress-info w-56 mx-4"
+        <div className="flex items-center w-full">
+        <span className="text-2xl">🔊</span>
+        <input
+            type="range"
+            min="0"
+            max="100"
+            className="range text-black [--range-bg:white]"
+            value={volume}
+            onChange={(e) => {
+              const newVolume = e.target.value;
+              setVolume(newVolume);
+              if (widgetRef.current && isWidgetReady.current) {
+                widgetRef.current.setVolume(newVolume);
+              }
+            }}
+          />
+          <div className='justify-center flex gap-2 m-auto'>
+            <button
+              className="btn btn-soft btn-primary"
+              onClick={() => handleTrackChange('prev')}
+            >
+              ⏮️
+            </button>
+            
+            <button
+              className="btn btn-soft btn-info"
+              onClick={handlePlayPause}
+            >
+              {isPlaying ? '⏸️' : '▶️'}
+            </button>
+            <button
+              className="btn btn-soft btn-info"
+              onClick={() => handleTrackChange('next')}
+            >
+              ⏭️
+            </button>
+          </div>
+          
+
+          <div><h2 className="w-64 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">{songName}</h2></div>
+        </div>
+        <progress
+            className="progress progress-info w-1/2 m-auto"
             max="100"
             value={progress}
             onClick={(e) => {
@@ -255,33 +288,6 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               }
             }}
           />
-          <button
-            className="btn btn-soft btn-info"
-            onClick={handlePlayPause}
-          >
-            {isPlaying ? 'Pause' : 'Play'}
-          </button>
-          <button
-            className="btn btn-soft btn-info"
-            onClick={() => handleTrackChange('next')}
-          >
-            Next
-          </button>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            className="range text-blue-300 [--range-bg:orange] [--range-thumb:blue] [--range-fill:0]"
-            value={volume}
-            onChange={(e) => {
-              const newVolume = e.target.value;
-              setVolume(newVolume);
-              if (widgetRef.current && isWidgetReady.current) {
-                widgetRef.current.setVolume(newVolume);
-              }
-            }}
-          />
-        </div>
       </div>
     </>
   );
