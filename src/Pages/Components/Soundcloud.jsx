@@ -169,27 +169,29 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         <div className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="absolute top-4 right-4 bg-black/80 hover:bg-black/90 text-white px-3 py-1 rounded-l-lg"
+            className="absolute top-4 right-4 bg-transparent text-red-700 text-3xl font-bold"
             aria-label="Close panel"
           >
-            X
+            &times;
           </button>
-          <div className="rounded-lg  h-full bg-blue-500 p-6">
-            <div className="relative w-48 mb-2 top-[2.5vh]">
+          
+          <div className="rounded-lg  h-full bg-gradient-to-b from-sky-200 to-slate-200 p-6">
+            <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
+            <div className="relative w-full mb-2 top-[2.5vh] flex justify-center">
               <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search playlists..."
-                className="w-full px-3 py-2 rounded-md bg-white/10 text-white border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 bg-blue-500">
+            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 overflow-y-auto">
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
-                  className="btn btn-soft btn-warning"
+                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
                   onClick={() => switchToPlaylist(playlist.url)}
                 >
                   {playlist.name}
@@ -211,7 +213,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         )}
         */}
       </div>
-      <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-blue-600 p-4 flex flex-col items-center" style={{ height: '15%' }}>
+      <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex flex-col items-center" style={{ height: '15%' }}>
         <div className="flex justify-between items-center w-full">
           <button
             className="btn btn-soft btn-primary"
