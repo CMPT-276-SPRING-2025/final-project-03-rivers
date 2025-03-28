@@ -88,7 +88,7 @@ h1 {
 .left-signup {
     width: 400px; 
     height: 550px;
-    background: linear-gradient(to right, #37425D, #748BC3);
+    background: linear-gradient(to left, #37425D, #748BC3);
     text-align: center;
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
@@ -167,7 +167,7 @@ h1 {
 }
 
 .btnToSignup button{
-    background: linear-gradient(to right, #37425D, #748BC3);
+    background: linear-gradient(to top, #37425D, #748BC3);
     height: 50px;
     width: 220px;
     border-radius: 15px;
@@ -188,6 +188,7 @@ h1 {
 }
 
 .btnToSignup button:hover {
+    background: linear-gradient(to bottom, #37425D, #748BC3);
     transform: scale(1.05);
     border-color: #37425D;
 }
