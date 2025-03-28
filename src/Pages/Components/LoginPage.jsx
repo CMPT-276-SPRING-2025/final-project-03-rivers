@@ -1,21 +1,59 @@
 import './LoginPage.css';
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import question from "../../assets/question.png";
 import logo from '../../assets/logo.png';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from '@firebase/auth';
+import {auth} from '../Firebase.jsx';
+import Login from '../Music.jsx';
+
+
 
 const LoginPage = () => {
+  
+  
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // Prevent form submission, so login action is handled by React
+  const [loginEmail, setLoginEmail] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
 
-    navigate('/loading'); // Navigate to loading page
 
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe(); // Cleanup subscription
+  }, []);
+
+  const login = async (e) => {
+    e.preventDefault();
+    try{
+      await signInWithEmailAndPassword(
+      auth, 
+      loginEmail, 
+      loginPassword);
+  
+    console.log("User logged in: ", auth.currentUser);
+    navigate('/loading');
     setTimeout(() => {
-      navigate('/home'); // After 5 seconds, navigate to home page
-    }, 5000);
+          navigate('/home'); // After 5 seconds, navigate to home page
+        }, 1000);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
+  // const handleLogin = (e) => {
+  //   e.preventDefault(); // Prevent form submission, so login action is handled by React
+
+  //   navigate('/loading'); // Navigate to loading page
+
+  //   setTimeout(() => {
+  //     navigate('/home'); // After 5 seconds, navigate to home page
+  //   }, 1000);
+  // };
 
   const handleSignUp = () => {
     navigate('/signup'); // Navigate to signup page
@@ -49,12 +87,12 @@ const LoginPage = () => {
       <div className="box" data-testid="box"> 
         {/* Login Form Section */}
         <section className="login" data-testid="login-section">
-              <form data-testid="login-form">
+              <form onSubmit={login} data-testid="login-form">
                 <h1 data-testid="login-header">Log In To Your Account</h1>
 
                 <div className="input-group">
-                    <input type="text" placeholder="Email" className="input" />
-                    <input type="password" placeholder="Password" className="input" />
+                    <input type="text" placeholder="Email" onChange={(e)=> { setLoginEmail(e.target.value)}} className="input" />
+                    <input type="password" placeholder="Password" onChange={(e)=> { setLoginPassword(e.target.value)}} className="input" />
                 </div>
                 
                 {/*<label htmlFor="username" data-testid="username-label">Username:</label>
@@ -75,7 +113,7 @@ const LoginPage = () => {
                 />*/}
 
                 <div className="login-button">
-                  <button className="btn" data-testid="login-button" onClick={handleLogin}>Login</button>
+                  <button className="btn" data-testid="login-button" >Login</button>
                 </div>
                 <div style={{marginTop: "10px"}}>
                 <button className="btn bg-white text-black border-[#e5e5e5]">
@@ -99,7 +137,9 @@ const LoginPage = () => {
                 <p data-testid="no-account-text">Don't have an account?</p>
                 <button className="btn btn-outline" data-testid="signup-button" onClick={handleSignUp}>Sign Up</button>
               </div>
-
+                 
+            {/* <h4>User Logged In: {user.email}</h4> */}
+          
             </section>
         </div>
       
