@@ -83,7 +83,7 @@ export default function Chatbot() {
       {/* Sidebar Container */}
       <div
         className={`
-          fixed right-0 top-0 h-screen bg-white shadow-lg
+          fixed right-0 top-0 h-screen bg-gradient-to-b from-sky-200 to-slate-200 shadow-lg
           transform transition-transform duration-300 ease-in-out
           ${isExpanded ? 'translate-x-0' : 'translate-x-full'}
           z-40
@@ -170,9 +170,9 @@ export default function Chatbot() {
         onClose={() => setIsPersonalityModalOpen(false)}
         className="modal"
       >
-        <div className="modal-content bg-blue-700 rounded">
+        <div className="modal-content bg-gradient-to-b from-sky-200 to-slate-200 rounded">
           <div className="modal-header">
-            <h2 className="modal-title">Set AI Personality</h2>
+            <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Set AI Personality</h1>
             <button
               onClick={() => setIsPersonalityModalOpen(false)}
               className="modal-close-btn"
