@@ -6,7 +6,6 @@ import Music from './Pages/Music'
 import LoadingPage from './Pages/LoadingPage'
 import MainP from './Pages/MainP';
 import SignupPage from './Pages/Components/SignupPage';
-
 function App() {
   return (
     <BrowserRouter>
