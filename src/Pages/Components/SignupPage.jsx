@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './SignupPage.css';
 import question from '../../assets/question.png';
-import Email from '../../assets/email.png';
-import Lock from '../../assets/lock.png';
-import User from '../../assets/user.png';
+import Email from '../../assets/Email.png';
+import Lock from '../../assets/Lock.png';
+import User from '../../assets/User.png';
 
 const Signup = () => {
   const navigate = useNavigate();
