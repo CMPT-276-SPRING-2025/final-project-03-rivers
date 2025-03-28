@@ -25,8 +25,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       const iframeElement = document.createElement('iframe');
       iframeElement.id = 'soundcloud-player';
       iframeElement.src = currentPlaylistUrl;
-      iframeElement.width = '100%';
-      iframeElement.height = '166';
+      iframeElement.width = '0';
+      iframeElement.height = '0';
       iframeElement.allow = 'autoplay';
       document.body.appendChild(iframeElement);
       iframeRef.current = iframeElement;
@@ -170,6 +170,14 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     {
       name: 'TikTok',
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/333345223&'
+    },
+    {
+      name: "Assorted Weeb",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1993691044&'
+    },
+    {
+      name: "Kpop",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/283568798&'
     }
   ];
 
