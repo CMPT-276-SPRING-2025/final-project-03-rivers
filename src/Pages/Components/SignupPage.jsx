@@ -43,10 +43,10 @@ const Signup = () => {
       <div className="signup-UI" data-testid="signup-ui">
         {/* Left Side (Login Section) */}
         <div className="left-signup" data-testid="left-signup">
-          <h1 data-testid="welcome-back-header">Welcome Back!</h1>
-          <h3 data-testid="ready-to-focus-text">Ready to focus?</h3>
+          <h1 data-testid="welcome-back-header">Welcome To Focus Forge!</h1>
+          <h3 data-testid="ready-to-focus-text">The Solution To Procrastination</h3>
           <div className="signUpButton" data-testid="login-section">
-            <h2 data-testid="no-account-text">Don't have an account?</h2>
+            <h2 data-testid="no-account-text">Already Have<br></br>An Account?</h2>
             <button className="btnToLogin" data-testid="login-button" onClick={handleLogin}>Log In</button>
           </div>
         </div>
