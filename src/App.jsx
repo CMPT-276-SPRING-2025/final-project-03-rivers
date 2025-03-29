@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Default route redirects to SignupPage */}
-        <Route path="/" element={<Navigate to="/signup" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
