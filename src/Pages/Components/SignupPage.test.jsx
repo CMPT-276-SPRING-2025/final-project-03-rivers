@@ -29,12 +29,12 @@ describe('SignupPage Component', () => {
     
         expect(screen.getByTestId('login-button')).toBeInTheDocument();
         expect(screen.getByText('Log In')).toBeInTheDocument();
-        expect(screen.getByTestId('welcome-back-header')).toBeInTheDocument();
-        expect(screen.getByText('Welcome Back!')).toBeInTheDocument();
-        expect(screen.getByTestId('ready-to-focus-text')).toBeInTheDocument();
-        expect(screen.getByText('Ready to focus?')).toBeInTheDocument();
-        expect(screen.getByTestId('no-account-text')).toBeInTheDocument();
-        expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
+        expect(screen.getByTestId('welcome-header')).toBeInTheDocument();
+        expect(screen.getByText('Welcome To Focus Forge!')).toBeInTheDocument();
+        expect(screen.getByTestId('greeting-text')).toBeInTheDocument();
+        expect(screen.getByText('The Solution To Procrastination')).toBeInTheDocument();
+        expect(screen.getByTestId('have-account-text')).toBeInTheDocument();
+        expect(screen.getByText("Already HaveAn Account?")).toBeInTheDocument();
     });
     
     it('handles login button click', () => {
