@@ -132,7 +132,7 @@ export default function Chatbot() {
                   </div>
                 ) : (
                   <div key={index} className="mb-4 flex justify-start">
-                    <div className="chat-bubble bg-black max-w-[70%] break-words">
+                    <div className="chat-bubble bg-black max-w-[70%] break-words text-white">
                       <ReactMarkdown>{msg.message}</ReactMarkdown>
                     </div>
                   </div>
