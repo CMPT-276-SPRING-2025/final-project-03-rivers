@@ -44,6 +44,7 @@ const LoginPage = () => {
         navigate('/home'); // Redirect after a short delay
       }, 1000);
     } catch (error) {
+      
       setError("Failed to log in. Please check your credentials.");
       console.error(error.message);
       setLoading(false); // Stop loading if login fails
