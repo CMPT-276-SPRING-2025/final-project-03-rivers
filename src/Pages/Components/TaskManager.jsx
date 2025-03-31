@@ -1,86 +1,171 @@
 import React, { useState, useEffect } from "react";
-import { addTask as addTaskAPI, fetchTasks } from "./Todo"; // Import functions
+import { addTask as addTask, fetchTasks, fetchProjects, addProject } from "./Todo";
 import './TaskManager.css';
 
 const TaskManager = () => {
-  const [task, setTask] = useState(""); // State to manage task input
-  const [tasks, setTasks] = useState([]); // Store tasks fetched from Todoist
-  const [loading, setLoading] = useState(true); // Loading state to show while fetching tasks
-  const [isCreatingTask, setIsCreatingTask] = useState(false); // State to manage the visibility of task creation window
+  const [task, setTask] = useState("");
+  const [dueDate, setDueDate] = useState("");
+  const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState("");
+  const [tasks, setTasks] = useState([]);
+  const [isCreatingTask, setIsCreatingTask] = useState(true);  
+  const [hasDueDate, setHasDueDate] = useState(true);
 
-  // Fetch tasks when the component mounts
+  // Fetch tasks and projects
   useEffect(() => {
-    const loadTasks = async () => {
+    const loadData = async () => {
       try {
-        // Fetch all tasks from Todoist
         const fetchedTasks = await fetchTasks();
-        setTasks(fetchedTasks); // Set tasks in state
-        setLoading(false); // Set loading to false after fetching
+        const fetchedProjects = await fetchProjects();
+
+        setTasks(fetchedTasks);
+        setProjects(fetchedProjects);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
-        setLoading(false);
+        console.error("Error fetching data:", error);
       }
     };
 
-    loadTasks(); // Run the loadTasks function when the component mounts
-  }, []); // Empty dependency array to run only once on mount
+    loadData();
+  }, []);
 
-  // Handle adding a task
   const handleAddTask = async () => {
-    if (task.trim() === "") return; // Prevent adding empty tasks
+    if (task.trim() === "") return;  // Only require task content
 
     try {
-      // Add the task to Todoist
-      const newTask = await addTaskAPI(task);
+      // Check if project exists or create a new one
+      const project = projects.find(proj => proj.name === selectedProject);
+      let projectId = null;
 
-      // Add the new task to the task list in the state
-      setTasks((prevTasks) => [...prevTasks, newTask]);
+      if (selectedProject && !project) {
+        // If no project exists, create a new project
+        const newProject = await addProject(selectedProject);
+        setProjects([...projects, newProject]);
+        projectId = newProject.id;
+      } else if (project) {
+        projectId = project.id;
+      }
 
-      // Clear the input field and hide the task creation window
+      // Add task with optional due date and assigned project
+      const newTask = await addTask(task, hasDueDate ? dueDate : "", projectId);
+
+      // If the task has a project, put it in the project-specific list
+      if (projectId) {
+        setTasks(prevTasks => [
+          ...prevTasks.filter(taskItem => taskItem.projectId !== projectId), 
+          newTask
+        ]);
+      } else {
+        // Else, it goes to the to-do list
+        setTasks((prevTasks) => [...prevTasks, newTask]);
+      }
+
       setTask("");
-      setIsCreatingTask(false);
+      setDueDate("");
+      setSelectedProject("");
+      setIsCreatingTask(false); 
     } catch (error) {
       console.error("Error adding task:", error);
     }
   };
 
-  if (loading) return <p>getting tasks... </p>; // Show loading message while fetching tasks
-
   return (
     <div className="task-manager-container">
       {isCreatingTask ? (
-        // Task Creation Window
         <div className="task-creation-container">
           <div className="task-input-box p-4 bg-gray-100 rounded-lg shadow-lg mb-4">
-            <h2 className="text-xl font-bold mb-4">Task Manager</h2>
-            <div className="flex gap-2">
-              <input 
-                type="text" className="input"
-                placeholder="Enter task..." 
-                value={task} 
-                onChange={(e) => setTask(e.target.value)} 
+            <h2 className="text-xl font-bold mb-4">Create a Task</h2>
+            <div className="flex flex-col gap-4">
+              <input
+                type="text"
+                className="input"
+                placeholder="Enter task..."
+                value={task}
+                onChange={(e) => setTask(e.target.value)}
               />
-              <button className="btn btn-sm" onClick={handleAddTask}> Create Task </button>
+
+              {/* Due date section */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">
+                  <input
+                    type="checkbox"
+                    checked={hasDueDate}
+                    onChange={(e) => setHasDueDate(e.target.checked)}
+                    className="mr-2"
+                  />
+                  Add due date
+                </label>
+
+                {hasDueDate && (
+                  <input
+                    type="date"
+                    className="input"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                  />
+                )}
+              </div>
+
+              {/* Allow typing in project name */}
+              <input
+                type="text"
+                className="input"
+                placeholder="Enter project name (optional)"
+                value={selectedProject}
+                onChange={(e) => setSelectedProject(e.target.value)}
+              />
+
+              <button className="btn btn-sm" onClick={handleAddTask}>
+                Create Task
+              </button>
             </div>
           </div>
-          <button 
-            className="bg-gray-500 text-white px-4 py-2 rounded mt-4"
-            onClick={() => setIsCreatingTask(false)} // Close the creation window without adding a task
-          >
-            Cancel
-          </button>
         </div>
       ) : (
-        // Task List Window
-        <div className="task-list-container">
-          <h3 className="text-lg font-semibold">To-Do List</h3>
-          <ul>
-            {tasks.map((taskItem) => (
-              <li key={taskItem.id} className="mt-2">{taskItem.content}</li>
-            ))}
-          </ul>
-          <button className="btn btn-sm" onClick={() => setIsCreatingTask(true)}> Add Task </button>
-        </div>
+        <>
+          {/* Once the task is created, show the tasks */}
+          <div className="task-list-container">
+            <h3 className="text-lg font-semibold">ToDo List</h3>
+            <div className="task-box">
+              <ul>
+                {tasks
+                  .filter((taskItem) => !taskItem.projectId) // General tasks without project
+                  .map((taskItem) => (
+                    <li key={taskItem.id} className="mt-2">
+                      <strong>{taskItem.content}</strong>{" "}
+                      {taskItem.due?.string && (
+                        <span className="text-gray-500"> - Due: {taskItem.due.string}</span>
+                      )}
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </div>
+
+          {/* Render tasks for each project */}
+          {projects.map((project) => (
+            <div key={project.id} className="project-tasks-container">
+              <h3 className="text-lg font-semibold">{project.name} Tasks</h3>
+              <div className="task-box">
+                <ul>
+                  {tasks
+                    .filter((taskItem) => taskItem.projectId === project.id)
+                    .map((taskItem) => (
+                      <li key={taskItem.id} className="mt-2">
+                        <strong>{taskItem.content}</strong>{" "}
+                        {taskItem.due?.string && (
+                          <span className="text-gray-500"> - Due: {taskItem.due.string}</span>
+                        )}
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+
+          <button className="btn btn-sm" onClick={() => setIsCreatingTask(true)}>
+            Add Task
+          </button>
+        </>
       )}
     </div>
   );
