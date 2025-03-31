@@ -1,17 +1,33 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import './StickyNotes.css'; 
 
 const StickyNotes = () => {
-    {/*Create a state hook to manage sticky notes*/}
     const [notes, setNotes] = useState([]);
 
-    {/*Function to create sticky notes*/}
+    // Function to create a new sticky note 
     const createNote = () => {
         const newNote = {
-            id: Date.now(), 
+            id: Date.now(),
             text: '',
-        };
-        setNotes([...notes, newNote]);
-    }
-}
+        }; 
+        setNotes((prevNotes) => [...prevNotes, newNote]);
+    };
 
-export default StickyNotes;
+    // Function to update a sticky note
+    const updateNote = (id, newText) => {
+        setNotes((prevNotes) =>
+            prevNotes.map((note) =>
+                note.id === id ? { ...note, text: newText } : note
+            )
+        );
+    }
+
+    // Function to delete a sticky note
+    const deleteNote = (id) => {
+        setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+    };
+    
+    return(
+        <div>StickyNotes</div>
+    )
+};
