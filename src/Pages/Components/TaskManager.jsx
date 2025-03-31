@@ -1,8 +1,67 @@
 import React, { useState, useEffect } from "react";
 import { addTask as addTask, fetchTasks, fetchProjects, addProject } from "./Todo";
 import './TaskManager.css';
+import TaskForm from "./TaskForm";
+import TaskList from "./TaskList";
+import ProjectList from "./ProjectList";
 
 const TaskManager = () => {
+  const [tasks, setTasks] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setTasks(await fetchTasks());
+        setProjects(await fetchProjects());
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    loadData();
+  }, []);
+
+  const handleAddTask = async (task, dueDate, projectName) => {
+    try {
+      let projectId = null;
+      let project = projects.find((p) => p.name === projectName);
+
+      if (projectName && !project) {
+        const newProject = await addProject(projectName);
+        setProjects([...projects, newProject]);
+        projectId = newProject.id;
+      } else if (project) {
+        projectId = project.id;
+      }
+
+      const newTask = await addTask(task, dueDate, projectId);
+      setTasks([...tasks, newTask]);
+      setIsPopupOpen(false);
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+  };
+
+  return (
+    <div className="task-manager">
+      <button onClick={() => setIsPopupOpen(true)}>Add Task</button>
+      
+      <TaskForm
+        isOpen={isPopupOpen} 
+        onClose={() => setIsPopupOpen(false)} 
+        onAddTask={handleAddTask} 
+      />
+
+      <TaskList tasks={tasks.filter((task) => !task.projectId)} />
+      <ProjectList projects={projects} tasks={tasks} />
+    </div>
+  );
+};
+
+export default TaskManager;
+
+{/*const TaskManager = () => {
   const [task, setTask] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [projects, setProjects] = useState([]);
@@ -83,7 +142,7 @@ const TaskManager = () => {
                 onChange={(e) => setTask(e.target.value)}
               />
 
-              {/* Due date section */}
+              {/* Due date section
               <div className="space-y-2">
                 <label className="text-sm font-medium">
                   <input
@@ -105,7 +164,7 @@ const TaskManager = () => {
                 )}
               </div>
 
-              {/* Allow typing in project name */}
+              {/* Allow typing in project name
               <input
                 type="text"
                 className="input"
@@ -122,7 +181,7 @@ const TaskManager = () => {
         </div>
       ) : (
         <>
-          {/* Once the task is created, show the tasks */}
+          {/* Once the task is created, show the tasks
           <div className="task-list-container">
             <h3 className="text-lg font-semibold">ToDo List</h3>
             <div className="task-box">
@@ -141,7 +200,7 @@ const TaskManager = () => {
             </div>
           </div>
 
-          {/* Render tasks for each project */}
+          {/* Render tasks for each project
           {projects.map((project) => (
             <div key={project.id} className="project-tasks-container">
               <h3 className="text-lg font-semibold">{project.name} Tasks</h3>
@@ -171,4 +230,4 @@ const TaskManager = () => {
   );
 };
 
-export default TaskManager;
+export default TaskManager;*/}
