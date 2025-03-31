@@ -48,7 +48,11 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
             onClick={() => {
               if (val.title === 'Music') {
                 onTogglePanel(isOpen);
-              } else {
+              } 
+              else if (val.title === 'Sticky Notes') {
+                setShowStickyNotes((prev) => !prev);
+              }
+              else {
                 window.location.pathname = val.link;
               }
             }}
@@ -65,6 +69,7 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
 
 const MainP = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [showStickyNotes, setShowStickyNotes] = useState(false);
   
   const handleTogglePanel = (currentIsOpen) => {
     setIsOpen(!currentIsOpen);
@@ -77,6 +82,7 @@ const MainP = () => {
       <SideBar 
         isOpen={isOpen}
         onTogglePanel={handleTogglePanel}
+        setShowStickyNotes ={setShowStickyNotes}
       />
       <Login 
         isOpen={isOpen}
