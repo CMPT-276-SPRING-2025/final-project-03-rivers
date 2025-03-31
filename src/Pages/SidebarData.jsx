@@ -12,7 +12,7 @@ export const SidebarData = [
     {
         title: "Sticky Notes",
         icon: <StickyNote2Icon />,
-        link: "/stickyN"
+        action: "toggleStickyNotes"
     },
     {
         title: "ToDoList",

@@ -4,6 +4,8 @@ import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
+import StickyNotes from './Components/StickyNotes';
+
 const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>
@@ -38,7 +40,7 @@ const NavBar = () => {
   );
 };
 
-const SideBar = ({ isOpen, onTogglePanel }) => {
+const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes }) => {
   return (
     <div className="Sidebar">
       <ul>
@@ -49,7 +51,7 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
               if (val.title === 'Music') {
                 onTogglePanel(isOpen);
               } 
-              else if (val.title === 'Sticky Notes') {
+              else if (val.action === 'toggleStickyNotes') {
                 setShowStickyNotes((prev) => !prev);
               }
               else {
@@ -88,6 +90,7 @@ const MainP = () => {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      {showStickyNotes && <StickyNotes />}
     </div>
   );
 };
