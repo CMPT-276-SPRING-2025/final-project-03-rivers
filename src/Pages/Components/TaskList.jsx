@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchTasks } from "./Todo";
 import TaskForm from "./TaskForm";
+import "./TaskManager.css";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -25,7 +26,7 @@ const TaskList = () => {
   };
 
   return (
-    <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
+    <div className="task-list-container p-4 bg-white shadow-lg rounded-lg w-1/4 mx-auto">
       <h2 className="text-center text-3xl font-bold mb-4">To Do List</h2>
 
       <button

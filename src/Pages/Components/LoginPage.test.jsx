@@ -34,7 +34,7 @@ describe('LoginPage Component', () => {
     expect(screen.getByTestId('ready-to-focus-text')).toBeInTheDocument();
     expect(screen.getByText('Ready to focus?')).toBeInTheDocument();
     expect(screen.getByTestId('no-account-text')).toBeInTheDocument();
-    expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
+    expect(screen.getByText("Don't Have AnAccount?")).toBeInTheDocument();
   });
 
   // it('handles login button click', () => {

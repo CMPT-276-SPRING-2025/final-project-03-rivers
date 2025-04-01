@@ -290,7 +290,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             type="range"
             min="0"
             max="100"
-            className="range text-black [--range-bg:white]"
+            className="range range-xs text-black [--range-bg:white]"
             value={volume}
             data-testid = "volumeControl"
             onChange={(e) => {

@@ -133,7 +133,7 @@ const MainP = () => {
     };
 
     return (
-        <div className="mainP">
+        <div className="mainP !bg-white">
             <NavBar />
             <Chatbot />
             <SideBar
