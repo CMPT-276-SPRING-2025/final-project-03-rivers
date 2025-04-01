@@ -58,7 +58,7 @@ const LoginPage = () => {
       <div className="nav-bar" data-testid="nav-bar">
         <div className="left-nav" data-testid="left-nav">
           <img src={logo} alt="logo" className="logo" data-testid="logo" />
-          <h1 data-testid="focus-forge">FocusForge</h1>
+          <h1 data-testid="focus-forge" className = "gradient-text">FocusForge</h1>
         </div>
         <div className="right-nav" data-testid="right-nav">
           <img src={question} alt="question icon" className="question" data-testid="question-icon" />

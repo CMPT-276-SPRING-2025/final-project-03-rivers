@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
 
 .login-container {
-    font-family: 'Poppins', sans-serif;
     height: 100vh;
     margin: 0;
     overflow: hidden;
@@ -19,8 +19,7 @@
     display: flex;
     justify-content: space-between; 
     align-items: center; 
-    padding: 20px 20px; 
-    /*background-color: #ffffff;*/
+    padding: 10px 20px; 
   }
   
   .left-nav {
@@ -32,6 +31,15 @@
     width: 50px;
     height: auto;
     margin-right: 10px;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #37425D, #748BC3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
 }
 
 .left-nav h1 {
