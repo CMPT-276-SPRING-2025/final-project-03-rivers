@@ -134,11 +134,25 @@
   margin-right: 60px;
 }
 
-.login-button {
-  margin-top: 30px;
-  width: 100%;
+.login-button button {
+  background: linear-gradient(to top, #37425D, #748BC3);
+  height: 50px;
+  width: 220px;
+  margin-top: 20px;
   align-items: center;
   gap: 25px; 
+  border-radius: 15px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: bold;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.login-button button:hover{
+  background: linear-gradient(to bottom, #37425D, #748BC3);
+  transform: scale(1.05);
+  border-color: #37425D;
 }
 
 /*SIGNUP SIDE*/
