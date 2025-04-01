@@ -6,6 +6,8 @@ import Music from './Pages/Music';
 import LoadingPage from './Pages/LoadingPage';
 import MainP from './Pages/MainP';
 import SignupPage from './Pages/Components/SignupPage';
+import { render, fireEvent, screen } from '@testing-library/react';
+
 function App() {
   return (
     <BrowserRouter>

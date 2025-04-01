@@ -40,9 +40,9 @@ const LoginPage = () => {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       console.log("User logged in: ", auth.currentUser);
-      setTimeout(() => {
+  
         navigate('/home'); // Redirect after a short delay
-      }, 1000);
+ 
     } catch (error) {
       
       setError("Failed to log in. Please check your credentials.");
@@ -52,26 +52,26 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container" data-testid="login-container">
       {/* Navigation Bar */}
-      <div className="nav-bar">
-        <div className="left-nav">
-          <img src={logo} alt="logo" className="logo" />
-          <h1>FocusForge</h1>
+      <div className="nav-bar" data-testid="nav-bar">
+        <div className="left-nav" data-testid="left-nav">
+          <img src={logo} alt="logo" className="logo" data-testid="logo" />
+          <h1 data-testid="focus-forge">FocusForge</h1>
         </div>
-        <div className="right-nav">
-          <img src={question} alt="question icon" className="question" />
-          <div className="popup">
-            <p>This web app helps students and professionals manage time efficiently.</p>
+        <div className="right-nav" data-testid="right-nav">
+          <img src={question} alt="question icon" className="question" data-testid="question-icon" />
+          <div className="popup" data-testid="about">
+            <p data-testid="about-text">This web app helps students and professionals manage time efficiently.</p>
           </div>
         </div>
       </div>
 
-      <div className="box">
+      <div className="box" data-testid="box">
         {/* Login Form Section */}
-        <section className="login">
-          <form onSubmit={handleLogin}>
-            <h1>Log In To Your Account</h1>
+        <section className="login" data-testid="login-section">
+          <form onSubmit={handleLogin} data-testid="login-form">
+            <h1 data-testid="login-header">Log In To Your Account</h1>
             <div className="input-group">
               <input
                 type="text"
@@ -79,6 +79,7 @@ const LoginPage = () => {
                 onChange={(e) => setLoginEmail(e.target.value)}
                 className="input"
                 required
+                data-testid="email-input"
               />
               <input
                 type="password"
@@ -86,11 +87,12 @@ const LoginPage = () => {
                 onChange={(e) => setLoginPassword(e.target.value)}
                 className="input"
                 required
+                data-testid="password-input"
               />
             </div>
-            {error && <p className="error-message">{error}</p>}
+            {error && <p className="error-message" data-testid="error-message">{error}</p>}
             <div className="login-button">
-              <button className="btn" disabled={loading}>
+              <button className="btn" disabled={loading} data-testid="login-button">
                 {loading ? "Logging in..." : "Login"}
               </button>
             </div>
@@ -98,14 +100,14 @@ const LoginPage = () => {
         </section>
 
         {/* Sign-Up Information Section */}
-        <section className="signup">
-          <div className="greet">
-            <h1>Welcome Back!</h1>
-            <p>Ready to focus?</p>
+        <section className="signup" data-testid="signup-section">
+          <div className="greet" data-testid="greet">
+            <h1 data-testid="welcome-back-header">Welcome Back!</h1>
+            <p data-testid="ready-to-focus-text">Ready to focus?</p>
           </div>
-          <div className="signup-button">
-            <p>Don't have an account?</p>
-            <button className="btn btn-outline" onClick={() => navigate('/signup')}>
+          <div className="signup-button" data-testid="signup-button">
+            <p data-testid="no-account-text">Don't have an account?</p>
+            <button className="btn btn-outline" onClick={() => navigate('/signup')} data-testid="signup-action-button">
               Sign Up
             </button>
           </div>

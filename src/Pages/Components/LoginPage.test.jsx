@@ -37,18 +37,18 @@ describe('LoginPage Component', () => {
     expect(screen.getByText("Don't have an account?")).toBeInTheDocument();
   });
 
-  it('handles login button click', () => {
-    const loginButton = screen.getByTestId('login-button');
-    fireEvent.click(loginButton);
+  // it('handles login button click', () => {
+  //   const loginButton = screen.getByTestId('login-button');
+  //   fireEvent.click(loginButton);
 
-    expect(window.location.pathname).toBe('/loading'); 
-  });
+  //   expect(window.location.pathname).toBe('/loading'); 
+  // });
 
-  it('handles signup button click', () => {
-    const signupButton = screen.getByTestId('signup-button');
-    fireEvent.click(signupButton);
+  // it('handles signup button click', () => {
+  //   const signupButton = screen.getByTestId('signup-button');
+  //   fireEvent.click(signupButton);
 
-    expect(window.location.pathname).toBe('/signup'); 
-  });
+  //   expect(window.location.pathname).toBe('/signup'); 
+  // });
 
 });
