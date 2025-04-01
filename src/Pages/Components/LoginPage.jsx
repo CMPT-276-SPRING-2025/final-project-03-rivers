@@ -72,7 +72,7 @@ const LoginPage = () => {
         {/* Login Form Section */}
         <section className="login" data-testid="login-section">
           <form onSubmit={handleLogin} data-testid="login-form">
-            <h1 data-testid="login-header">Log In To Your Account</h1>
+            <h1 data-testid="login-header" className = "gradient-text">Log In To Your Account</h1>
             <div className="input-group">
               <input
                 type="text"
