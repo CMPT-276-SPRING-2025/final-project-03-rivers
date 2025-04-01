@@ -8,6 +8,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [volume, setVolume] = useState(100);
   const [progress, setProgress] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isShuffled, setIsShuffled] = useState(false);
   const [songName, setSongName] = useState('');
   const [totalSongs, setTotalSongs] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -82,11 +83,26 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       setIsPlaying(false);
     };
 
+    const handleFinish = () => {
+      if (widgetRef.current && isWidgetReady.current) {
+        if (isShuffled) {
+          // When shuffled, jump to a random track
+          const randomIndex = Math.floor(Math.random() * totalSongs);
+          widgetRef.current.skip(randomIndex);
+        } else {
+          // When not shuffled, continue to next track
+          widgetRef.current.next();
+        }
+        setTimeout(updateCurrentSong, 500);
+      }
+    };
+
     eventsRef.current.add(
       widgetRef.current.bind(SC.Widget.Events.READY, handleReady),
       widgetRef.current.bind(SC.Widget.Events.PLAY, handlePlay),
       widgetRef.current.bind(SC.Widget.Events.PAUSE, handlePause),
-      widgetRef.current.bind(SC.Widget.Events.PLAY_PROGRESS, handlePlayProgress)
+      widgetRef.current.bind(SC.Widget.Events.PLAY_PROGRESS, handlePlayProgress),
+      widgetRef.current.bind(SC.Widget.Events.FINISH, handleFinish)
     );
   };
 
@@ -139,25 +155,54 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
-  const handleTrackChange = (direction) => {
-    if (widgetRef.current && isWidgetReady.current) {
-      if (direction === 'next') {
-        widgetRef.current.getCurrentSoundIndex((currentIndex) => {
-          if (currentIndex < totalSongs - 1) {
-            widgetRef.current.next();
-          }
-        });
-      } else if (direction === 'prev') {
-        widgetRef.current.getCurrentSoundIndex((currentIndex) => {
-          if (currentIndex > 0) {
-            widgetRef.current.prev();
-          }
-        });
-      }
-      setTimeout(updateCurrentSong, 500);
+  const handleToggleShuffle = () => {
+    setIsShuffled(!isShuffled);
+    
+    if (!widgetRef.current || !isWidgetReady.current) return;
+    
+    const currentIndex = widgetRef.current.getCurrentSoundIndex();
+    const totalTracks = totalSongs;
+    
+    if (!isShuffled && currentIndex === totalTracks - 1) {
+      // Skip shuffle when reaching end of playlist
+      return;
+    }
+    
+    if (!isShuffled) {
+      // Start shuffled playback
+      widgetRef.current.next();
+    } else {
+      // Return to normal playback
+      widgetRef.current.play(currentIndex);
     }
   };
 
+  const handleTrackChange = (direction) => {
+    if (widgetRef.current && isWidgetReady.current) {
+      if (isShuffled) {
+        // When shuffled, jump to a random track
+        const randomIndex = Math.floor(Math.random() * totalSongs);
+        widgetRef.current.skip(randomIndex);
+        setTimeout(updateCurrentSong, 500);
+      } else {
+        // When not shuffled, use the original sequential behavior
+        if (direction === 'next') {
+          widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+            if (currentIndex < totalSongs - 1) {
+              widgetRef.current.next();
+            }
+          });
+        } else if (direction === 'prev') {
+          widgetRef.current.getCurrentSoundIndex((currentIndex) => {
+            if (currentIndex > 0) {
+              widgetRef.current.prev();
+            }
+          });
+        }
+        setTimeout(updateCurrentSong, 500);
+      }
+    }
+  };
   const playlists = [
     {
       name: 'Mori',
@@ -278,6 +323,14 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               onClick={() => handleTrackChange('next')}
             >
               ⏭️
+            </button>
+
+            <button
+              className={`btn btn-soft ${isShuffled ? 'btn-warning' : 'btn-info'}`}
+              onClick={handleToggleShuffle}
+              aria-label="Toggle shuffle"
+            >
+              🎲
             </button>
           </div>
           
