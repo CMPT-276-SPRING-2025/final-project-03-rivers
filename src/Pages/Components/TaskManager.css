@@ -7,6 +7,7 @@ body {
     overflow: hidden;
     background-image: linear-gradient(#eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px)), linear-gradient(90deg, #eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px));
     background-size: 40px 40px;
+    background-color: #ffffff;
     border: 0.5px solid #eeefef;
 }
   
