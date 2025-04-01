@@ -26,7 +26,7 @@ const TaskList = () => {
 
   return (
     <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
-      <h2 className="text-center text-3xl font-bold mb-4">To Do List</h2>
+      <h2 className="text-center text-3xl text-black font-bold mb-4 ">To Do List</h2>
 
       <button
         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 mb-4"
@@ -38,10 +38,10 @@ const TaskList = () => {
       {showForm && (
         <>
           <div
-            className="modal-overlay fixed inset-0 z-40"
+            className="text-blue modal-overlay fixed inset-0 z-40"
             onClick={() => setShowForm(false)} // Close form if overlay is clicked
           />
-          <div className="modal-form fixed inset-0 flex justify-center items-center z-50">
+          <div className="text-black modal-form fixed inset-0 flex justify-center items-center z-50">
             <TaskForm newTaskAdded={handleNewTaskAdded} />
           </div>
         </>
