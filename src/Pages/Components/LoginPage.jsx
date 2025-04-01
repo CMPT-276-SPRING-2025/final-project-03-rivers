@@ -58,7 +58,7 @@ const LoginPage = () => {
       <div className="nav-bar" data-testid="nav-bar">
         <div className="left-nav" data-testid="left-nav">
           <img src={logo} alt="logo" className="logo" data-testid="logo" />
-          <h1 data-testid="focus-forge">FocusForge</h1>
+          <h1 data-testid="focus-forge" className = "gradient-text">FocusForge</h1>
         </div>
         <div className="right-nav" data-testid="right-nav">
           <img src={question} alt="question icon" className="question" data-testid="question-icon" />
@@ -72,7 +72,7 @@ const LoginPage = () => {
         {/* Login Form Section */}
         <section className="login" data-testid="login-section">
           <form onSubmit={handleLogin} data-testid="login-form">
-            <h1 data-testid="login-header">Log In To Your Account</h1>
+            <h1 data-testid="login-header" className = "gradient-text">Log In To Your Account</h1>
             <div className="input-group">
               <input
                 type="text"
@@ -104,10 +104,10 @@ const LoginPage = () => {
         <section className="signup" data-testid="signup-section">
           <div className="greet" data-testid="greet">
             <h1 data-testid="welcome-back-header">Welcome Back!</h1>
-            <p data-testid="ready-to-focus-text">Ready to focus?</p>
+            <h3 data-testid="ready-to-focus-text">Ready to focus?</h3>
           </div>
           <div className="signup-button" data-testid="signup-button">
-            <p data-testid="no-account-text">Don't have an account?</p>
+            <h2 data-testid="no-account-text">Don't Have An<br></br>Account?</h2>
             <button className="btn btn-outline" onClick={() => navigate('/signup')} data-testid="signup-action-button">
               Sign Up
             </button>
