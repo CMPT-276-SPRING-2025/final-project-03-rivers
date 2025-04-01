@@ -50,6 +50,7 @@ const LoginPage = () => {
       setLoading(false); // Stop loading if login fails
     }
   };
+  console.log("LoginPage loaded");
 
   return (
     <div className="login-container" data-testid="login-container">

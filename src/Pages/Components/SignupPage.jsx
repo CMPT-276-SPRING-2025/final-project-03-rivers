@@ -11,12 +11,8 @@ import { auth } from '../Firebase.jsx';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [registerEmail, setRegisterEmail] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
-  const [user, setUser] = useState(null);
 
+<<<<<<< HEAD
    useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
@@ -37,34 +33,18 @@ const Signup = () => {
     e.preventDefault();
     // navigate('/loading');
     setError("");
+=======
+  const handleSignup = () => {
+    navigate('/loading');
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 
-    if (!isValidEmail(registerEmail)) {
-      alert("Invalid email format. Please enter a valid email.");
-      return;
-    }
-
-    setLoading(true);
-
-        try {
-          await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
-          console.log("User logged in: ", auth.currentUser);
-          setTimeout(() => {
-            navigate('/home'); // Redirect after a short delay
-          }, 1000);
-        } catch (error) {
-          
-          setError("Failed to log in. Please check your credentials.");
-          console.error(error.message);
-          
-        } finally {
-          setLoading(false);
-        }
-    // setTimeout(() => {
-    //   navigate('/home');
-    // }, 1000);
+    setTimeout(() => {
+      navigate('/home');
+    }, 5000);
   };
 
   return (
+<<<<<<< HEAD
     <div className="signup-container" data-testid="signup-container">
       {/* Top Navigation Bar */}
       <div className="top-nav-bar" data-testid="nav-bar">
@@ -103,13 +83,35 @@ const Signup = () => {
               <button className="btnToSignup" disabled = {loading} data-testid="signup-button">
               {loading ? "Signing Up..." : "Sign Up"}
               </button>
+=======
+    <div className="signup-container">
+        <div className="top-nav-bar">
+            <div className="left-nav">
+                <img src = {logo} alt="logo" className="logo" />
+                <h1>FocusForge</h1>
             </div>
-            {error && <p className="error-text">{error}</p>}
-
-          </div>
+            <div className="right-nav">
+                <img src={question} alt="question icon about project" className="question" />
+                <div className = "popup">
+                    This is a webapp designed to help students and people with time-management issues manage their time while leaving space for free time.
+                    This project aims to help split lives up into manageable chunks and get through the day.
+                </div>
+            </div>
         </div>
+        <div className="signup-UI">
+            <div className = "left-signup">
+                <h1>Welcome To FocusForge!</h1>
+            </div>
+            <div className = "right-signup">
+                <h1>Create Account</h1>
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
+            </div>
+        </div>
+<<<<<<< HEAD
         </form>
       </div>
+=======
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
     </div>
   );
 }

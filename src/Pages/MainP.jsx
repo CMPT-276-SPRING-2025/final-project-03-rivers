@@ -5,14 +5,25 @@ import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 import { signOut } from "@firebase/auth";
 import { auth } from "./Firebase.jsx";
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged } from '@firebase/auth';
+import StickyNotes from './Components/StickyNotes';
+import TaskManager from './Components/TaskManager';
+import { fetchTasks } from './Components/Todo';
+import TaskForm from "./Components/TaskForm";
+import TaskList from "./Components/TaskList";
 
+<<<<<<< HEAD
 
 >>>>>>> 305bbaab8143bed06a4325848eb466b294b5982e
+=======
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>
@@ -73,7 +84,7 @@ const NavBar = () => {
 };
 
 
-const SideBar = ({ isOpen, onTogglePanel }) => {
+const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) => {
   return (
     <div className="Sidebar">
       <ul>
@@ -83,7 +94,14 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
             onClick={() => {
               if (val.title === 'Music') {
                 onTogglePanel(isOpen);
-              } else {
+              } 
+              else if (val.action === 'toggleStickyNotes') {
+                setShowStickyNotes((prev) => !prev);
+              }
+              else if(val.action === 'toggleTaskManager') {
+                setTaskManager((prev) => !prev);
+              }
+              else {
                 window.location.pathname = val.link;
               }
             }}
@@ -100,10 +118,37 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
 
 const MainP = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [showStickyNotes, setShowStickyNotes] = useState(false);
+  const [showTaskManager, setTaskManager] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   const handleTogglePanel = (currentIsOpen) => {
     setIsOpen(!currentIsOpen);
   };
+
+  useEffect(() => {
+    const checkTasks = async () => {
+      try {
+        const fetchedTasks = await fetchTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkTasks();
+  }, []);
+
+  const handleTaskAdded = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
+  if (loading) {
+    return <p>Getting Tasks... </p>;
+  }
 
   return (
     <div className="mainP">
@@ -112,11 +157,18 @@ const MainP = () => {
       <SideBar 
         isOpen={isOpen}
         onTogglePanel={handleTogglePanel}
+        setShowStickyNotes ={setShowStickyNotes}
+        setTaskManager = {setTaskManager}
       />
       <Login 
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      {showStickyNotes && <StickyNotes />}
+      {showTaskManager && (tasks.length === 0 ? 
+        <TaskForm newTaskAdded={handleTaskAdded} /> : 
+        <TaskList tasks={tasks} />
+      )}
     </div>
   );
 };
