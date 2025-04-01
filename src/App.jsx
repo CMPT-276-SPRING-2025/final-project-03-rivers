@@ -18,7 +18,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/home" element={<MainP />} />
-        <Route path="/home" element={<Music />} />
+        <Route path="/music" element={<Music />} />
         <Route path="/toDoL" element={<TaskManager />} />
 
    

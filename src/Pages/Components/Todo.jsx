@@ -1,17 +1,21 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
-// Initialize the Todoist API client with your token
 const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_TOKEN);
 
-// Function to add a task to Todoist and return it
-export const addTask = async (taskContent, dueDate, projectId) => {
+
+export const addTask = async (taskContent, dueDate, projectId = null) => {
   try {
+    console.log("Adding task with:", taskContent, dueDate, projectId);
     // Add the task to Todoist
-    const task = await api.addTask({ 
+    const taskData = {
       content: taskContent,
       due_string: dueDate,
-      project_id: projectId  
-    });
+    };
+    
+    if (projectId) {
+      taskData.project_id = projectId; 
+    }
+    const task = await api.addTask(taskData);
 
     return task;  
   } catch (error) {
@@ -24,7 +28,8 @@ export const addTask = async (taskContent, dueDate, projectId) => {
 export const fetchTasks = async () => {
   try {
     const tasks = await api.getTasks();
-    return Array.isArray(tasks) ? tasks : [];  // Ensure it returns an array
+    console.log("Fetched tasks:", tasks);  
+    return Array.isArray(tasks) ? tasks : [];  
   } catch (error) {
     console.error("Error fetching tasks:", error);
     throw error;
