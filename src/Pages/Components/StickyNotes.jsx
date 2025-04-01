@@ -1,15 +1,12 @@
-import React, {useState} from 'react';
-import './StickyNotes.css'; 
+import React, { useState } from 'react';
+import './StickyNotes.css';
 
 const StickyNotes = () => {
-    const [notes, setNotes] = useState([]);
+    const [notes, setNotes] = useState([{ id: Date.now(), text: '' }]);
 
     // Function to create a new sticky note 
     const createNote = () => {
-        const newNote = {
-            id: Date.now(),
-            text: '',
-        }; 
+        const newNote = { id: Date.now(), text: '' };
         setNotes((prevNotes) => [...prevNotes, newNote]);
     };
 
@@ -20,14 +17,26 @@ const StickyNotes = () => {
                 note.id === id ? { ...note, text: newText } : note
             )
         );
-    }
+    };
 
     // Function to delete a sticky note
     const deleteNote = (id) => {
         setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
     };
-    
-    return(
-        <div>StickyNotes</div>
-    )
+
+    return (
+        <div className="stickynotes-container">
+            <div className="stickyNotesBase">
+                {notes.map((note) => (
+                    <div key={note.id} className="stickyNote">
+                        {/*Create textarea for each note*/}
+                        <textarea className="textArea" value={note.text} onChange={(e) => updateNote(note.id, e.target.value)}/>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
+
+export default StickyNotes;
+
