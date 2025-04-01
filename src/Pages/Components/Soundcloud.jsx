@@ -326,7 +326,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </button>
 
             <button
-              className={`btn btn-soft ${isShuffled ? 'btn-warning' : 'btn-info'}`}
+              className={`btn ${isShuffled ? 'btn-warning' : 'btn-soft btn-info'}`}
               onClick={handleToggleShuffle}
               aria-label="Toggle shuffle"
             >
