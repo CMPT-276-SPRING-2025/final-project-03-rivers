@@ -11,10 +11,6 @@
     background-position: 0px 0px, 32px 32px;
     background-size: 64px 64px;
     background-color: rgb(247, 248, 248);
-    
-    /*background-image: linear-gradient(#e6e6e6 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #e6e6e6 calc(100% - 0.5px)), linear-gradient(90deg, #e6e6e6 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #e6e6e6 calc(100% - 0.5px));
-    background-size: 2.5% 5%;
-    border: 0.5px solid #e6e6e6;*/
 }
 
 /*TOP NAVIGATION BAR*/
