@@ -1,12 +1,43 @@
-import React from 'react';
-import './App.css';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import LoginPage from './Pages/Components/LoginPage';
-import Music from './Pages/Music';
-import LoadingPage from './Pages/LoadingPage';
-import MainP from './Pages/MainP';
-import SignupPage from './Pages/Components/SignupPage';
-import TaskManager from './Pages/Components/TaskManager';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import LoginPage from "./Pages/Components/LoginPage";
+import Music from "./Pages/Music";
+import LoadingPage from "./Pages/LoadingPage";
+import MainP from "./Pages/MainP";
+import SignupPage from "./Pages/Components/SignupPage";
+import TaskForm from "./Pages/Components/TaskForm";
+import TaskList from "./Pages/Components/TaskList";
+import { fetchTasks } from "./Pages/Components/Todo";
+import TaskManager from "./Pages/Components/TaskManager";
+
+// Redirect to Task List if tasks exist, otherwise show Task Form
+const TaskRedirect = () => {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const checkTasks = async () => {
+      try {
+        const fetchedTasks = await fetchTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkTasks();
+  }, []);
+
+  // Wait for data to load before making a decision
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  return tasks.length > 0 ? <Navigate to="/toDoL-show" /> : <TaskForm />;
+};
 
 function App() {
   return (
@@ -19,9 +50,10 @@ function App() {
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/home" element={<MainP />} />
         <Route path="/music" element={<Music />} />
-        <Route path="/toDoL" element={<TaskManager />} />
-
-   
+        
+        {/* Conditional Redirect based on tasks */}
+        <Route path="/toDoL" element={<TaskRedirect />} />
+        <Route path="/toDoL-show" element={<TaskList />} />
       </Routes>
     </BrowserRouter>
   );
