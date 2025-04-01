@@ -137,6 +137,7 @@
 
 .login-button button {
   background: linear-gradient(to top, #37425D, #748BC3);
+  color: white;
   height: 50px;
   width: 220px;
   margin-top: 100px;
