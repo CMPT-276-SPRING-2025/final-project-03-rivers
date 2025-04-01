@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui";
 
 body {
   font-family: 'Poppins', sans-serif;
@@ -41,4 +43,22 @@ body {
   margin-bottom: 70px;
   background: linear-gradient(#C1E5FB, #E5EDF2);
   border-radius: 10px;
+}
+
+/* Update modal overlay styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+/* Fix modal form positioning */
+.modal-form {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
 }

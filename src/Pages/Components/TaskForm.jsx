@@ -54,7 +54,7 @@ const TaskForm = ({ newTaskAdded }) => {
   }, []);
 
   return (
-    <div className="task-form-container p-4 shadow-lg rounded-lg">
+    <div className="task-form-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
       <h2 className="text-center text-3xl font-bold mb-4">Create Task</h2>
 
       <div className="flex gap-2 mb-4">
