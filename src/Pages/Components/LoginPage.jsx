@@ -104,10 +104,10 @@ const LoginPage = () => {
         <section className="signup" data-testid="signup-section">
           <div className="greet" data-testid="greet">
             <h1 data-testid="welcome-back-header">Welcome Back!</h1>
-            <p data-testid="ready-to-focus-text">Ready to focus?</p>
+            <h3 data-testid="ready-to-focus-text">Ready to focus?</h3>
           </div>
           <div className="signup-button" data-testid="signup-button">
-            <p data-testid="no-account-text">Don't have an account?</p>
+            <h2 data-testid="no-account-text">Don't Have An<br></br>Account?</h2>
             <button className="btn btn-outline" onClick={() => navigate('/signup')} data-testid="signup-action-button">
               Sign Up
             </button>
