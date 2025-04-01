@@ -17,7 +17,7 @@ export const SidebarData = [
     {
         title: "ToDoList",
         icon: <ChecklistIcon />,
-        link: "/toDoL"
+        action: "toggleTaskManager"
     },
     {
         title: "Projects",

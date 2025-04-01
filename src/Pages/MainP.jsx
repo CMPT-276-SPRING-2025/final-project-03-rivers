@@ -5,7 +5,7 @@ import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
 import StickyNotes from './Components/StickyNotes';
-import TaskForm from './Components/TaskForm';
+import TaskManager from './Components/TaskManager';
 
 const Login = ({ isOpen, setIsOpen }) => {
   return (
@@ -41,7 +41,7 @@ const NavBar = () => {
   );
 };
 
-const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes }) => {
+const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) => {
   return (
     <div className="Sidebar">
       <ul>
@@ -54,6 +54,9 @@ const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes }) => {
               } 
               else if (val.action === 'toggleStickyNotes') {
                 setShowStickyNotes((prev) => !prev);
+              }
+              else if(val.action === 'toggleTaskManager') {
+                setTaskManager((prev) => !prev);
               }
               else {
                 window.location.pathname = val.link;
@@ -87,14 +90,14 @@ const MainP = () => {
         isOpen={isOpen}
         onTogglePanel={handleTogglePanel}
         setShowStickyNotes ={setShowStickyNotes}
-        showTaskManager = {setTaskManager}
+        setTaskManager = {setTaskManager}
       />
       <Login 
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
       {showStickyNotes && <StickyNotes />}
-      {showTaskManager && <TaskForm />}
+      {showTaskManager && <TaskManager />}
     </div>
   );
 };
