@@ -122,6 +122,14 @@ const TaskForm = ({ newTaskAdded }) => {
       >
         Create Task
       </button>
+
+      <button
+        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-4"
+        onClick={() => setShowCreateProject(false)} // Clear the form
+      >
+        &times;
+      </button>
+
     </div>
   );
 };

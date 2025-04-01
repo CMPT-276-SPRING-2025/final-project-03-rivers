@@ -45,20 +45,3 @@ body {
   border-radius: 10px;
 }
 
-/* Update modal overlay styles */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 40;
-}
-
-/* Fix modal form positioning */
-.modal-form {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 50;
-}
