@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import './SignupPage.css';
@@ -6,21 +6,62 @@ import question from '../../assets/question.png';
 import Email from '../../assets/Email.png';
 import Lock from '../../assets/Lock.png';
 import User from '../../assets/User.png';
+import { createUserWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
+import { auth } from '../Firebase.jsx';
 
 const Signup = () => {
   const navigate = useNavigate();
+  const [registerEmail, setRegisterEmail] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false); // Added loading state
+  const [user, setUser] = useState(null);
 
+   useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+      return () => unsubscribe();
+    }, []);
+  
+    const isValidEmail = (email) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+  
   const handleLogin = () => {
     navigate('/login');
   };
-
-  const handleSignup = (e) => {
+  
+  const handleSignup = async(e) => {
     e.preventDefault();
-    navigate('/loading');
+    // navigate('/loading');
+    setError("");
 
-    setTimeout(() => {
-      navigate('/home');
-    }, 5000);
+    if (!isValidEmail(registerEmail)) {
+      alert("Invalid email format. Please enter a valid email.");
+      return;
+    }
+
+    setLoading(true);
+
+        try {
+          await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+          console.log("User logged in: ", auth.currentUser);
+          setTimeout(() => {
+            navigate('/home'); // Redirect after a short delay
+          }, 1000);
+        } catch (error) {
+          
+          setError("Failed to log in. Please check your credentials.");
+          console.error(error.message);
+          
+        } finally {
+          setLoading(false);
+        }
+    // setTimeout(() => {
+    //   navigate('/home');
+    // }, 1000);
   };
 
   return (
@@ -51,17 +92,23 @@ const Signup = () => {
           </div>
         </div>
         {/* Right Side (Signup Section) */}
+        <form onSubmit={handleSignup}>
         <div className="right-signup" data-testid="right-signup">
           <h1 className="gradient-text" data-testid="signup-header">Create Account</h1>
           <div className="signupForm" data-testid="signup-form">
             <input type="text" placeholder="Name" className="input" data-testid="name-input" />
-            <input type="email" placeholder="Email" className="input" data-testid="email-input" />
-            <input type="password" placeholder="Password" className="input" data-testid="password-input" />
+            <input type="email" placeholder="Email"value={registerEmail} onChange={(e) => setRegisterEmail(e.target.value)} className="input" data-testid="email-input" required/>
+            <input type="password" value={registerPassword} onChange={(e) => setRegisterPassword(e.target.value)} placeholder="Password" className="input" data-testid="password-input" />
             <div className="btnToSignup" data-testid="signup-button-container">
-              <button className="btnToSignup" data-testid="signup-button" onClick={handleSignup}>Sign Up</button>
+              <button className="btnToSignup" disabled = {loading} data-testid="signup-button">
+              {loading ? "Signing Up..." : "Sign Up"}
+              </button>
             </div>
+            {error && <p className="error-text">{error}</p>}
+
           </div>
         </div>
+        </form>
       </div>
     </div>
   );
