@@ -4,6 +4,11 @@ import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 import { signOut } from "@firebase/auth";
 import { auth } from "./Firebase.jsx";
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +19,11 @@ import { fetchTasks } from './Components/Todo';
 import TaskForm from "./Components/TaskForm";
 import TaskList from "./Components/TaskList";
 
+<<<<<<< HEAD
+
+>>>>>>> 305bbaab8143bed06a4325848eb466b294b5982e
+=======
+>>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>

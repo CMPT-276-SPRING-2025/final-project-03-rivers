@@ -247,6 +247,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             max="100"
             className="range text-black [--range-bg:white]"
             value={volume}
+            data-testid = "volumeControl"
             onChange={(e) => {
               const newVolume = e.target.value;
               setVolume(newVolume);
@@ -258,6 +259,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           <div className='justify-center flex gap-2 m-auto'>
             <button
               className="btn btn-soft btn-primary"
+              data-testid="previous"
               onClick={() => handleTrackChange('prev')}
             >
               ⏮️
@@ -265,12 +267,14 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             
             <button
               className="btn btn-soft btn-info"
+              data-testid="pausePlay"
               onClick={handlePlayPause}
             >
               {isPlaying ? '⏸️' : '▶️'}
             </button>
             <button
               className="btn btn-soft btn-info"
+              data-testid="next"
               onClick={() => handleTrackChange('next')}
             >
               ⏭️
@@ -278,10 +282,11 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           </div>
           
 
-          <div><h2 className="w-64 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">{songName}</h2></div>
+          <div data-testid = 'song'><h2 className="w-64 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">{songName}</h2></div>
         </div>
         <progress
             className="progress progress-info w-1/2 m-auto"
+            data-testid="progress"
             max="100"
             value={progress}
             onClick={(e) => {
