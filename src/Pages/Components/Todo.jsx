@@ -29,7 +29,7 @@ export const fetchTasks = async () => {
   try {
     const tasks = await api.getTasks();
     console.log("Fetched tasks:", tasks);  
-    return Array.isArray(tasks) ? tasks : [];  
+    return Array.isArray(tasks.results) ? tasks.results : [];  
   } catch (error) {
     console.error("Error fetching tasks:", error);
     throw error;

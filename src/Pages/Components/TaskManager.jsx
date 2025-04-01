@@ -15,7 +15,7 @@ const TaskManager = () => {
       try {
         // Fetch tasks and projects from Todoist
         const fetchedTasks = await fetchTasks();
-        console.log(fetchedTasks);
+        console.log("fetched tasks in task manager", fetchedTasks);
         const fetchedProjects = await fetchProjects();
         
         setTasks(fetchedTasks); 
@@ -64,7 +64,7 @@ const TaskManager = () => {
   
   const renderTaskProject = (task) => {
     const project = projects.find((project) => project.id === task.projectId);
-    return project ? project.name : "No Project"; // Return "No Project" if no project is assigned
+    return project ? project.name : "No Project"; 
   };
 
   return (
