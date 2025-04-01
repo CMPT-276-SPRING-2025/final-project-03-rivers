@@ -3,9 +3,16 @@ import './StickyNotes.css';
 
 const StickyNotes = () => {
     const [notes, setNotes] = useState([{ id: Date.now(), text: '' }]);
+    const MAX_NOTES = 5; // max number of sticky notes 
 
     // Function to create a new sticky note 
     const createNote = () => {
+
+        //  check to see if sticky note limit has been reach 
+        if(notes.length >= MAX_NOTES){
+            alert("You can only create 5 sticky notes.");
+            return;
+        }
         const newNote = { id: Date.now(), text: '' };
         setNotes((prevNotes) => [...prevNotes, newNote]);
     };
