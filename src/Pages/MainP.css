@@ -69,8 +69,9 @@ ul li{
 }
 
 .themes {
-    margin-right: -500px;
+    margin-right: -400px;
     font-size: 24px;
+    position:relative;
 }
 
 .Sidebar{
@@ -118,5 +119,50 @@ ul li{
     display: flex;
     align-items: center; 
     margin-right: 20px;
+  }
+  .logout-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .logout {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .logout-text {
+    margin-left: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .logout-dropdown {
+    position: absolute;
+    top: 45px; /* Adjust position below the button */
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    z-index: 100;
+  }
+  
+  .logout-dropdown button {
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .logout-dropdown button:hover {
+    background: #f8f8f8;
   }
   
