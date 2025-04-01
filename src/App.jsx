@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import LoginPage from "./Pages/Components/LoginPage";
-import Music from "./Pages/Music";
-import LoadingPage from "./Pages/LoadingPage";
+import { BrowserRouter, Routes, Route, Navigate, useNavigate, Navigate } from "react-router-dom";;
+import LoginPage from "./Pages/Components/LoginPage";;
+import Music from "./Pages/Music";;
+import LoadingPage from "./Pages/LoadingPage";;
 import MainP from "./Pages/MainP";
 import SignupPage from "./Pages/Components/SignupPage";
 import TaskForm from "./Pages/Components/TaskForm";
 import TaskList from "./Pages/Components/TaskList";
 import { fetchTasks } from "./Pages/Components/Todo";
 import TaskManager from "./Pages/Components/TaskManager";
+import { render, fireEvent, screen } from '@testing-library/react';
 
 // Redirect to Task List if tasks exist, otherwise show Task Form
 const TaskRedirect = () => {
@@ -54,7 +55,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/home" element={<MainP />} />
-        
+        <Route path="/home" element={<Music />} />
 
       </Routes>
     </BrowserRouter>

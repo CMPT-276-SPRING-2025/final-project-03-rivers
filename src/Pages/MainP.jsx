@@ -4,6 +4,10 @@ import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
+import { signOut } from "@firebase/auth";
+import { auth } from "./Firebase.jsx";
+import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from '@firebase/auth';
 import StickyNotes from './Components/StickyNotes';
 import TaskManager from './Components/TaskManager';
 import { fetchTasks } from './Components/Todo';
@@ -23,26 +27,52 @@ const Login = ({ isOpen, setIsOpen }) => {
 };
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out");
+      navigate("/login"); // Redirect to login page after logout
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
+  };
   return (
     <nav className="navBar">
       <div className="tabs">
         <ul className="focusF">
-          <li>FocusForge</li>
+          <li >FocusForge</li>
         </ul>
         <ul className="themes">
           <li>Themes</li>
         </ul>
-        <button className="logout">
-          <img 
-            src={logout}
-            alt="Logout"
-            style={{ width: '35px', height: '35px' }}
-          />
-        </button>
+        
+        <div 
+          className="logout-container"
+          onClick={handleLogout}  // Add click handler for the entire button
+          onMouseEnter={() => setShowDropdown(true)}  // Show dropdown on hover
+          onMouseLeave={() => setShowDropdown(false)} // Hide dropdown when mouse leaves
+        >
+          <button className="logout">
+            <img 
+              src={logout}
+              alt="Logout"
+              style={{ width: '35px', height: '35px' }} 
+            />
+            {/* Optionally, you can display the text on hover */}
+            {showDropdown && (
+              <span className="logout-text">Logout</span>
+            )}
+          </button>
+
+        </div>
       </div>
     </nav>
   );
 };
+
 
 const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) => {
   return (
