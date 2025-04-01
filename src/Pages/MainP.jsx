@@ -3,12 +3,7 @@ import './MainP.css';
 import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
-import Chatbot from "./Components/Chatbot"
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> e5b900affb1109501cae7af3690de625897a8c98
+import Chatbot from "./Components/Chatbot";
 import { signOut } from "@firebase/auth";
 import { auth } from "./Firebase.jsx";
 import { useNavigate } from 'react-router-dom';
@@ -19,158 +14,149 @@ import { fetchTasks } from './Components/Todo';
 import TaskForm from "./Components/TaskForm";
 import TaskList from "./Components/TaskList";
 
-<<<<<<< HEAD
-
->>>>>>> 305bbaab8143bed06a4325848eb466b294b5982e
-=======
->>>>>>> e5b900affb1109501cae7af3690de625897a8c98
 const Login = ({ isOpen, setIsOpen }) => {
-  return (
-    <>
-      <Soundcloud 
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        onTogglePanel={togglePanel}
-      />
-    </>
-  );
+    return (
+        <>
+            <Soundcloud
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                onTogglePanel={togglePanel}
+            />
+        </>
+    );
 };
 
 const NavBar = () => {
-  const navigate = useNavigate();
-  const [showDropdown, setShowDropdown] = useState(false);
+    const navigate = useNavigate();
+    const [showDropdown, setShowDropdown] = useState(false);
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      console.log("User logged out");
-      navigate("/login"); // Redirect to login page after logout
-    } catch (error) {
-      console.error("Logout failed:", error.message);
-    }
-  };
-  return (
-    <nav className="navBar">
-      <div className="tabs">
-        <ul className="focusF">
-          <li >FocusForge</li>
-        </ul>
-        <ul className="themes">
-          <li>Themes</li>
-        </ul>
-        
-        <div 
-          className="logout-container"
-          onClick={handleLogout}  // Add click handler for the entire button
-          onMouseEnter={() => setShowDropdown(true)}  // Show dropdown on hover
-          onMouseLeave={() => setShowDropdown(false)} // Hide dropdown when mouse leaves
-        >
-          <button className="logout">
-            <img 
-              src={logout}
-              alt="Logout"
-              style={{ width: '35px', height: '35px' }} 
-            />
-            {/* Optionally, you can display the text on hover */}
-            {showDropdown && (
-              <span className="logout-text">Logout</span>
-            )}
-          </button>
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            console.log("User logged out");
+            navigate("/login"); // Redirect to login page after logout
+        } catch (error) {
+            console.error("Logout failed:", error.message);
+        }
+    };
 
-        </div>
-      </div>
-    </nav>
-  );
+    return (
+        <nav className="navBar">
+            <div className="tabs">
+                <ul className="focusF">
+                    <li>FocusForge</li>
+                </ul>
+                <ul className="themes">
+                    <li>Themes</li>
+                </ul>
+                <div
+                    className="logout-container"
+                    onClick={handleLogout}
+                    onMouseEnter={() => setShowDropdown(true)}
+                    onMouseLeave={() => setShowDropdown(false)}
+                >
+                    <button className="logout">
+                        <img
+                            src={logout}
+                            alt="Logout"
+                            style={{ width: '35px', height: '35px' }}
+                        />
+                        {showDropdown && (
+                            <span className="logout-text">Logout</span>
+                        )}
+                    </button>
+                </div>
+            </div>
+        </nav>
+    );
 };
 
-
 const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) => {
-  return (
-    <div className="Sidebar">
-      <ul>
-        {SidebarData.map((val, index) => (
-          <li
-            key={val.title}
-            onClick={() => {
-              if (val.title === 'Music') {
-                onTogglePanel(isOpen);
-              } 
-              else if (val.action === 'toggleStickyNotes') {
-                setShowStickyNotes((prev) => !prev);
-              }
-              else if(val.action === 'toggleTaskManager') {
-                setTaskManager((prev) => !prev);
-              }
-              else {
-                window.location.pathname = val.link;
-              }
-            }}
-            className="sidebar-item"
-          >
-            <div className="sidebar-icon">{val.icon}</div>
-            <div className="sidebar-title">{val.title}</div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div className="Sidebar">
+            <ul>
+                {SidebarData.map((val, index) => (
+                    <li
+                        key={val.title}
+                        onClick={() => {
+                            if (val.title === 'Music') {
+                                onTogglePanel(isOpen);
+                            }
+                            else if (val.action === 'toggleStickyNotes') {
+                                setShowStickyNotes((prev) => !prev);
+                            }
+                            else if(val.action === 'toggleTaskManager') {
+                                setTaskManager((prev) => !prev);
+                            }
+                            else {
+                                window.location.pathname = val.link;
+                            }
+                        }}
+                        className="sidebar-item"
+                    >
+                        <div className="sidebar-icon">{val.icon}</div>
+                        <div className="sidebar-title">{val.title}</div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 };
 
 const MainP = () => {
-  const [isOpen, setIsOpen] = useState(true);
-  const [showStickyNotes, setShowStickyNotes] = useState(false);
-  const [showTaskManager, setTaskManager] = useState(false);
-  const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
-  const handleTogglePanel = (currentIsOpen) => {
-    setIsOpen(!currentIsOpen);
-  };
+    const [isOpen, setIsOpen] = useState(true);
+    const [showStickyNotes, setShowStickyNotes] = useState(false);
+    const [showTaskManager, setTaskManager] = useState(false);
+    const [tasks, setTasks] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const checkTasks = async () => {
-      try {
-        const fetchedTasks = await fetchTasks();
-        setTasks(fetchedTasks);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      } finally {
-        setLoading(false);
-      }
+    const handleTogglePanel = (currentIsOpen) => {
+        setIsOpen(!currentIsOpen);
     };
 
-    checkTasks();
-  }, []);
+    useEffect(() => {
+        const checkTasks = async () => {
+            try {
+                const fetchedTasks = await fetchTasks();
+                setTasks(fetchedTasks);
+            } catch (error) {
+                console.error("Error fetching tasks:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkTasks();
+    }, []);
 
-  const handleTaskAdded = (newTask) => {
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-  };
+    const handleTaskAdded = (newTask) => {
+        setTasks((prevTasks) => [...prevTasks, newTask]);
+    };
 
-  if (loading) {
-    return <p>Getting Tasks... </p>;
-  }
+    if (loading) {
+        return <p>Getting Tasks... </p>;
+    }
 
-  return (
-    <div className="mainP">
-      <NavBar />
-      <Chatbot />
-      <SideBar 
-        isOpen={isOpen}
-        onTogglePanel={handleTogglePanel}
-        setShowStickyNotes ={setShowStickyNotes}
-        setTaskManager = {setTaskManager}
-      />
-      <Login 
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      />
-      {showStickyNotes && <StickyNotes />}
-      {showTaskManager && (tasks.length === 0 ? 
-        <TaskForm newTaskAdded={handleTaskAdded} /> : 
-        <TaskList tasks={tasks} />
-      )}
-    </div>
-  );
+    return (
+        <div className="mainP">
+            <NavBar />
+            <Chatbot />
+            <SideBar
+                isOpen={isOpen}
+                onTogglePanel={handleTogglePanel}
+                setShowStickyNotes={setShowStickyNotes}
+                setTaskManager={setTaskManager}
+            />
+            <Login
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+            />
+            {showStickyNotes && <StickyNotes />}
+            {showTaskManager && (tasks.length === 0 ?
+                <TaskForm newTaskAdded={handleTaskAdded} /> :
+                <TaskList tasks={tasks} />
+            )}
+        </div>
+    );
 };
 
 export default MainP;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate, useNavigate, Navigate } from "react-router-dom";;
+import { BrowserRouter, Routes, Route, Navigate, useNavigate} from "react-router-dom";;
 import LoginPage from "./Pages/Components/LoginPage";;
 import Music from "./Pages/Music";;
 import LoadingPage from "./Pages/LoadingPage";;
