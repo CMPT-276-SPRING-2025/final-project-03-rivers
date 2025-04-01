@@ -132,10 +132,6 @@ const MainP = () => {
         setTasks((prevTasks) => [...prevTasks, newTask]);
     };
 
-    if (loading) {
-        return <p>Getting Tasks... </p>;
-    }
-
     return (
         <div className="mainP !bg-white">
             <NavBar />
