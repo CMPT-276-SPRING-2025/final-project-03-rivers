@@ -20,7 +20,7 @@ const TaskList = () => {
 
   return (
     <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
-      <h2 className="text-center text-3xl font-bold mb-4">Task List</h2>
+      <h2 className="text-center text-3xl font-bold mb-4">To Do List</h2>
 
       {tasks.length > 0 ? (
         <ul>
