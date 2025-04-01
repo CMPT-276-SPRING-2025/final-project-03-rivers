@@ -10,7 +10,7 @@ const LoadingPage = () => {
                     clearInterval(interval);
                     return 100;
                 }
-                return Math.min(oldProgress + 2, 100);
+                return Math.min(oldProgress + 20, 100);
             });
         }, 100);
 

@@ -1,78 +1,121 @@
-import React from 'react';
-import './MainP.css'
+import React, { useState, useEffect } from 'react';
+import './MainP.css';
 import logout from '../assets/logout.png';
-import Soundcloud from './Components/Soundcloud'
+import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
-const Login = () => {
+import Chatbot from "./Components/Chatbot"
+import { signOut } from "@firebase/auth";
+import { auth } from "./Firebase.jsx";
+import { useNavigate } from 'react-router-dom';
+import { onAuthStateChanged } from '@firebase/auth';
+
+
+const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>
-        <Soundcloud />
+      <Soundcloud 
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        onTogglePanel={togglePanel}
+      />
     </>
-  )
-}
+  );
+};
 
 const NavBar = () => {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
 
-    return (
-        <nav className = "navBar">
-        <div className='tabs'>
-        <ul className='focusF'>
-            <li>FocusForge</li>
-        </ul>
-   
-        <ul className='themes'>
-            <li>Themes</li>
-        </ul>
-        <button className='logout'><img src = {logout} style = {{width: '35px', height: '35px'}} ></img></button>
-        </div>
-        </nav>
-    );
-}
-
-
-const SideBar = () => {
-    return (
-      <div className="Sidebar">
-        <ul>
-          {SidebarData.map((val, key) => {
-            return (
-              <li
-                // key={key}
-
-                // {onClick must be changed to accomodate feature and not page}
-
-                onClick={() => {
-                  window.location.pathname = val.link;
-                }}
-                className="sidebar-item"
-              >
-                <div className="sidebar-icon">{val.icon}</div>
-                <div className="sidebar-title">{val.title}</div>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      console.log("User logged out");
+      navigate("/login"); // Redirect to login page after logout
+    } catch (error) {
+      console.error("Logout failed:", error.message);
+    }
   };
-  
-  
+  return (
+    <nav className="navBar">
+      <div className="tabs">
+        <ul className="focusF">
+          <li >FocusForge</li>
+        </ul>
+        <ul className="themes">
+          <li>Themes</li>
+        </ul>
+        
+        <div 
+          className="logout-container"
+          onClick={handleLogout}  // Add click handler for the entire button
+          onMouseEnter={() => setShowDropdown(true)}  // Show dropdown on hover
+          onMouseLeave={() => setShowDropdown(false)} // Hide dropdown when mouse leaves
+        >
+          <button className="logout">
+            <img 
+              src={logout}
+              alt="Logout"
+              style={{ width: '35px', height: '35px' }} 
+            />
+            {/* Optionally, you can display the text on hover */}
+            {showDropdown && (
+              <span className="logout-text">Logout</span>
+            )}
+          </button>
+
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+
+const SideBar = ({ isOpen, onTogglePanel }) => {
+  return (
+    <div className="Sidebar">
+      <ul>
+        {SidebarData.map((val, index) => (
+          <li
+            key={val.title}
+            onClick={() => {
+              if (val.title === 'Music') {
+                onTogglePanel(isOpen);
+              } else {
+                window.location.pathname = val.link;
+              }
+            }}
+            className="sidebar-item"
+          >
+            <div className="sidebar-icon">{val.icon}</div>
+            <div className="sidebar-title">{val.title}</div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const MainP = () => {
+  const [isOpen, setIsOpen] = useState(true);
+  
+  const handleTogglePanel = (currentIsOpen) => {
+    setIsOpen(!currentIsOpen);
+  };
 
+  return (
+    <div className="mainP">
+      <NavBar />
+      <Chatbot />
+      <SideBar 
+        isOpen={isOpen}
+        onTogglePanel={handleTogglePanel}
+      />
+      <Login 
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
+    </div>
+  );
+};
 
-    return (
-        <div className = "mainP">
-        {/* <h1>MAIN PAGE</h1> */}
-        <NavBar />
-        <SideBar />
-        <Login />
-
-
-        </div>
-    )
-
-
-}
-//Ade
 export default MainP;
