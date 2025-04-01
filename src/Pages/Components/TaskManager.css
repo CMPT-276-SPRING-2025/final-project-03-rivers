@@ -56,7 +56,7 @@ body {
   
   /* TASK LIST */
   .task-list-container {
-    margin-top: 200px;
+    margin-top: 20px;
     width: 100%;
     max-width: 400px;
     padding: 40px;
@@ -132,4 +132,16 @@ body {
 
 .add-task-button:hover {
     background: #45a049;
+}
+
+.create-project-popup {
+  position: absolute;
+  top: -60px; /* Adjust this based on the height of the input field */
+  left: 0;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
 }

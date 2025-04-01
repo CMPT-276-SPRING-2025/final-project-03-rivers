@@ -9,7 +9,9 @@ const TaskManager = () => {
   const [tasks, setTasks] = useState([]);  
   const [projects, setProjects] = useState([]);  
   const [loading, setLoading] = useState(true);  
- 
+  const [showCreateProject, setShowCreateProject] = useState(false); 
+  const [newProjectName, setNewProjectName] = useState(""); 
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -31,15 +33,16 @@ const TaskManager = () => {
   }, []); 
 
   const handleCreateProject = async () => {
-    const newProjectName = prompt("Enter the new project name:");
-    if (newProjectName) {
-      try {
-        const newProject = await addProject(newProjectName);
-        setProjects((prevProjects) => [...prevProjects, newProject]); 
-        setProjectId(newProject.id); 
-      } catch (error) {
-        console.error("Error creating project:", error);
-      }
+    if (newProjectName.trim() === "") return; // Ensure the project name isn't empty
+
+    try {
+      const newProject = await addProject(newProjectName);
+      setProjects((prevProjects) => [...prevProjects, newProject]); 
+      setProjectId(newProject.id); 
+      setShowCreateProject(false);  // Hide the input after creating the project
+      setNewProjectName(""); // Clear the input field
+    } catch (error) {
+      console.error("Error creating project:", error);
     }
   };
 
@@ -68,14 +71,14 @@ const TaskManager = () => {
   };
 
   return (
-    <div className="p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Task Manager</h2>
+    <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
+      <h2 className="text-center text-3xl font-bold mb-4">Task Manager</h2>
 
       {/* Input and Button for adding a task */}
       <div className="flex gap-2 mb-4">
         <input
           type="text"
-          className="border p-2 rounded w-full"
+          className="p-2 rounded w-full bg-white"
           placeholder="Enter task..."
           value={task}
           onChange={(e) => setTask(e.target.value)}
@@ -86,7 +89,7 @@ const TaskManager = () => {
       <div className="flex gap-2 mb-4">
         <input
           type="date"
-          className="border p-2 rounded w-full"
+          className="p-2 rounded w-full bg-white"
           placeholder="Due Date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
@@ -96,7 +99,7 @@ const TaskManager = () => {
       {/* Project Dropdown */}
       <div className="flex gap-2 mb-4">
         <select
-          className="border p-2 rounded w-full"
+          className=" p-2 rounded w-full bg-white"
           value={projectId} 
           onChange={(e) => setProjectId(e.target.value)}
         >
@@ -107,24 +110,44 @@ const TaskManager = () => {
             </option>
           ))}
         </select>
-        {/* Button to create a new project */}
+
+        {/* Button to show the project creation input */}
         <button
-          className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
-          onClick={() => handleCreateProject()}
+          className="bg-blue-700 text-white px-2 py-1 rounded hover:bg-blue-900"
+          onClick={() => setShowCreateProject(true)} 
         >
           Create Project
         </button>
       </div>
 
+      {/* Display input field to create project if showCreateProject is true */}
+      {showCreateProject && (
+        <div className="flex gap-2 mb-4">
+          <input
+            type="text"
+            className="p-2 rounded w-full bg-white"
+            placeholder="Enter new project name"
+            value={newProjectName}
+            onChange={(e) => setNewProjectName(e.target.value)}
+          />
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            onClick={handleCreateProject}
+          >
+            Save Project
+          </button>
+        </div>
+      )}
+
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         onClick={handleAddTask}
       >
-        Add Task
+        Create Task
       </button>
 
       {/* Displaying the task list */}
-      <h3 className="mt-4 text-lg font-semibold">To Do List</h3>
+      <h3 className="text-center mt-4 text-2xl font-semibold">To Do List</h3>
       <ul>
         {tasks && tasks.length > 0 ? (
           tasks.map((task) => (
