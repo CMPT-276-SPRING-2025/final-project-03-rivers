@@ -1,9 +1,10 @@
-// TaskList.jsx (Displays the tasks)
 import React, { useEffect, useState } from "react";
 import { fetchTasks } from "./Todo";
+import TaskForm from "./TaskForm";
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -18,10 +19,33 @@ const TaskList = () => {
     loadTasks();
   }, []);
 
+  const handleNewTaskAdded = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setShowForm(false);  
+  };
+
   return (
     <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
       <h2 className="text-center text-3xl font-bold mb-4">To Do List</h2>
 
+      <button
+        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 mb-4"
+        onClick={() => setShowForm(true)} // Show form when clicked
+      >
+        Add Task
+      </button>
+
+      {showForm && (
+        <>
+          <div
+            className="modal-overlay fixed inset-0 z-40"
+            onClick={() => setShowForm(false)} // Close form if overlay is clicked
+          />
+          <div className="modal-form fixed inset-0 flex justify-center items-center z-50">
+            <TaskForm newTaskAdded={handleNewTaskAdded} />
+          </div>
+        </>
+      )}
       {tasks.length > 0 ? (
         <ul>
           {tasks.map((task) => (

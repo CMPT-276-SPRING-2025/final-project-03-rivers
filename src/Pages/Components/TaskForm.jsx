@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";  // Import the useNavigate hook
 import { addTask, addProject, fetchProjects } from "./Todo";  
+import "./TaskManager.css"
 
-const TaskForm = () => {
+const TaskForm = ({ newTaskAdded }) => {
   const [task, setTask] = useState("");  
   const [dueDate, setDueDate] = useState("");  
   const [projectId, setProjectId] = useState("");
@@ -10,20 +10,16 @@ const TaskForm = () => {
   const [newProjectName, setNewProjectName] = useState(""); 
   const [showCreateProject, setShowCreateProject] = useState(false); 
 
-  const navigate = useNavigate();  // Use navigate to switch pages
-
   const handleAddTask = async () => {
     if (task.trim() === "") return; 
 
     try {
-      await addTask(task, dueDate, projectId || null);  // If no project, pass null
+      const newTask = await addTask(task, dueDate, projectId || null);  // If no project, pass null
       setTask("");  
       setDueDate("");  
-      setProjectId("");  
+      setProjectId(""); 
 
-      // After adding the task, navigate to the task list page
-      navigate("/ToDoL");
-
+      newTaskAdded(newTask);
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -58,7 +54,7 @@ const TaskForm = () => {
   }, []);
 
   return (
-    <div className="task-list-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
+    <div className="task-form-container p-4 shadow-lg rounded-lg">
       <h2 className="text-center text-3xl font-bold mb-4">Create Task</h2>
 
       <div className="flex gap-2 mb-4">

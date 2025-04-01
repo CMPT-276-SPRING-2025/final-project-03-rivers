@@ -15,12 +15,17 @@ import TaskManager from "./Pages/Components/TaskManager";
 const TaskRedirect = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkTasks = async () => {
       try {
         const fetchedTasks = await fetchTasks();
         setTasks(fetchedTasks);
+
+        if (fetchedTasks.length > 0) {
+          navigate("/toDoL-show");
+        }
       } catch (error) {
         console.error("Error fetching tasks:", error);
       } finally {
@@ -29,14 +34,14 @@ const TaskRedirect = () => {
     };
 
     checkTasks();
-  }, []);
+  }, [navigate]);
 
   // Wait for data to load before making a decision
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  return tasks.length > 0 ? <Navigate to="/toDoL-show" /> : <TaskForm />;
+  return <TaskForm />;
 };
 
 function App() {
@@ -49,11 +54,8 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/home" element={<MainP />} />
-        <Route path="/music" element={<Music />} />
         
-        {/* Conditional Redirect based on tasks */}
-        <Route path="/toDoL" element={<TaskRedirect />} />
-        <Route path="/toDoL-show" element={<TaskList />} />
+
       </Routes>
     </BrowserRouter>
   );

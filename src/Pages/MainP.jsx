@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MainP.css';
 import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
@@ -6,6 +6,9 @@ import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
 import StickyNotes from './Components/StickyNotes';
 import TaskManager from './Components/TaskManager';
+import { fetchTasks } from './Components/Todo';
+import TaskForm from "./Components/TaskForm";
+import TaskList from "./Components/TaskList";
 
 const Login = ({ isOpen, setIsOpen }) => {
   return (
@@ -77,10 +80,35 @@ const MainP = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [showStickyNotes, setShowStickyNotes] = useState(false);
   const [showTaskManager, setTaskManager] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
   
   const handleTogglePanel = (currentIsOpen) => {
     setIsOpen(!currentIsOpen);
   };
+
+  useEffect(() => {
+    const checkTasks = async () => {
+      try {
+        const fetchedTasks = await fetchTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkTasks();
+  }, []);
+
+  const handleTaskAdded = (newTask) => {
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
+  if (loading) {
+    return <p>Getting Tasks... </p>;
+  }
 
   return (
     <div className="mainP">
@@ -97,7 +125,10 @@ const MainP = () => {
         setIsOpen={setIsOpen}
       />
       {showStickyNotes && <StickyNotes />}
-      {showTaskManager && <TaskManager />}
+      {showTaskManager && (tasks.length === 0 ? 
+        <TaskForm newTaskAdded={handleTaskAdded} /> : 
+        <TaskList tasks={tasks} />
+      )}
     </div>
   );
 };

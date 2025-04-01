@@ -1,3 +1,4 @@
+// no longer need this file since we have divided into 2 seperate files
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { addTask, fetchTasks, addProject, fetchProjects } from "./Todo";  
