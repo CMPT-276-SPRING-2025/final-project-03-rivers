@@ -29,8 +29,22 @@ const StickyNotes = () => {
             <div className="stickyNotesBase">
                 {notes.map((note) => (
                     <div key={note.id} className="stickyNote">
+                        {/*Add Button for sticky note*/}
+                        <button className="addNoteBtn" onClick={(e) => {
+                            e.stopPropagation();
+                            createNote();
+                        }}>
+                            Create
+                        </button>
+                        {/*Delete Button for sticky note*/}
+                        <button className="deleteNoteBtn" onClick={(e) => {
+                            e.stopPropagation();
+                            deleteNote(note.id);
+                        }}>
+                            Delete
+                        </button>
                         {/*Create textarea for each note*/}
-                        <textarea className="textArea" value={note.text} onChange={(e) => updateNote(note.id, e.target.value)}/>
+                        <textarea className="textArea" value={note.text} onChange={(e) => updateNote(note.id, e.target.value)} />
                     </div>
                 ))}
             </div>

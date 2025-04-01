@@ -1,6 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&display=swap');
 
+
+.stickynotes-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.stickyNotesBase {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
 .stickyNote {
     width: 200px;
     height: 200px;
@@ -17,6 +32,7 @@
 .textArea {
     width: 100%;
     height: 100%;
+    margin-top: 20px;
     color: black; 
     font-family: "Poppins", sans-serif;
     border: none;
@@ -27,4 +43,37 @@
     outline: none;
     overflow: auto;
     flex-grow: 1;
+}
+
+.stickyNoteBtns{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.addNoteBtn{
+    background-color: #005d17;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px; 
+    left: 5px;
+}
+
+.deleteNoteBtn{
+    background-color: #FF4D4D;
+    color: white;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    border-radius: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
