@@ -4,6 +4,8 @@ import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
 import Chatbot from "./Components/Chatbot"
+import StickyNotes from './Components/StickyNotes';
+
 const Login = ({ isOpen, setIsOpen }) => {
   return (
     <>
@@ -38,7 +40,7 @@ const NavBar = () => {
   );
 };
 
-const SideBar = ({ isOpen, onTogglePanel }) => {
+const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes }) => {
   return (
     <div className="Sidebar">
       <ul>
@@ -48,7 +50,11 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
             onClick={() => {
               if (val.title === 'Music') {
                 onTogglePanel(isOpen);
-              } else {
+              } 
+              else if (val.action === 'toggleStickyNotes') {
+                setShowStickyNotes((prev) => !prev);
+              }
+              else {
                 window.location.pathname = val.link;
               }
             }}
@@ -65,6 +71,7 @@ const SideBar = ({ isOpen, onTogglePanel }) => {
 
 const MainP = () => {
   const [isOpen, setIsOpen] = useState(true);
+  const [showStickyNotes, setShowStickyNotes] = useState(false);
   
   const handleTogglePanel = (currentIsOpen) => {
     setIsOpen(!currentIsOpen);
@@ -77,11 +84,13 @@ const MainP = () => {
       <SideBar 
         isOpen={isOpen}
         onTogglePanel={handleTogglePanel}
+        setShowStickyNotes ={setShowStickyNotes}
       />
       <Login 
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      {showStickyNotes && <StickyNotes />}
     </div>
   );
 };
