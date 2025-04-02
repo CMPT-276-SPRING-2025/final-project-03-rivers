@@ -8,6 +8,12 @@ const TaskList = () => {
   const [showList, setShowList] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [completedTasks, setCompletedTasks] = useState({});
+  const [editTask, setEditTask] = useState(null); 
+
+  const handleEditTask = (taskId) => {
+    setEditTask(taskId);
+    setShowForm(true);
+  };
 
   const handleCompletedTask = (taskId) => {
     setCompletedTasks((prev) => ({
@@ -73,7 +79,16 @@ const TaskList = () => {
               onClick={() => setShowForm(false)} // Close form if overlay is clicked
             />
             <div className="modal-form fixed inset-0 flex justify-center items-center z-50">
-              <TaskForm newTaskAdded={handleNewTaskAdded} setShowForm={setShowForm}/>
+              <TaskForm 
+                newTaskAdded={handleNewTaskAdded} 
+                setShowForm={setShowForm} 
+                taskToEdit={editTask}
+                onSave={(updatedTask) => {
+                  setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
+                  setShowForm(false);
+                  setEditTask(null);
+                }}
+              />
             </div>
           </>
         )}
@@ -99,8 +114,20 @@ const TaskList = () => {
 
                 {task.due ? <span className="text-sm"> - Due: {task.due.string}</span> : null}
 
+                {/*Edit and Delete Task options*/}
                 <button
-                  className="ml-auto text-red-600 text-2xl font-bold hover:text-red-800"
+                  className="ml-auto"
+                  onClick={() => handleEditTask(task.id)}
+                  >
+                  <svg className="cursor-pointer h-6 w-6 text-gray-500"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  
+                    <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  
+                    <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+                  </svg>
+
+                </button>
+
+                <button
+                  className="cursor-pointer ml-auto text-red-600 text-2xl font-bold hover:text-red-700"
                   onClick={() => handleDeleteTask(task.id)}
                 >
                   &times;

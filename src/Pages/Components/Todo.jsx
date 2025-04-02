@@ -47,6 +47,25 @@ export const deleteTask = async (taskId) => {
   }
 };
 
+export const updateTask = async (taskId, taskContent, dueDate, projectId = null) => {
+  try {
+    const taskData = {
+      content: taskContent,
+      due_string: dueDate,
+    };
+    
+    if (projectId) {
+      taskData.project_id = projectId; 
+    }
+    const updatedTask = await api.updateTask(taskId, taskData);
+
+    return updatedTask;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+};
+
 export const addProject = async (projectName) => {
   try {
     const project = await api.addProject({ name: projectName });

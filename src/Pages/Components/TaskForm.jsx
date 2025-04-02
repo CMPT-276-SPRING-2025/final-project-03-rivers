@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { addTask, addProject, fetchProjects } from "./Todo";  
+import { addTask, updateTask, addProject, fetchProjects } from "./Todo";  
 import "./TaskManager.css"
 
-const TaskForm = ({ newTaskAdded, setShowForm}) => {
-  const [task, setTask] = useState("");  
-  const [dueDate, setDueDate] = useState("");  
-  const [projectId, setProjectId] = useState("");
+const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
+  const [task, setTask] = useState(taskToEdit ? taskToEdit.content : "");  
+  const [dueDate, setDueDate] = useState(taskToEdit ? taskToEdit.dueDate : "");  
+  const [projectId, setProjectId] = useState(taskToEdit ? taskToEdit.projectId : "");
   const [projects, setProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState(""); 
   const [showCreateProject, setShowCreateProject] = useState(false); 
+
+  const handleEditTask = async (taskId) => {
+    if (task.trim() === "") return;
+
+    try {
+      if (taskToEdit) {
+        const updatedTask = await updateTask(taskId, task, dueDate, projectId || null);
+        onSave(updatedTask); 
+      }  
+    } 
+    catch (error) {
+      console.error("Error updating task:", error);
+    }
+  };
 
   const handleAddTask = async () => {
     if (task.trim() === "") return; 
@@ -65,7 +79,9 @@ const TaskForm = ({ newTaskAdded, setShowForm}) => {
 
   return (
     <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
-      <h2 className="text-center text-3xl font-bold mb-6">Create Task</h2>
+      <h2 className="text-center text-3xl font-bold mb-6">
+        {taskToEdit ? "Edit Task" : "Create Task"}
+      </h2>
 
       <div className="mb-2">
         <textarea
@@ -120,13 +136,15 @@ const TaskForm = ({ newTaskAdded, setShowForm}) => {
           <div className="absolute bottom-0 left-0 flex flex-col gap-3">
             <button
               className="create-task-btn bg-blue-400 text-gray px-4 py-2 rounded-lg hover:bg-blue-500 w-32"
-              onClick={handleAddTask}
+              onClick={() => {
+                taskToEdit ? handleEditTask(taskToEdit.id) : handleAddTask();
+              }}
             >
               Create Task
             </button>
 
             <button
-              className="cancel-btn bg-red-400 text-blackpx-4 py-2 rounded-lg hover:bg-red-500 w-32"
+              className="cancel-btn bg-red-400 text-black px-4 py-2 rounded-lg hover:bg-red-500 w-32"
               onClick={handleCancel}
             >
               Cancel
