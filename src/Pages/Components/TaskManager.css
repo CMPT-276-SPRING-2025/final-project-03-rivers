@@ -13,15 +13,12 @@ body {
   
   /* TASK LIST */
   .task-list-container {
-    position: relative;
     margin-left: 220px;
     margin-top: 20px;
-    width: 100%;
-    max-width: 400px;
-    padding: 40px;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
-    min-height: 200px;
+    max-width: 400x;
+    min-height: 100px;
   }
   
   .task-list-container ul {
