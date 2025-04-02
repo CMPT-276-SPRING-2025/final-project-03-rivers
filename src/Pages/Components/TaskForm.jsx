@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { addTask, addProject, fetchProjects } from "./Todo";  
 import "./TaskManager.css"
 
-const TaskForm = ({ newTaskAdded }) => {
+const TaskForm = ({ newTaskAdded, setShowForm}) => {
   const [task, setTask] = useState("");  
   const [dueDate, setDueDate] = useState("");  
   const [projectId, setProjectId] = useState("");
@@ -23,6 +23,16 @@ const TaskForm = ({ newTaskAdded }) => {
     } catch (error) {
       console.error("Error adding task:", error);
     }
+  };
+
+  const handleCancel = () => {
+    setTask("");
+    setDueDate("");
+    setProjectId("");
+    setNewProjectName("");
+    setShowCreateProject(false);
+    setShowForm(false); 
+    
   };
 
   const handleCreateProject = async () => {
@@ -54,29 +64,19 @@ const TaskForm = ({ newTaskAdded }) => {
   }, []);
 
   return (
-    <div className="task-form-container p-4 bg-white shadow-lg rounded-lg max-w-md mx-auto">
-      <h2 className="text-center text-3xl font-bold mb-4">Create Task</h2>
+    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
+      <h2 className="text-center text-3xl font-bold mb-6">Create Task</h2>
 
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          className="p-2 rounded w-full bg-white"
+      <div className="mb-2">
+        <textarea
+          className="task-input bg-white p-2 w-full h-32 rounded-lg"
           placeholder="Enter task..."
           value={task}
           onChange={(e) => setTask(e.target.value)}
         />
       </div>
 
-      <div className="flex gap-2 mb-4">
-        <input
-          type="date"
-          className="p-2 rounded w-full bg-white"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-        />
-      </div>
-
-      <div className="flex gap-2 mb-4">
+      <div className="mb-2 flex items-center gap-2">
         <select
           className="p-2 rounded w-full bg-white"
           value={projectId}
@@ -91,15 +91,15 @@ const TaskForm = ({ newTaskAdded }) => {
         </select>
 
         <button
-          className="bg-blue-700 text-white px-2 py-1 rounded hover:bg-blue-900"
+          className="add-project-btn p-2 bg-white text-gray-600 rounded"
           onClick={() => setShowCreateProject(true)}
         >
-          Create Project
+          <span className="text-xl">+</span>
         </button>
       </div>
 
       {showCreateProject && (
-        <div className="flex gap-2 mb-4">
+        <div className="mb-2 flex items-center gap-2">
           <input
             type="text"
             className="p-2 rounded w-full bg-white"
@@ -108,21 +108,41 @@ const TaskForm = ({ newTaskAdded }) => {
             onChange={(e) => setNewProjectName(e.target.value)}
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="save-project-btn p-2 bg-blue-600 text-white rounded"
             onClick={handleCreateProject}
           >
-            Save Project
+            ok
           </button>
         </div>
       )}
 
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        onClick={handleAddTask}
-      >
-        Create Task
-      </button>
-    </div>
+      <div className="relative mt-2 h-24">
+          <div className="absolute bottom-0 left-0 flex flex-col gap-3">
+            <button
+              className="create-task-btn bg-blue-400 text-gray px-4 py-2 rounded-lg hover:bg-blue-500 w-32"
+              onClick={handleAddTask}
+            >
+              Create Task
+            </button>
+
+            <button
+              className="cancel-btn bg-red-400 text-blackpx-4 py-2 rounded-lg hover:bg-red-500 w-32"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+          </div>
+
+          <div className="absolute bottom-0 right-0">
+            <input
+              type="date"
+              className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+            />
+          </div>
+        </div>
+      </div>
   );
 };
 

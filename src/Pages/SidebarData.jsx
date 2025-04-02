@@ -4,6 +4,7 @@ import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
+
 export const SidebarData = [
     {
         title: "Music",
