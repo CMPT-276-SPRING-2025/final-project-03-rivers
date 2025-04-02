@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 @import "tailwindcss";
-@plugin "daisyui";
 
 body {
   font-family: 'Poppins', sans-serif;
     height: 100vh;
     margin: 0;
-    overflow: hidden;
     background-image: linear-gradient(#eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px)), linear-gradient(90deg, #eeefef 0.5px, transparent 0.5px, transparent calc(100% - 0.5px), #eeefef calc(100% - 0.5px));
     background-size: 40px 40px;
     background-color: #ffffff;
@@ -15,6 +13,7 @@ body {
   
   /* TASK LIST */
   .task-list-container {
+    position: relative;
     margin-left: 220px;
     margin-top: 20px;
     width: 100%;
@@ -22,6 +21,7 @@ body {
     padding: 40px;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
+    min-height: 200px;
   }
   
   .task-list-container ul {
@@ -43,5 +43,5 @@ body {
   margin-bottom: 70px;
   background: linear-gradient(#C1E5FB, #E5EDF2);
   border-radius: 10px;
+  
 }
-

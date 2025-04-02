@@ -36,10 +36,21 @@ export const fetchTasks = async () => {
   }
 };
 
+// delete task from Todoist
+export const deleteTask = async (taskId) => {
+  try {
+    await api.deleteTask(taskId);
+    console.log(`Task with ID ${taskId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};
+
 export const addProject = async (projectName) => {
   try {
     const project = await api.addProject({ name: projectName });
-    return project;  
+    return project;  i
   } catch (error) {
     console.error("Error adding project:", error);
     throw error;
@@ -55,5 +66,15 @@ export const fetchProjects = async () => {
     console.error("Error fetching projects:", error);
     throw error;
   }
-}
+};
+
+export const deleteProject = async (projectId) => {
+  try {
+    await api.deleteProject(projectId);
+    console.log(`Project with ID ${projectId} deleted successfully.`);
+  } catch (error) {
+    console.error("Error deleting project:", error);
+    throw error;
+  }
+};
 
