@@ -3,6 +3,7 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
 
 export const SidebarData = [
     {
@@ -25,6 +26,11 @@ export const SidebarData = [
         icon: <AssignmentTurnedInIcon/>,
         link: "projects"
 
+    },
+    {
+        title: "Chatbot",
+        icon: <SmartToyIcon/>,
+        link: "/chatbot"
     }
 ];
 

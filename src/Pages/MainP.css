@@ -8,7 +8,7 @@ html, body, .mainP {
 
 .navBar {
 
-    background: linear-gradient(to bottom, #9fb3cf, #ffff);
+    background: linear-gradient(to bottom, #bae6fd, #ffff);
     color: rgb(47, 47, 165);
     display: flex;
     border: none;
@@ -16,7 +16,7 @@ html, body, .mainP {
     position: sticky;
     justify-content: flex-end;
     height: 100px;
-
+    font-family: 'Poppins', sans-serif;
 
 }
 
@@ -67,7 +67,9 @@ ul li{
     margin-left: 30px;
     font-size: 30px;
 }
-
+.focusFtext {
+  color:linear-gradient(to bottom, #bae6fd, #ffff);
+}
 .themes {
     margin-right: -400px;
     font-size: 24px;
