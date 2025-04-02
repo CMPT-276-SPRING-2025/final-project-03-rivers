@@ -165,6 +165,7 @@ h1 {
     font-size: 1.2em;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    color: white;
 }
 
 .btnToSignup button{
@@ -180,6 +181,7 @@ h1 {
     margin-top: 105px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
+    color:white;
 }
 
 .btnToLogin:hover {

@@ -3,7 +3,7 @@ import './MainP.css';
 import logout from '../assets/logout.png';
 import Soundcloud, { togglePanel } from './Components/Soundcloud';
 import { SidebarData } from './SidebarData';
-import Chatbot from "./Components/Chatbot";
+import Chatbot, { toggleExpand } from "./Components/Chatbot";
 import { signOut } from "@firebase/auth";
 import { auth } from "./Firebase.jsx";
 import { useNavigate } from 'react-router-dom';
@@ -44,7 +44,7 @@ const NavBar = () => {
         <nav className="navBar">
             <div className="tabs">
                 <ul className="focusF">
-                    <li>FocusForge</li>
+                    <li className='focusFtext'>FocusForge</li>
                 </ul>
                 <ul className="themes">
                     <li>Themes</li>
@@ -71,7 +71,7 @@ const NavBar = () => {
     );
 };
 
-const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) => {
+const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setTaskManager }) => {
     return (
         <div className="Sidebar">
             <ul>
@@ -87,6 +87,9 @@ const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) 
                             }
                             else if(val.action === 'toggleTaskManager') {
                                 setTaskManager((prev) => !prev);
+                            }
+                            else if(val.title === 'Chatbot'){
+                                onToggleChat(isExpanded);
                             }
                             else {
                                 window.location.pathname = val.link;
@@ -105,6 +108,7 @@ const SideBar = ({ isOpen, onTogglePanel, setShowStickyNotes, setTaskManager }) 
 
 const MainP = () => {
     const [isOpen, setIsOpen] = useState(true);
+    const [isExpanded, setIsExpanded] = useState(false);
     const [showStickyNotes, setShowStickyNotes] = useState(false);
     const [showTaskManager, setTaskManager] = useState(false);
     const [tasks, setTasks] = useState([]);
@@ -113,6 +117,10 @@ const MainP = () => {
     const handleTogglePanel = (currentIsOpen) => {
         setIsOpen(!currentIsOpen);
     };
+
+    const handleToggleExpand = (currentIsExpand) => {
+        setIsExpanded(!currentIsExpand)
+    }
 
     useEffect(() => {
         const checkTasks = async () => {
@@ -135,10 +143,16 @@ const MainP = () => {
     return (
         <div className="mainP">
             <NavBar />
-            <Chatbot />
+            <Chatbot 
+                isExpanded={isExpanded}
+                setIsExpanded={setIsExpanded}
+                onToggleExpand={toggleExpand}
+            />
             <SideBar
                 isOpen={isOpen}
                 onTogglePanel={handleTogglePanel}
+                onToggleChat={handleToggleExpand}
+                isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
                 setTaskManager={setTaskManager}
             />
