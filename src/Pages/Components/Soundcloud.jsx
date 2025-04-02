@@ -144,14 +144,20 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   };
 
   const switchToPlaylist = (playlistUrl) => {
-    if (widgetRef.current) {
-      widgetRef.current.pause();
-      cleanupPlayer();
+    if(playlistUrl !== currentPlaylistUrl){
+      console.log("Changing playlists");
+      if (widgetRef.current) {
+        widgetRef.current.pause();
+        cleanupPlayer();
+      }
+      setCurrentPlaylistUrl(playlistUrl);
+      setProgress(0);
+      setSongName('');
+      setIsPlaying(false);
     }
-    setCurrentPlaylistUrl(playlistUrl);
-    setProgress(0);
-    setSongName('');
-    setIsPlaying(false);
+    else{
+      console.log("Same Playlist, do nothing");
+    }
   };
 
   const handlePlayPause = () => {
