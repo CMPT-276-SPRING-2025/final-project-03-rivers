@@ -15,11 +15,19 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
     'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
   );
-
+  const [currentTime, setCurrentTime] = useState(0);
+  const [curduration, setDuration] = useState(0);
   const iframeRef = useRef(null);
   const widgetRef = useRef(null);
   const eventsRef = useRef(new Set());
   const isWidgetReady = useRef(false);
+
+  function formatTime(seconds) {
+    if (seconds === null || isNaN(seconds)) return '--:--';
+    const minutes = Math.floor(seconds / 60 / 1000);
+    const remainingSeconds = Math.floor((seconds / 1000) % 60);
+    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
 
   useEffect(() => {
     const setupPlayer = async () => {
@@ -66,6 +74,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         widgetRef.current.getDuration((duration) => {
           widgetRef.current.getPosition((position) => {
             if (position !== null && duration !== null) {
+              setDuration(duration);
+              setCurrentTime(position);
               setProgress(position / duration * 100)
             }
           });
@@ -283,7 +293,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       </div>
 
       {/* This is the Control Bar */}
-      <div className="fixed bottom-0 left-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex flex-col items-center" style={{ height: '15%' }}>
+      <div className="fixed bottom-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex items-center" style={{ height: '15%' }}>
         <div className="flex items-center w-full">
         <span className="text-2xl">🔊</span>
         <input
@@ -337,23 +347,27 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
 
           <div data-testid = 'song'><h2 className="w-64 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">{songName}</h2></div>
         </div>
-        <progress
-            className="progress progress-info w-1/2 m-auto"
-            data-testid="progress"
-            max="100"
-            value={progress}
-            onClick={(e) => {
-              const rect = e.target.getBoundingClientRect();
-              const clickX = e.clientX - rect.left;
-              const newProgress = (clickX / rect.width) * 100;
-              setProgress(newProgress);
-              if (widgetRef.current && isWidgetReady.current) {
-                widgetRef.current.getCurrentSound((sound) => {
-                  widgetRef.current.seekTo((newProgress / 100) * sound.duration);
-                });
-              }
-            }}
-          />
+        <div className="fixed bottom-0 left-0 w-full p-4 flex">
+          <progress
+              className="progress progress-info w-1/2 ml-[25%]"
+              data-testid="progress"
+              max="100"
+              value={progress}
+              onClick={(e) => {
+                const rect = e.target.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const newProgress = (clickX / rect.width) * 100;
+                setProgress(newProgress);
+                if (widgetRef.current && isWidgetReady.current) {
+                  widgetRef.current.getCurrentSound((sound) => {
+                    widgetRef.current.seekTo((newProgress / 100) * sound.duration);
+                  });
+                }
+              }}
+            />
+            <p className="!text-left text-black ml-4">{formatTime(currentTime)} / {formatTime(curduration)}</p>
+        </div>
+
       </div>
     </>
   );
