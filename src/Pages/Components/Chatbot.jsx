@@ -3,8 +3,11 @@ import { IoIosSend } from "react-icons/io";
 import { generateContent } from './Model';
 import ReactMarkdown from 'react-markdown';
 
-export default function Chatbot() {
-  const [isExpanded, setIsExpanded] = useState(false);
+export const toggleExpand = (isExpanded, setIsExpanded) => {
+  setIsExpanded(!isExpanded)
+}
+
+export default function Chatbot({isExpanded, setIsExpanded}) {
   const [userInput, setUserInput] = useState('');
   const [aiPersonality, setAiPersonality] = useState('');
   const [response, setResponse] = useState([]);
@@ -70,15 +73,6 @@ export default function Chatbot() {
   return (
     <>
       {/* Toggle Button */}
-      <button
-        onClick={() => setIsExpanded(!isExpanded)}
-        className={`fixed right-30 top-4 z-50 p-2 rounded-full bg-blue-500 text-white hover:bg-blue-600 transition-transform duration-200 ${
-          isExpanded ? 'visibility: hidden' : ''
-        }`}
-        aria-label="Toggle chat"
-      >
-        <IoIosSend className="h-5 w-5" />
-      </button>
 
       {/* Sidebar Container */}
       <div
