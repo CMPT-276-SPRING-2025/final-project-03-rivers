@@ -44,7 +44,7 @@ const NavBar = () => {
         <nav className="navBar">
             <div className="tabs">
                 <ul className="focusF">
-                    <li>FocusForge</li>
+                    <li className='focusFtext'>FocusForge</li>
                 </ul>
                 <ul className="themes">
                     <li>Themes</li>
