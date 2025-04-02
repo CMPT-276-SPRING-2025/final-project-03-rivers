@@ -351,7 +351,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           </div>
           
 
-          <div data-testid = 'song'><h2 className="w-64 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">{songName}</h2></div>
+          <div data-testid = 'song'><h2 className="w-64 h-20 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
         </div>
         <div className="fixed bottom-0 left-0 w-full p-4 flex">
           <progress
