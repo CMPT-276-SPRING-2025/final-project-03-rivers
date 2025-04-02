@@ -4,7 +4,7 @@ import { generateContent } from './Model';
 import ReactMarkdown from 'react-markdown';
 
 export default function Chatbot() {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [userInput, setUserInput] = useState('');
   const [aiPersonality, setAiPersonality] = useState('');
   const [response, setResponse] = useState([]);
