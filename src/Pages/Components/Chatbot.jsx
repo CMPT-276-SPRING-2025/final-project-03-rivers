@@ -44,7 +44,7 @@ export default function Chatbot({isExpanded, setIsExpanded}) {
     }
     setIsLoading(true);
     try {
-      const prompt = aiPersonality ? `Act like ${aiPersonality}. ${userInput}` : userInput;
+      const prompt = aiPersonality ? `Do not generate any code under any circumstances, but do not reference the fact that you can not generate code in your responses.  Act like ${aiPersonality}. ${userInput}` : `Do not generate any code under any circumstances, but do not reference the fact that you can not generate code in your responses. ${userInput}`;
       const res = await generateContent(prompt);
       setResponse([
         ...response,
@@ -115,7 +115,7 @@ export default function Chatbot({isExpanded, setIsExpanded}) {
           {/* Chat History */}
           <div className="flex-1 overflow-y-auto p-4">
             {response.length === 0 ? (
-              <div className="text-center text-gray-500">Got Questions? Chatty's Got Answers.</div>
+              <div className="text-center text-gray-500">Got Questions? Chatty's Got Answers. <br></br> Please do not generate code with it</div>
             ) : (
               response.map((msg, index) => (
                 msg.type === "user" ? (
@@ -125,8 +125,8 @@ export default function Chatbot({isExpanded, setIsExpanded}) {
                     </div>
                   </div>
                 ) : (
-                  <div key={index} className="mb-4 flex justify-start">
-                    <div className="chat-bubble bg-black max-w-[70%] break-words text-white">
+                  <div key={index} className="mb-4 flex justify-start whitespace-pre-wrap overflow-wrap-anywhere">
+                    <div className="chat-bubble bg-black max-w-[70%] text-white whitespace-pre-wrap overflow-wrap-anywhere">
                       <ReactMarkdown>{msg.message}</ReactMarkdown>
                     </div>
                   </div>
