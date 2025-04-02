@@ -14,7 +14,6 @@ body {
   /* TASK LIST */
   .task-list-container {
     margin-left: 220px;
-    margin-top: 20px;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
     max-width: 400x;
@@ -29,10 +28,9 @@ body {
   }
   
   .task-list-container li {
+    padding: 6px 10px;
     background-color: #ffffff;
-    padding: 12px;
-    border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
   }
 
 /* TASK FORM */
@@ -40,5 +38,4 @@ body {
   margin-bottom: 70px;
   background: linear-gradient(#C1E5FB, #E5EDF2);
   border-radius: 10px;
-  
 }

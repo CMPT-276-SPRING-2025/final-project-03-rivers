@@ -3,6 +3,7 @@ import StickyNote2Icon from '@mui/icons-material/StickyNote2';
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+
 export const SidebarData = [
     {
         title: "Music",

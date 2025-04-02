@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchTasks } from "./Todo";
+import { fetchTasks, deleteTask } from "./Todo";
 import TaskForm from "./TaskForm";
 import "./TaskManager.css";
 
@@ -14,6 +14,15 @@ const TaskList = () => {
        ...prev, 
        [taskId]: !prev[taskId],
     }));
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    try {
+      await deleteTask(taskId);
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    } catch (error) {
+      console.error("Error deleting task:", error);
+    }
   };
 
   useEffect(() => {
@@ -36,7 +45,7 @@ const TaskList = () => {
 
   return (
     showList && ( // Only show the list if showList is true
-      <div className="task-list-container p-5 rounded-lg w-1/4 relative">
+      <div className="task-list-container p-6 rounded-lg w-1/4 relative">
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
 
         <div className="absolute top-0 left-0 p-4">
@@ -72,7 +81,7 @@ const TaskList = () => {
         {tasks.length > 0 ? (
           <ul>
             {tasks.map((task) => (
-              <li key={task.id} className="mt-2 flex items-center">
+              <li key={task.id} className="mt-2 flex items-center relative">
                 <input
                   type="checkbox"
                   className="mr-2 cursor-pointer"
@@ -89,11 +98,19 @@ const TaskList = () => {
                 </span>
 
                 {task.due ? <span className="text-sm"> - Due: {task.due.string}</span> : null}
+
+                <button
+                  className="ml-auto text-red-600 text-2xl font-bold hover:text-red-800"
+                  onClick={() => handleDeleteTask(task.id)}
+                >
+                  &times;
+                </button>
+
               </li>
             ))}
           </ul>
         ) : (
-          <p>Getting task... </p>
+          <p>No Task Available... </p>
         )}
       </div>
     )
