@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addTask, updateTask, addProject, fetchProjects } from "./Todo";  
+import { addTask, updateTask, addProject, fetchProjects, deleteProject } from "./Todo";  
 import "./TaskManager.css"
 
 const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
@@ -8,7 +8,37 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [projectId, setProjectId] = useState("");
   const [projects, setProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState(""); 
-  const [showCreateProject, setShowCreateProject] = useState(false); 
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+
+  const handleDeleteProject = async (project) => {
+    try {
+      setProjectToDelete(project);
+      setShowDeleteConfirm(true);
+    } catch (error) {
+      console.error("Error preparing project deletion:", error);
+    }
+  };
+
+  const confirmDeleteProject = async () => {
+    try {
+      await deleteProject(projectToDelete.id);
+      setProjects(prevProjects => 
+        prevProjects.filter(p => p.id !== projectToDelete.id)
+      );
+      setProjectId(prevId => prevId === projectToDelete.id ? '' : prevId);
+      setShowDeleteConfirm(false);
+      setProjectToDelete(null);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setProjectToDelete(null);
+  }; 
   
   useEffect(() => {
     if (taskToEdit) {
@@ -20,6 +50,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     const loadProjects = async () => {
       try {
         const fetchedProjects = await fetchProjects();
+        console.log("Projects received:", fetchedProjects); 
         setProjects(fetchedProjects);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -111,11 +142,15 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           onChange={(e) => setProjectId(e.target.value)}
         >
           <option value="">Select Project</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
+          {projects.length === 0 ? (
+            <option disabled>No projects found</option>
+          ) : (
+            projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))
+          )}
         </select>
 
         <button
@@ -124,6 +159,21 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         >
           <span className="text-xl">+</span>
         </button>
+
+        {projectId && (
+            <button
+              className="delete-project-btn p-2 bg-white text-red-600 rounded"
+              onClick={() => {
+                const projectToDelete = projects.find(p => p.id === projectId);
+                if (projectToDelete) {
+                  handleDeleteProject(projectToDelete);
+                }
+              }}
+            >
+              <span className="text-xl">×</span>
+            </button>
+          )}
+
       </div>
 
       {showCreateProject && (
@@ -141,6 +191,33 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           >
             ok
           </button>
+        </div>
+      )}
+
+      {showDeleteConfirm && projectToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">
+              Delete Project: {projectToDelete.name}?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              This action cannot be undone. Task in this project can be view in To-Do List Tab.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={confirmDeleteProject}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
 

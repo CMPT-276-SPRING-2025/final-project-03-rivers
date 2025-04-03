@@ -72,7 +72,7 @@ const TaskList = () => {
   return (
     showList && ( // Only show the list if showList is true
       <div className="task-list-container p-6 rounded-lg w-1/4 relative">
-        <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
+        <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
 
         <div className="absolute top-0 left-0 p-4">
           <button
@@ -158,7 +158,7 @@ const TaskList = () => {
                 </div>
 
                 {task.due && (
-                  <div className="due-date ml-4 text-sm rounded-md text-center text-black">
+                  <div className="due-date ml-4 text-sm rounded-md text-center">
                     <strong>{task.due.date}</strong>
                   </div>
                 )}
@@ -166,7 +166,7 @@ const TaskList = () => {
             ))}
           </ul>
         ) : (
-          <p className="text-black">No Task Available... </p>
+          <p>No Task Available... </p>
         )}
 
 
