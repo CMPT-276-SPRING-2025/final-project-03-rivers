@@ -16,14 +16,12 @@ body {
     margin-left: 220px;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
-    max-width: 400x;
-    min-height: 100px;
   }
   
   .task-list-container ul {
     display: flex;
-    flex-direction: column;  /* Stack items vertically */
-    gap: 10px; /* Adds spacing between items */
+    flex-direction: column;  
+    gap: 10px; 
     padding: 0;
   }
   
@@ -31,6 +29,8 @@ body {
     padding: 4px 10px;
     background-color: #ffffff;
     border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
   }
 
 /* TASK FORM */

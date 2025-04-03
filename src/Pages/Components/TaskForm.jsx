@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { addTask, updateTask, addProject, fetchProjects } from "./Todo";  
+import { addTask, updateTask, addProject, fetchProjects, deleteProject } from "./Todo";  
 import "./TaskManager.css"
 
 const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
@@ -8,7 +8,37 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [projectId, setProjectId] = useState("");
   const [projects, setProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState(""); 
-  const [showCreateProject, setShowCreateProject] = useState(false); 
+  const [showCreateProject, setShowCreateProject] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
+
+  const handleDeleteProject = async (project) => {
+    try {
+      setProjectToDelete(project);
+      setShowDeleteConfirm(true);
+    } catch (error) {
+      console.error("Error preparing project deletion:", error);
+    }
+  };
+
+  const confirmDeleteProject = async () => {
+    try {
+      await deleteProject(projectToDelete.id);
+      setProjects(prevProjects => 
+        prevProjects.filter(p => p.id !== projectToDelete.id)
+      );
+      setProjectId(prevId => prevId === projectToDelete.id ? '' : prevId);
+      setShowDeleteConfirm(false);
+      setProjectToDelete(null);
+    } catch (error) {
+      console.error("Error deleting project:", error);
+    }
+  };
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setProjectToDelete(null);
+  }; 
   
   useEffect(() => {
     if (taskToEdit) {
@@ -20,6 +50,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     const loadProjects = async () => {
       try {
         const fetchedProjects = await fetchProjects();
+        console.log("Projects received:", fetchedProjects); 
         setProjects(fetchedProjects);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -91,13 +122,13 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
   return (
     <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
-      <h2 className="text-center text-3xl font-bold mb-6">
+      <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent">
         {taskToEdit ? "Edit Task" : "Create Task"}
       </h2>
 
       <div className="mb-2">
         <textarea
-          className="task-input bg-white p-2 w-full h-32 rounded-lg"
+          className="task-input bg-white p-2 w-full h-32 rounded-lg text-black"
           placeholder="Enter task..."
           value={task}
           onChange={(e) => setTask(e.target.value)}
@@ -106,31 +137,50 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
       <div className="mb-2 flex items-center gap-2">
         <select
-          className="p-2 rounded w-full bg-white"
+          className="p-2 rounded w-full bg-white text-black"
           value={projectId}
           onChange={(e) => setProjectId(e.target.value)}
         >
           <option value="">Select Project</option>
-          {projects.map((project) => (
-            <option key={project.id} value={project.id}>
-              {project.name}
-            </option>
-          ))}
+          {projects.length === 0 ? (
+            <option disabled>No projects found</option>
+          ) : (
+            projects.map((project) => (
+              <option key={project.id} value={project.id}>
+                {project.name}
+              </option>
+            ))
+          )}
         </select>
 
         <button
-          className="add-project-btn p-2 bg-white text-gray-600 rounded"
+          className="add-project-btn p-2 bg-white text-black rounded "
           onClick={() => setShowCreateProject(true)}
         >
           <span className="text-xl">+</span>
         </button>
+
+        {projectId && (
+            <button
+              className="delete-project-btn p-2 bg-white text-red-600 rounded"
+              onClick={() => {
+                const projectToDelete = projects.find(p => p.id === projectId);
+                if (projectToDelete) {
+                  handleDeleteProject(projectToDelete);
+                }
+              }}
+            >
+              <span className="text-xl">×</span>
+            </button>
+          )}
+
       </div>
 
       {showCreateProject && (
         <div className="mb-2 flex items-center gap-2">
           <input
             type="text"
-            className="p-2 rounded w-full bg-white"
+            className="p-2 rounded w-full bg-white text-black"
             placeholder="Enter new project name"
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
@@ -141,6 +191,33 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           >
             ok
           </button>
+        </div>
+      )}
+
+      {showDeleteConfirm && projectToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">
+              Delete Project: {projectToDelete.name}?
+            </h3>
+            <p className="text-gray-600 mb-4">
+              This action cannot be undone. Task in this project can be view in To-Do List Tab.
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={confirmDeleteProject}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -164,7 +241,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           <div className="absolute bottom-0 right-0">
             <input
               type="date"
-              className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg"
+              className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg text-black"
               value={dueDate}
               onChange={(e) => {
                 console.log("Selected due date:", e.target.value);
