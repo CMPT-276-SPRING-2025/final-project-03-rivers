@@ -47,7 +47,9 @@ const TaskList = () => {
     showList && ( // Only show the list if showList is true
       <div className="task-list-container p-6 rounded-lg w-1/4 relative">
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
-
+        <div cla>
+        <button className="btn btn-wide">Import from Todoist</button>
+       </div>
         <div className="absolute top-0 left-0 p-4">
           <button
             className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"
