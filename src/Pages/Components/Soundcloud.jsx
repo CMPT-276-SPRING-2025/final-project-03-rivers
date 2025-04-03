@@ -296,7 +296,16 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             &times;
           </button>
           <div className="rounded-lg h-full bg-gradient-to-b from-sky-200 to-slate-200 p-6">
-            <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
+            <div className="text-center overflow-y-auto max-h-[60%]">
+              <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
+              <button
+                className = 'btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'
+                onClick={() => setIsModalOpen(true)}
+              >
+                Add Playlist
+              </button>
+            </div>
+            
             <div className="relative w-full mb-2 top-[2.5vh] flex justify-center">
               <input
                 type="text"
@@ -306,7 +315,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
-            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 overflow-y-auto max-h-[60%]">
+
+            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 overflow-y-auto max-h-[35%]">
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
