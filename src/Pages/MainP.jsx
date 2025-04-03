@@ -13,6 +13,7 @@ import TaskManager from './Components/TaskManager';
 import { fetchTasks } from './Components/Todo';
 import TaskForm from "./Components/TaskForm";
 import TaskList from "./Components/TaskList";
+import ProjectList from './Components/ProjectList.jsx';
 
 const Login = ({ isOpen, setIsOpen }) => {
     return (
@@ -71,7 +72,7 @@ const NavBar = () => {
     );
 };
 
-const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setTaskManager }) => {
+const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setTaskManager, setShowProject }) => {
     return (
         <div className="Sidebar">
             <ul>
@@ -87,6 +88,9 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                             }
                             else if(val.action === 'toggleTaskManager') {
                                 setTaskManager((prev) => !prev);
+                            }
+                            else if(val.action === 'toggleProject'){
+                                setShowProject((prev) => !prev);
                             }
                             else if(val.title === 'Chatbot'){
                                 onToggleChat(isExpanded);
@@ -113,6 +117,8 @@ const MainP = () => {
     const [showTaskManager, setTaskManager] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [showProject, setShowProject] = useState(true);
+
 
     const handleTogglePanel = (currentIsOpen) => {
         setIsOpen(!currentIsOpen);
@@ -155,16 +161,21 @@ const MainP = () => {
                 isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
                 setTaskManager={setTaskManager}
+                setShowProject={setShowProject}
             />
             <Login
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
             />
             {showStickyNotes && <StickyNotes />}
+
             {showTaskManager && (tasks.length === 0 ?
                 <TaskForm newTaskAdded={handleTaskAdded} /> :
                 <TaskList tasks={tasks} />
             )}
+
+            {showProject && <ProjectList />}
+            
         </div>
     );
 };

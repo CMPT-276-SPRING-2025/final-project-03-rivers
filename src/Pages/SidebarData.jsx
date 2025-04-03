@@ -24,7 +24,7 @@ export const SidebarData = [
     {
         title: "Projects",
         icon: <AssignmentTurnedInIcon/>,
-        link: "projects"
+        action: "toggleProject"
 
     },
     {
