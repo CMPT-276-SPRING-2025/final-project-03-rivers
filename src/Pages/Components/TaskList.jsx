@@ -10,19 +10,6 @@ const TaskList = () => {
   const [completedTasks, setCompletedTasks] = useState({});
   const [editTask, setEditTask] = useState(null); 
 
-  useEffect(() => {
-    const loadTasks = async () => {
-      try {
-        const fetchedTasks = await fetchTasks();
-        setTasks(fetchedTasks);
-      } catch (error) {
-        console.error("Error fetching tasks:", error);
-      }
-    };
-
-    loadTasks();
-  }, []);
-
   const handleEditTask = (task) => {
     setEditTask(task);
     setShowForm(true);
@@ -30,14 +17,17 @@ const TaskList = () => {
 
   const handleTaskUpdate = async (updatedTask) => {
     try {
-      await updateTask(updatedTask);
-      const updatedTasks = await fetchTasks(); 
-      setTasks(updatedTasks);
+      const response = await updateTask(updatedTask);
+      
+      setTasks(prevTasks =>
+        prevTasks.map(t => t.id === updatedTask.id ? response : t)
+      );
       setShowForm(false);
     } catch (error) {
       console.error("Error updating task:", error);
     }
   };
+
   const handleCompletedTask = (taskId) => {
     setCompletedTasks((prev) => ({
        ...prev, 
@@ -61,6 +51,19 @@ const TaskList = () => {
     }
   };
 
+  useEffect(() => {
+    const loadTasks = async () => {
+      try {
+        const fetchedTasks = await fetchTasks();
+        setTasks(fetchedTasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    loadTasks();
+  }, []);
+
   const handleNewTaskAdded = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
     setShowForm(false);  
@@ -78,7 +81,7 @@ const TaskList = () => {
               setShowForm(true); 
               setEditTask(null);
 
-            }} // Show form when clicked and reset edit task state
+            }} // Show form when clicked and reset edittassk state
           >
             +
           </button>
@@ -135,7 +138,7 @@ const TaskList = () => {
                   {/* Edit and Delete options */}
                   <div className="flex items-center ml-2">
                     <button
-                      className="mr-1"
+                      className="mr-2"
                       onClick={() => handleEditTask(task)}
                     >
                       <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
