@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from 'react';
 const togglePanel = (isOpen, setIsOpen) => {
     setIsOpen(!isOpen)
   }
-
 export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [volume, setVolume] = useState(100);
   const [progress, setProgress] = useState(0);
@@ -21,6 +20,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const widgetRef = useRef(null);
   const eventsRef = useRef(new Set());
   const isWidgetReady = useRef(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   function formatTime(seconds) {
     if (seconds === null || isNaN(seconds)) return '--:--';
@@ -260,7 +260,15 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           </button>
           
           <div className="rounded-lg  h-full bg-gradient-to-b from-sky-200 to-slate-200 p-6">
-            <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
+            <div className='flex flex-col items-center'>
+              <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className='btn btn-soft btn-warning mx-auto'
+              >
+                Add Song
+              </button>
+            </div>
             <div className="relative w-full mb-2 top-[2.5vh] flex justify-center">
               <input
                 type="text"
@@ -375,6 +383,53 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         </div>
 
       </div>
+
+      {/* Personality Modal */}
+      <dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="modal">
+        <div className="modal-content bg-gradient-to-b from-sky-200 to-slate-200 rounded">
+          <div className="modal-header">
+            <h1 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent">
+              Add a song
+            </h1>
+          </div>
+          <div className="modal-body">
+            <textarea
+              placeholder="Enter Playlist embed link (Go onto Soundcloud -> Embed -> copy the whole link)"
+              className="w-full p-2 border rounded text-black bg-blue-50 resize-vertical"
+              style={{
+                minHeight: "40px",
+                maxHeight: "80vh",
+                width: "30vw",
+                boxSizing: "border-box",
+              }}
+            />
+            <textarea
+              placeholder="Enter Playlist Name"
+              className="w-full p-2 border rounded text-black bg-blue-50 resize-vertical"
+              style={{
+                minHeight: "40px",
+                maxHeight: "80vh",
+                width: "30vw",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <div className="modal-footer">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </dialog>
     </>
   );
 };
