@@ -16,9 +16,6 @@ body {
     margin-left: 220px;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
-    max-width: 400px;
-    min-height: 100px;
-    max-height: 800px;
   }
   
   .task-list-container ul {
