@@ -299,7 +299,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className='btn btn-soft btn-warning mx-auto'
+                className='btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'
               >
                 Add Song
               </button>
@@ -419,7 +419,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
 
       </div>
 
-      {/* Personality Modal */}
+      {/* Song Add Modal */}
       <dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className="modal">
         <div className="modal-content bg-gradient-to-b from-sky-200 to-slate-200 rounded">
           <div className="modal-header">
