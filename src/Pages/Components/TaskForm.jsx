@@ -88,13 +88,13 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
   return (
     <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
-      <h2 className="text-center text-3xl font-bold mb-6">
+      <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent">
         {taskToEdit ? "Edit Task" : "Create Task"}
       </h2>
 
       <div className="mb-2">
         <textarea
-          className="task-input bg-white p-2 w-full h-32 rounded-lg"
+          className="task-input bg-white p-2 w-full h-32 rounded-lg text-black"
           placeholder="Enter task..."
           value={task}
           onChange={(e) => setTask(e.target.value)}
@@ -103,7 +103,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
       <div className="mb-2 flex items-center gap-2">
         <select
-          className="p-2 rounded w-full bg-white"
+          className="p-2 rounded w-full bg-white text-black"
           value={projectId}
           onChange={(e) => setProjectId(e.target.value)}
         >
@@ -116,7 +116,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         </select>
 
         <button
-          className="add-project-btn p-2 bg-white text-gray-600 rounded"
+          className="add-project-btn p-2 bg-white text-black rounded "
           onClick={() => setShowCreateProject(true)}
         >
           <span className="text-xl">+</span>
@@ -127,7 +127,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         <div className="mb-2 flex items-center gap-2">
           <input
             type="text"
-            className="p-2 rounded w-full bg-white"
+            className="p-2 rounded w-full bg-white text-black"
             placeholder="Enter new project name"
             value={newProjectName}
             onChange={(e) => setNewProjectName(e.target.value)}
@@ -161,7 +161,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           <div className="absolute bottom-0 right-0">
             <input
               type="date"
-              className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg"
+              className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg text-black"
               value={dueDate}
               onChange={(e) => {
                 console.log("Selected due date:", e.target.value);
