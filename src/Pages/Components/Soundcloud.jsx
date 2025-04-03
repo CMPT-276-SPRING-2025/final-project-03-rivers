@@ -14,6 +14,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [currentPlaylistUrl, setCurrentPlaylistUrl] = useState(
     'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1814722893&'
   );
+  const [currentPlaylistName, setCurrentPlaylistName] = useState('Country');
   const [currentTime, setCurrentTime] = useState(0);
   const [curduration, setDuration] = useState(0);
   const iframeRef = useRef(null);
@@ -145,7 +146,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
-  const switchToPlaylist = (playlistUrl) => {
+  const switchToPlaylist = (playlistUrl, playlistName) => {
     if(playlistUrl !== currentPlaylistUrl){
       console.log("Changing playlists");
       if (widgetRef.current) {
@@ -156,6 +157,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       setProgress(0);
       setSongName('');
       setIsPlaying(false);
+      setCurrentPlaylistName(playlistName);
     }
     else{
       console.log("Same Playlist, do nothing");
@@ -319,7 +321,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 <button
                   key={playlist.name}
                   className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
-                  onClick={() => switchToPlaylist(playlist.url)}
+                  onClick={() => switchToPlaylist(playlist.url, playlist.name)}
                 >
                   {playlist.name}
                 </button>
@@ -397,8 +399,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           <div data-testid = 'song'><h2 className="w-64 h-20 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
         </div>
         <div className="fixed bottom-0 left-0 w-full p-4 flex">
+        <h2 className="w-[13%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{currentPlaylistName}</h2>
           <progress
-              className="progress progress-info w-1/2 ml-[25%]"
+              className="progress progress-info w-1/2 ml-[12%]"
               data-testid="progress"
               max="100"
               value={progress}
