@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react"
 import { IoIosSend } from "react-icons/io"
 import { generateContent } from "./Model"
 import ReactMarkdown from "react-markdown"
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
 
 export const toggleExpand = (isExpanded, setIsExpanded) => {
   setIsExpanded(!isExpanded)
