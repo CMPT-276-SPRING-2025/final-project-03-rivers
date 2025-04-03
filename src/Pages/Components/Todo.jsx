@@ -9,13 +9,14 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
     // Add the task to Todoist
     const taskData = {
       content: taskContent,
-      due_string: dueDate,
+      due_date: dueDate || "",
     };
     
     if (projectId) {
       taskData.project_id = projectId; 
     }
     const task = await api.addTask(taskData);
+    console.log("Adding task in Todoist:", taskData);
 
     return task;  
   } catch (error) {
@@ -47,10 +48,50 @@ export const deleteTask = async (taskId) => {
   }
 };
 
+export const updateTask = async (task) => {
+  try {
+    console.log("Updating task in Todoist:", task);
+
+    const updatedTask = await api.updateTask(task.id, {
+      content: task.content,
+      due_date: task.due_date || null,
+      project_id: task.project_id || null
+    });
+
+    console.log("Updated task:", updatedTask);
+    
+    return updatedTask;
+  } catch (error) {
+    console.error("Error updating task in Todoist:", error);
+    throw error;
+  }
+};
+
+export const closeTask = async(taskId) => {
+  try {
+    await api.closeTask(taskId);
+    console.log(`Task with ID ${taskId} close successfully.`);
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};
+
+
+export const reopenTask = async(taskId) => {
+  try {
+    await api.reopenTask(taskId);
+    console.log(`Task with ID ${taskId} reopen successfully.`);
+  } catch (error) {
+    console.error("Error deleting task:", error);
+    throw error;
+  }
+};
+
 export const addProject = async (projectName) => {
   try {
     const project = await api.addProject({ name: projectName });
-    return project;  i
+    return project;  
   } catch (error) {
     console.error("Error adding project:", error);
     throw error;
@@ -61,7 +102,8 @@ export const addProject = async (projectName) => {
 export const fetchProjects = async () => {
   try {
     const projects = await api.getProjects();
-    return Array.isArray(projects) ? projects : [];
+    console.log("Projects from todoist:", projects);
+    return projects.results;
   } catch (error) {
     console.error("Error fetching projects:", error);
     throw error;
