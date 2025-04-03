@@ -38,9 +38,6 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         due_date: dueDate || taskToEdit.dueDate,
         project_id: projectId || taskToEdit.projectId
       };
-      
-      console.log("taskToEdit:", taskToEdit);
-      console.log("task state:", task);
 
       await onSave(updatedTask);
       setShowForm(false);

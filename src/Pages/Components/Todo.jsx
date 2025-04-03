@@ -48,21 +48,17 @@ export const deleteTask = async (taskId) => {
   }
 };
 
-export const updateTask = async (task, dueDate) => {
+export const updateTask = async (task) => {
   try {
-    const taskData = {
-      id: task.id,
-      content: task.content,
-      due_date: dueDate || null,
-      project_id: task.project_id || null
-    };
+    console.log("Updating task in Todoist:", task);
 
-    console.log("Updating task in Todoist:", taskData);
-    
-    const updatedTask = await api.updateTask(task.id, taskData);
+    const updatedTask = await api.updateTask(task.id, {
+      content: task.content,
+      due_date: task.due_date || null,
+      project_id: task.project_id || null
+    });
 
     console.log("Updated task:", updatedTask);
-    console.log("Todoist API response:", updatedTask);
     
     return updatedTask;
   } catch (error) {
