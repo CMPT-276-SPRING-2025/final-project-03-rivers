@@ -295,17 +295,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           >
             &times;
           </button>
-          
-          <div className="rounded-lg  h-full bg-gradient-to-b from-sky-200 to-slate-200 p-6">
-            <div className='flex flex-col items-center'>
-              <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className='btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'
-              >
-                Add Song
-              </button>
-            </div>
+          <div className="rounded-lg h-full bg-gradient-to-b from-sky-200 to-slate-200 p-6">
+            <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
             <div className="relative w-full mb-2 top-[2.5vh] flex justify-center">
               <input
                 type="text"
@@ -315,8 +306,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
-
-            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 overflow-y-auto">
+            <div className="grid grid-cols-2 gap-2 mb-2 mt-10 overflow-y-auto max-h-[60%]">
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
@@ -344,7 +334,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       </div>
 
       {/* This is the Control Bar */}
-      <div className="fixed bottom-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex items-center" style={{ height: '15%' }}>
+      <div className="fixed bottom-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex items-center" style={{ height: '150px' }}>
         <div className="flex items-center w-full">
         <span className="text-2xl">🔊</span>
         <input
@@ -387,7 +377,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </button>
 
             <button
-              className={`btn ${isShuffled ? 'btn-warning' : 'btn-soft btn-info'}`}
+              className={`btn px-[5%] py-[10%] ${isShuffled ? 'btn-warning' : 'btn-soft btn-info'}`}
               onClick={handleToggleShuffle}
               aria-label="Toggle shuffle"
             >
@@ -396,7 +386,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           </div>
           
 
-          <div data-testid = 'song'><h2 className="w-64 h-20 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
+          <div data-testid = 'song'><h2 className="w-[100%] h-[7.5%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
         </div>
         <div className="fixed bottom-0 left-0 w-full p-4 flex">
         <h2 className="w-[13%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{currentPlaylistName}</h2>
