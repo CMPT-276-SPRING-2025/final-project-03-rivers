@@ -3,27 +3,53 @@ import { addTask, updateTask, addProject, fetchProjects } from "./Todo";
 import "./TaskManager.css"
 
 const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
-  const [task, setTask] = useState(taskToEdit ? taskToEdit.content : "");  
-  const [dueDate, setDueDate] = useState(taskToEdit ? taskToEdit.dueDate : "");  
-  const [projectId, setProjectId] = useState(taskToEdit ? taskToEdit.projectId : "");
+  const [task, setTask] = useState("");  
+  const [dueDate, setDueDate] = useState("");  
+  const [projectId, setProjectId] = useState("");
   const [projects, setProjects] = useState([]);
   const [newProjectName, setNewProjectName] = useState(""); 
   const [showCreateProject, setShowCreateProject] = useState(false); 
+  
+  useEffect(() => {
+    if (taskToEdit) {
+      setTask(taskToEdit.content);
+      setDueDate(taskToEdit.dueDate);
+      setProjectId(taskToEdit.projectId);
+    }
 
-  const handleEditTask = async (taskId) => {
-    if (task.trim() === "") return;
+    const loadProjects = async () => {
+      try {
+        const fetchedProjects = await fetchProjects();
+        setProjects(fetchedProjects);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
 
+    loadProjects();
+  }, [taskToEdit]);
+
+
+  const handleEditTask = async () => {
     try {
-      if (taskToEdit) {
-        const updatedTask = await updateTask(taskId, task, dueDate, projectId || null);
-        onSave(updatedTask); 
-      }  
-    } 
-    catch (error) {
-      console.error("Error updating task:", error);
+      const updatedTask = {
+        id: taskToEdit.id,
+        content: task || taskToEdit.content,
+        due_date: dueDate || taskToEdit.dueDate,
+        project_id: projectId || taskToEdit.projectId
+      };
+      
+      console.log("taskToEdit:", taskToEdit);
+      console.log("task state:", task);
+
+      await onSave(updatedTask);
+      setShowForm(false);
+
+    } catch (error) {
+      console.error("Error editing task:", error);
     }
   };
-
+  
   const handleAddTask = async () => {
     if (task.trim() === "") return; 
 
@@ -62,20 +88,6 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       console.error("Error creating project:", error);
     }
   };
-
-  // Fetch the projects in the TaskForm component
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const fetchedProjects = await fetchProjects();
-        setProjects(fetchedProjects);
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
-    };
-
-    loadProjects();
-  }, []);
 
   return (
     <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
@@ -136,11 +148,9 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           <div className="absolute bottom-0 left-0 flex flex-col gap-3">
             <button
               className="create-task-btn bg-blue-400 text-gray px-4 py-2 rounded-lg hover:bg-blue-500 w-32"
-              onClick={() => {
-                taskToEdit ? handleEditTask(taskToEdit.id) : handleAddTask();
-              }}
+              onClick={taskToEdit ? handleEditTask : handleAddTask}
             >
-              Create Task
+              {taskToEdit ? "Edit Task" : "Create Task"}
             </button>
 
             <button
@@ -156,7 +166,10 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
               type="date"
               className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg"
               value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
+              onChange={(e) => {
+                console.log("Selected due date:", e.target.value);
+                setDueDate(e.target.value);
+              }}
             />
           </div>
         </div>

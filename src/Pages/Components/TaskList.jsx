@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchTasks, deleteTask } from "./Todo";
+import { fetchTasks, deleteTask, updateTask, closeTask, reopenTask } from "./Todo";
 import TaskForm from "./TaskForm";
 import "./TaskManager.css";
 
@@ -10,9 +10,22 @@ const TaskList = () => {
   const [completedTasks, setCompletedTasks] = useState({});
   const [editTask, setEditTask] = useState(null); 
 
-  const handleEditTask = (taskId) => {
-    setEditTask(taskId);
+  const handleEditTask = (task) => {
+    setEditTask(task);
     setShowForm(true);
+  };
+
+  const handleTaskUpdate = async (updatedTask) => {
+    try {
+      const response = await updateTask(updatedTask);
+      
+      setTasks(prevTasks =>
+        prevTasks.map(t => t.id === updatedTask.id ? response : t)
+      );
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error updating task:", error);
+    }
   };
 
   const handleCompletedTask = (taskId) => {
@@ -20,6 +33,13 @@ const TaskList = () => {
        ...prev, 
        [taskId]: !prev[taskId],
     }));
+
+    if (!completedTasks[taskId]) {
+      closeTask(taskId);  
+    }
+    else {
+      reopenTask(taskId)
+    }
   };
 
   const handleDeleteTask = async (taskId) => {
@@ -57,7 +77,11 @@ const TaskList = () => {
         <div className="absolute top-0 left-0 p-4">
           <button
             className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"
-            onClick={() => setShowForm(true)} // Show form when clicked
+            onClick={() => {
+              setShowForm(true); 
+              setEditTask(null);
+
+            }} // Show form when clicked and reset edittassk state
           >
             +
           </button>
@@ -82,12 +106,8 @@ const TaskList = () => {
               <TaskForm 
                 newTaskAdded={handleNewTaskAdded} 
                 setShowForm={setShowForm} 
-                taskToEdit={editTask}
-                onSave={(updatedTask) => {
-                  setTasks(tasks.map((t) => (t.id === updatedTask.id ? updatedTask : t)));
-                  setShowForm(false);
-                  setEditTask(null);
-                }}
+                taskToEdit={editTask} 
+                onSave={handleTaskUpdate}
               />
             </div>
           </>
@@ -112,12 +132,12 @@ const TaskList = () => {
                   {task.content}
                 </span>
 
-                {task.due ? <span className="text-sm"> - Due: {task.due.string}</span> : null}
+                {task.due ? <span className="text-sm"> - Due: {task.due.date}</span> : null}
 
                 {/*Edit and Delete Task options*/}
                 <button
                   className="ml-auto"
-                  onClick={() => handleEditTask(task.id)}
+                  onClick={() => handleEditTask(task)}
                   >
                   <svg className="cursor-pointer h-6 w-6 text-gray-500"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  
                     <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  
