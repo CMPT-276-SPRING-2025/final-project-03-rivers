@@ -239,12 +239,22 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     {
       name: "Kpop",
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/283568798&'
+    },
+    {
+      name: "something",
+      url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1712717550&"
     }
   ];
 
   const filteredPlaylists = playlists.filter(playlist =>
     playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handlePlaylistAdd = (newPlaylist, newName) => {
+    if(!newPlaylist || !newName) {
+      return false;
+    }
+  }
 
   return (
     <>
