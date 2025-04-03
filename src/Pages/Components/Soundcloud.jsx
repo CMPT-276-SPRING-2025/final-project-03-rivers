@@ -21,6 +21,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const eventsRef = useRef(new Set());
   const isWidgetReady = useRef(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newPlaylist, setNewPlaylist] = useState('');
+  const [newName, setNewName] = useState('');
 
   function formatTime(seconds) {
     if (seconds === null || isNaN(seconds)) return '--:--';
@@ -219,7 +221,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       }
     }
   };
-  const playlists = [
+  const [playlists,setPlaylists] = useState([
     {
       name: 'Mori',
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1493436424&'
@@ -239,22 +241,45 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     {
       name: "Kpop",
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/283568798&'
-    },
-    {
-      name: "something",
-      url: "https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1712717550&"
     }
-  ];
+  ]);
+
+  function extractSoundCloudUrl(iframeString) {
+    // Use regex to find the src attribute value
+    const srcMatch = iframeString.match(/src="([^"]+)"/);
+    
+    if (!srcMatch) {
+      return null;
+    }
+    
+    // Extract the URL from the src attribute
+    const fullUrl = srcMatch[1];
+    
+    // Find the base URL (everything before the first &)
+    const baseUrl = fullUrl.split('&')[0];
+    
+    return baseUrl;
+  }
 
   const filteredPlaylists = playlists.filter(playlist =>
     playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handlePlaylistAdd = (newPlaylist, newName) => {
-    if(!newPlaylist || !newName) {
+    if (!newPlaylist || !newName) {
       return false;
     }
-  }
+    const newPlaylistLink = extractSoundCloudUrl(newPlaylist);
+    setPlaylists(prevPlaylists => [
+      ...prevPlaylists,
+      {
+        name: newName,
+        url: newPlaylistLink
+      }
+    ]);
+  
+    return true;
+  };
 
   return (
     <>
@@ -403,6 +428,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </h1>
           </div>
           <div className="modal-body">
+            
             <textarea
               placeholder="Enter Playlist embed link (Go onto Soundcloud -> Embed -> copy the whole link)"
               className="w-full p-2 border rounded text-black bg-blue-50 resize-vertical"
@@ -412,8 +438,11 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 width: "30vw",
                 boxSizing: "border-box",
               }}
-            />
-            <textarea
+              value = {newPlaylist}
+              onChange={(e) => setNewPlaylist(e.target.value)}
+              >
+              </textarea>
+              <textarea
               placeholder="Enter Playlist Name"
               className="w-full p-2 border rounded text-black bg-blue-50 resize-vertical"
               style={{
@@ -422,7 +451,10 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 width: "30vw",
                 boxSizing: "border-box",
               }}
-            />
+              value = {newName}
+              onChange={(e) => setNewName(e.target.value)}
+              >
+              </textarea>
           </div>
           <div className="modal-footer">
             <button
@@ -432,7 +464,10 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               Cancel
             </button>
             <button
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => {
+                setIsModalOpen(false);
+                handlePlaylistAdd(newPlaylist, newName);
+              }}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Save
