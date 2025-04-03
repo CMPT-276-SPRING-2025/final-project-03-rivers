@@ -102,8 +102,11 @@ export const addProject = async (projectName) => {
 export const fetchProjects = async () => {
   try {
     const projects = await api.getProjects();
+    const filteredProjects = response.results
+      .filter(project => !project.inbox_project)
+
     console.log("Projects from todoist:", projects);
-    return projects.results;
+    return filteredProjects;
   } catch (error) {
     console.error("Error fetching projects:", error);
     throw error;
