@@ -116,49 +116,60 @@ const TaskList = () => {
         {tasks.length > 0 ? (
           <ul>
             {tasks.map((task) => (
-              <li key={task.id} className="mt-2 flex items-center relative">
-                <input
-                  type="checkbox"
-                  className="mr-2 cursor-pointer"
-                  checked={completedTasks[task.id] || false}
-                  onChange={() => handleCompletedTask(task.id)}
-                />
+              <li key={task.id} className="mt-2 flex items-center justify-between relative p-4">
+                {/* Task Name and Edit Features in one box */}
+                <div className="flex items-center w-full">
+                  <div className="flex items-center flex-grow">
+                    <input
+                      type="checkbox"
+                      className="mr-2 cursor-pointer"
+                      checked={completedTasks[task.id] || false}
+                      onChange={() => handleCompletedTask(task.id)}
+                    />
+                    <span
+                      className={`text-sm ${
+                        completedTasks[task.id] ? "line-through text-gray-500" : "text-black"
+                      }`}
+                    >
+                      {task.content}
+                    </span>
+                  </div>
 
-                <span
-                  className={`text-sm ${
-                    completedTasks[task.id] ? "line-through text-gray-500" : "text-black"
-                  }`}
-                >
-                  {task.content}
-                </span>
+                  {/* Edit and Delete options */}
+                  <div className="flex items-center ml-2">
+                    <button
+                      className="mr-2"
+                      onClick={() => handleEditTask(task)}
+                    >
+                      <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" />
+                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+                        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+                      </svg>
+                    </button>
 
-                {task.due ? <span className="text-sm"> - Due: {task.due.date}</span> : null}
+                    <button
+                      className="cursor-pointer text-red-600 text-2xl font-bold hover:text-red-700"
+                      onClick={() => handleDeleteTask(task.id)}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                </div>
 
-                {/*Edit and Delete Task options*/}
-                <button
-                  className="ml-auto"
-                  onClick={() => handleEditTask(task)}
-                  >
-                  <svg className="cursor-pointer h-6 w-6 text-gray-500"  width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">  
-                    <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />  
-                    <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
-                  </svg>
-
-                </button>
-
-                <button
-                  className="cursor-pointer ml-auto text-red-600 text-2xl font-bold hover:text-red-700"
-                  onClick={() => handleDeleteTask(task.id)}
-                >
-                  &times;
-                </button>
-
+                {task.due && (
+                  <div className="due-date ml-4 text-sm rounded-md text-center">
+                    <strong>{task.due.date}</strong>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
         ) : (
           <p>No Task Available... </p>
         )}
+
+
       </div>
     )
   );
