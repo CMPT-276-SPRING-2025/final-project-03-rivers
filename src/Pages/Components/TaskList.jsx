@@ -72,7 +72,7 @@ const TaskList = () => {
   return (
     showList && ( // Only show the list if showList is true
       <div className="task-list-container p-6 rounded-lg w-1/4 relative">
-        <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
+        <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
 
         <div className="absolute top-0 left-0 p-4">
           <button
@@ -122,7 +122,7 @@ const TaskList = () => {
                   <div className="flex items-center flex-grow">
                     <input
                       type="checkbox"
-                      className="mr-2 cursor-pointer"
+                      className="text-black mr-2 cursor-pointer"
                       checked={completedTasks[task.id] || false}
                       onChange={() => handleCompletedTask(task.id)}
                     />
@@ -158,7 +158,7 @@ const TaskList = () => {
                 </div>
 
                 {task.due && (
-                  <div className="due-date ml-4 text-sm rounded-md text-center">
+                  <div className="text-black due-date ml-4 text-sm rounded-md text-center">
                     <strong>{task.due.date}</strong>
                   </div>
                 )}
@@ -166,7 +166,7 @@ const TaskList = () => {
             ))}
           </ul>
         ) : (
-          <p>No Task Available... </p>
+          <p className="text-black"ck>No Task Available... </p>
         )}
 
 
