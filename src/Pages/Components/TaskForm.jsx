@@ -44,7 +44,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     if (taskToEdit) {
       setTask(taskToEdit.content);
       setDueDate(taskToEdit.dueDate);
-      setProjectId(taskToEdit.project_id);
+      setProjectId(taskToEdit.projectId);
     }
 
     const loadProjects = async () => {
@@ -66,20 +66,16 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     loadProjects();
   }, [taskToEdit]);
 
-
   const handleEditTask = async () => {
     try {
       const updatedTask = {
         id: taskToEdit.id,
         content: task || taskToEdit.content,
         due_date: dueDate || taskToEdit.dueDate,
-        project_id: projectId || taskToEdit.project_id
+        project_id: projectId || taskToEdit.projectId
       };
-      
-      console.log("taskToEdit:", taskToEdit);
-      console.log("task state:", task);
-      console.log("projectId:", projectId);
 
+      console.log("Updating task:", updatedTask);
       await onSave(updatedTask);
       setShowForm(false);
 

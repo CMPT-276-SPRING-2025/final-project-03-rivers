@@ -166,7 +166,7 @@ const TaskList = () => {
             ))}
           </ul>
         ) : (
-          <p>No Task Available... </p>
+          <p className="text-center text-gray-500 italic">No Task Available... </p>
         )}
 
 

@@ -9,8 +9,11 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
     // Add the task to Todoist
     const taskData = {
       content: taskContent,
-      due_date: dueDate || "",
     };
+
+    if (dueDate) {
+      taskData.due_date = dueDate;
+    }
     
     if (projectId) {
       taskData.project_id = projectId; 
@@ -55,12 +58,12 @@ export const updateTask = async (task) => {
     const updatedTask = await api.updateTask(task.id, {
       content: task.content,
       due_date: task.due_date || null,
-      project_id: task.projectId || null
+      project_id: task.project_id
     });
 
     console.log("Updated task:", updatedTask);
-    
     return updatedTask;
+
   } catch (error) {
     console.error("Error updating task in Todoist:", error);
     throw error;
