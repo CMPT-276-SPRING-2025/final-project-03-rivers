@@ -44,14 +44,20 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     if (taskToEdit) {
       setTask(taskToEdit.content);
       setDueDate(taskToEdit.dueDate);
-      setProjectId(taskToEdit.projectId);
+      setProjectId(taskToEdit.project_id);
     }
 
     const loadProjects = async () => {
       try {
         const fetchedProjects = await fetchProjects();
-        console.log("Projects received:", fetchedProjects); 
-        setProjects(fetchedProjects);
+        
+        // Filter out the Inbox (default Todoist project)
+        const filteredProjects = fetchedProjects.filter(
+          (project) => project.name.toLowerCase() !== "inbox"
+        );
+    
+        console.log("Filtered projects:", filteredProjects);
+        setProjects(filteredProjects);
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
@@ -67,11 +73,12 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         id: taskToEdit.id,
         content: task || taskToEdit.content,
         due_date: dueDate || taskToEdit.dueDate,
-        project_id: projectId || taskToEdit.projectId
+        project_id: projectId || taskToEdit.project_id
       };
       
       console.log("taskToEdit:", taskToEdit);
       console.log("task state:", task);
+      console.log("projectId:", projectId);
 
       await onSave(updatedTask);
       setShowForm(false);
@@ -85,7 +92,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     if (task.trim() === "") return; 
 
     try {
-      const newTask = await addTask(task, dueDate, projectId || null);  // If no project, pass null
+      const newTask = await addTask(task, dueDate, projectId);  
       setTask("");  
       setDueDate("");  
       setProjectId(""); 
