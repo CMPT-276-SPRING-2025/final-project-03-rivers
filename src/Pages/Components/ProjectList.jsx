@@ -112,16 +112,13 @@ const ProjectList = () => {
 
   const confirmDeleteProject = async () => {
     try {
-      // First, delete all tasks under this project
       const projectTasks = tasks.filter(task => task.projectId === projectToDelete.id);
       for (const task of projectTasks) {
         await deleteTask(task.id);
       }
-  
-      // Then delete the project
+
       await deleteProject(projectToDelete.id);
   
-      // Update state
       setProjects(prevProjects =>
         prevProjects.filter(p => p.id !== projectToDelete.id)
       );
