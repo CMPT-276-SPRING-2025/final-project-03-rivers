@@ -146,6 +146,10 @@ const MainP = () => {
         checkTasks();
     }, []);
 
+    const handleTaskAdded = (newTask) => {
+        setTasks((prevTasks) => [...prevTasks, newTask]);
+    };
+
     return (
         <div className="mainP">
             <NavBar />
@@ -160,7 +164,7 @@ const MainP = () => {
                 onToggleChat={handleToggleExpand}
                 isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
-                setShowTaskManager={setShowTaskManager} handleToggleTaskManager={handleToggleTaskManager}
+                setShowTaskManager={handleToggleTaskManager}
                 setShowProject={setShowProject}
             />
             <Login
@@ -169,11 +173,13 @@ const MainP = () => {
             />
             {showStickyNotes && <StickyNotes />}
 
-            <TaskList 
-                show={showTaskManager} 
-                tasks={tasks} 
-                setShowTaskManager={setShowTaskManager} 
-                />
+            {showTaskManager && (
+                tasks.length === 0 ? (
+                <TaskForm newTaskAdded={handleTaskAdded} />
+                ) : (
+                <TaskList tasks={tasks} setShowTaskManager={handleToggleTaskManager} /> 
+                )
+            )}
 
             {showProject && <ProjectList />}
             
