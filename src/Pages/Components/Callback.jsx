@@ -31,10 +31,16 @@ const Callback = ({ setTasks }) => {
           setTasks(tasksResponse.data);
 
           // Redirect to home page after importing tasks
-          navigate("/home");
+          navigate("/home"); // Use react-router-dom's navigate function
         } catch (error) {
           console.error("Error fetching Todoist tasks:", error);
+          alert("Failed to fetch tasks from Todoist. Please try again.");
+          navigate("/"); // Redirect to the main page or an error page
         }
+      } else {
+        console.error("Authorization code not found in URL.");
+        alert("Authorization code is missing. Please try importing tasks again.");
+        navigate("/"); // Redirect to the main page or an error page
       }
     };
 
