@@ -39,7 +39,7 @@ const ProjectList = () => {
         const taskCount = tasks.filter(task => task.projectId === project.id).length;
         
         const baseHeight = 145;
-        const additionalHeight = 55; 
+        const additionalHeight = 60; 
         
         const totalHeight = taskCount > 1 ? baseHeight + (taskCount - 1) * additionalHeight : baseHeight;
   
