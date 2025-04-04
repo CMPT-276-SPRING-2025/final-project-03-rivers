@@ -43,8 +43,8 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   useEffect(() => {
     if (taskToEdit) {
       setTask(taskToEdit.content);
-      setDueDate(taskToEdit.due?.date || '');
-      setProjectId(taskToEdit.project_id);
+      setDueDate(taskToEdit.dueDate);
+      setProjectId(taskToEdit.projectId);
     }
 
     const loadProjects = async () => {
