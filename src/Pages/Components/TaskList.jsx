@@ -79,16 +79,11 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
 
 
   return (
+    
     showList && ( 
-      <div
-        className={`task-list-container rounded-lg z-50
-          transition-all duration-300 ease-in-out
-          ${show ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'}
-          p-6
-        `}
-      >
-        <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
-        {/* Form and Delete Buttons */}
+      <div className="task-list-container p-6 rounded-lg w-1/4 relative">
+      <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
+
         <div className="absolute top-0 left-0 p-4">
           <button
             className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"

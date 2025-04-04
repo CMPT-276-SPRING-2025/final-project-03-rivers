@@ -18,7 +18,7 @@ body {
     border-radius: 10px;
     width: 30vw;
     max-height: 65vh;
-    overflow-y: auto;
+    overflow-y: auto
   }
   
   .task-list-container ul {
