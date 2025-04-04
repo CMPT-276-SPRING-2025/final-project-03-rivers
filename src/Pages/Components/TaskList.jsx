@@ -90,7 +90,8 @@ const TaskList = ({ setShowTaskManager }) => {
       <div
         className={`task-list-container 
           ${isClosing ? 'opacity-0 translate-y-4' : (!isVisible ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0')} 
-          transition-all duration-300 ease-out p-6 rounded-lg relative`}
+          transition-all duration-300 ease-out 
+          p-6 rounded-lg w-1/4 relative`}
       >
         {/* Form and Delete Buttons */}
       <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
