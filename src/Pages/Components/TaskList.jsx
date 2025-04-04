@@ -3,21 +3,15 @@ import { fetchTasks, deleteTask, updateTask, closeTask, reopenTask } from "./Tod
 import TaskForm from "./TaskForm";
 import "./TaskManager.css";
 
-const TaskList = ({ setShowTaskManager }) => {
+const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
   const [tasks, setTasks] = useState([]);
   const [showList, setShowList] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [completedTasks, setCompletedTasks] = useState({});
   const [editTask, setEditTask] = useState(null); 
-  const [isVisible, setIsVisible] = useState(false);
-  const [isClosing, setIsClosing] = useState(false); // New state for closing animation
 
   const handleClose = () => {
-    setIsClosing(true); 
-    setTimeout(() => {
-      setShowTaskManager(false); 
-      setIsClosing(false); 
-    }, 100); 
+    setShowTaskManager(false);
   };
 
   const handleEditTask = (task) => {
@@ -74,7 +68,7 @@ const TaskList = ({ setShowTaskManager }) => {
 
     setTimeout(() => {
       setIsVisible(true);
-    }, 800);  
+    }, 500);  
 
   }, []);
 
@@ -87,9 +81,11 @@ const TaskList = ({ setShowTaskManager }) => {
   return (
     showList && ( 
       <div
-        className={`task-list-container 
-          ${isClosing ? 'opacity-0 translate-y-4' : (!isVisible ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0')} 
-          transition-all duration-300 ease-out p-6 rounded-lg relative`}
+        className={`task-list-container rounded-lg z-50
+          transition-all duration-300 ease-in-out
+          ${show ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-2 scale-95 pointer-events-none'}
+          p-6
+        `}
       >
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
         {/* Form and Delete Buttons */}
