@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { fetchTasks, deleteTask } from "./Todo";
 import TaskForm from "./TaskForm";
 import "./TaskManager.css";
+
+const redirectToTodoistLogin = () => {
+  const clientId = "09a61f99ddfe45618be2ffc1e4fba1b4"; // Replace with your Todoist client ID
+  const redirectUri = "http://localhost:5177/callback"; // Replace with your app's redirect URI
+  const authUrl = `https://todoist.com/oauth/authorize?client_id=${clientId}&scope=data:read_write&state=todoist_auth`;
+
+  window.location.href = authUrl;
+};
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -11,8 +20,8 @@ const TaskList = () => {
 
   const handleCompletedTask = (taskId) => {
     setCompletedTasks((prev) => ({
-       ...prev, 
-       [taskId]: !prev[taskId],
+      ...prev,
+      [taskId]: !prev[taskId],
     }));
   };
 
@@ -38,18 +47,56 @@ const TaskList = () => {
     loadTasks();
   }, []);
 
+  useEffect(() => {
+    const fetchTodoistTasks = async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const code = urlParams.get("code");
+
+      if (code) {
+        try {
+          // Exchange the authorization code for an access token
+          const response = await axios.post("https://todoist.com/oauth/access_token", {
+            client_id: "09a61f99ddfe45618be2ffc1e4fba1b4", // Replace with your Todoist client ID
+            client_secret: "52b4fb169b354697ba7ff9ae197568cf", // Replace with your Todoist client secret
+            code,
+          });
+
+          const accessToken = response.data.access_token;
+
+          // Fetch tasks from Todoist
+          const tasksResponse = await axios.get("https://api.todoist.com/rest/v2/tasks", {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+
+          setTasks(tasksResponse.data);
+
+          // Redirect to home page after importing tasks
+          window.history.replaceState({}, document.title, "/home");
+        } catch (error) {
+          console.error("Error fetching Todoist tasks:", error);
+        }
+      }
+    };
+
+    fetchTodoistTasks();
+  }, []);
+
   const handleNewTaskAdded = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
-    setShowForm(false);  
+    setShowForm(false);
   };
 
   return (
     showList && ( // Only show the list if showList is true
       <div className="task-list-container p-6 rounded-lg w-1/4 relative">
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
-        <div cla>
-        <button className="btn btn-wide">Import from Todoist</button>
-       </div>
+        <div>
+          <button className="btn btn-wide" onClick={redirectToTodoistLogin}>
+            Import from Todoist
+          </button>
+        </div>
         <div className="absolute top-0 left-0 p-4">
           <button
             className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"
@@ -75,7 +122,7 @@ const TaskList = () => {
               onClick={() => setShowForm(false)} // Close form if overlay is clicked
             />
             <div className="modal-form fixed inset-0 flex justify-center items-center z-50">
-              <TaskForm newTaskAdded={handleNewTaskAdded} setShowForm={setShowForm}/>
+              <TaskForm newTaskAdded={handleNewTaskAdded} setShowForm={setShowForm} />
             </div>
           </>
         )}
@@ -107,7 +154,6 @@ const TaskList = () => {
                 >
                   &times;
                 </button>
-
               </li>
             ))}
           </ul>
