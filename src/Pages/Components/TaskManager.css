@@ -13,9 +13,12 @@ body {
   
   /* TASK LIST */
   .task-list-container {
-    margin-left: 220px;
+    margin-left: 15vw;
     background: linear-gradient(#C1E5FB, #E5EDF2);
     border-radius: 10px;
+    width: 30vw;
+    max-height: 65vh;
+    overflow-y: auto
   }
   
   .task-list-container ul {

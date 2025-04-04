@@ -71,7 +71,7 @@ const TaskList = () => {
 
   return (
     showList && ( // Only show the list if showList is true
-      <div className="task-list-container p-6 rounded-lg w-1/4 relative">
+      <div className="task-list-container p-6 rounded-lg relative">
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
 
         <div className="absolute top-0 left-0 p-4">

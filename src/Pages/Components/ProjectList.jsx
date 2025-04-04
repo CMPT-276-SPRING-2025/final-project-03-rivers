@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { fetchTasks, fetchProjects, deleteTask, closeTask, reopenTask, deleteProject } from './Todo';
+import { fetchTasks, fetchProjects, deleteTask, closeTask, reopenTask, deleteProject, updateTask } from './Todo';
 import "./ProjectList.css"
+import ProjectEdit from './ProjectEdit';
 
 const ProjectList = () => {
   const [tasks, setTasks] = useState([]);
@@ -8,6 +9,8 @@ const ProjectList = () => {
   const [projectHeights, setProjectHeights] = useState({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
   const projectRefs = useRef({});
 
   useEffect(() => {
@@ -51,6 +54,22 @@ const ProjectList = () => {
     return () => window.removeEventListener('resize', updateHeights);
   }, [tasks, projects]);
 
+  const handleTaskUpdate = async (updatedTask) => {
+    try {
+      await updateTask(updatedTask); 
+  
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+        )
+      );
+  
+      setShowEditModal(false);
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
   const handleCompletedTask = async (taskId, isCompleted) => {
     try {
       if (isCompleted) {
@@ -78,43 +97,54 @@ const ProjectList = () => {
   };
 
   const handleEditTask = (task) => {
-    // Handle edit task functionality here
-    console.log('Edit task: ', task);
+    setTaskToEdit(task);
+    setShowEditModal(true);
   };
 
-  const handleDeleteProject = async (projectId) => {
+  const handleDeleteProject = async (project) => {
     try {
-      await deleteProject(projectId);
-      setProjects((prevProjects) => prevProjects.filter((project) => project.id !== projectId));
-
+      setProjectToDelete(project);
+      setShowDeleteConfirm(true);
     } catch (error) {
-      console.error("Error deleting project:", error);
+      console.error("Error preparing project deletion:", error);
     }
   };
 
   const confirmDeleteProject = async () => {
-      try {
-        await deleteProject(projectToDelete.id);
-        setProjects(prevProjects => 
-          prevProjects.filter(p => p.id !== projectToDelete.id)
-        );
-        setProjectId(prevId => prevId === projectToDelete.id ? '' : prevId);
-        setShowDeleteConfirm(false);
-        setProjectToDelete(null);
-      } catch (error) {
-        console.error("Error deleting project:", error);
+    try {
+      // First, delete all tasks under this project
+      const projectTasks = tasks.filter(task => task.projectId === projectToDelete.id);
+      for (const task of projectTasks) {
+        await deleteTask(task.id);
       }
-    };
   
-    const handleCancelDelete = () => {
+      // Then delete the project
+      await deleteProject(projectToDelete.id);
+  
+      // Update state
+      setProjects(prevProjects =>
+        prevProjects.filter(p => p.id !== projectToDelete.id)
+      );
+      setTasks(prevTasks =>
+        prevTasks.filter(task => task.projectId !== projectToDelete.id)
+      );
       setShowDeleteConfirm(false);
       setProjectToDelete(null);
-    }; 
+    } catch (error) {
+      console.error("Error deleting project and its tasks:", error);
+    }
+  };
+  
+
+  const handleCancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setProjectToDelete(null);
+  };
 
   return (
     <div className="project-list-container">
       {projects.length === 0 ? (
-        <div className="no-projects mt-64 text-center text-black text-2xl">
+        <div className="no-projects text-center text-black text-2xl">
           <p>No projects yet</p>
         </div>
       ) : (
@@ -130,42 +160,15 @@ const ProjectList = () => {
               >
                 {/* Project Name and Close Button Container */}
                 <div className="flex justify-between items-center w-full mb-6">
-                  <span className="text-2xl font-bold text-black text-center">{project.name}</span>
+                  <span className="text-2xl font-bold text-black text-center flex-1">{project.name}</span>
                   
                   <button
                     className="absolute top-4 right-4 text-red-600 text-3xl font-normal cursor-pointer hover:text-red-700"
-                    onClick={() => handleDeleteProject(project.id)} // Handle project delete or hide
+                    onClick={() => handleDeleteProject(project)}
                   >
                     &times;
                   </button>
                 </div>
-
-                {showDeleteConfirm && projectToDelete && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg p-6 shadow-lg">
-                    <h3 className="text-lg font-semibold mb-4">
-                      Delete Project: {projectToDelete.name}?
-                    </h3>
-                    <p className="text-gray-600 mb-4">
-                      This action cannot be undone. Task in this project can be view in To-Do List Tab.
-                    </p>
-                    <div className="flex justify-end gap-3">
-                      <button
-                        className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                        onClick={handleCancelDelete}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                        onClick={confirmDeleteProject}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
                 
                 {/* Task list or "No tasks assigned..." */}
                 {projectTasks.length === 0 ? (
@@ -223,9 +226,45 @@ const ProjectList = () => {
                 )}
               </div>
             );
+            
           })}
         </div>
       )}
+        {showDeleteConfirm && projectToDelete && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <h3 className="text-lg font-semibold mb-4">
+                Delete Project: {projectToDelete.name}?
+              </h3>
+              <p className="text-gray-600 mb-4">
+              Are you sure? This action cannot be undone. All tasks in this project will be deleted.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                  onClick={handleCancelDelete}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  onClick={confirmDeleteProject}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {showEditModal && taskToEdit && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <ProjectEdit
+              task={taskToEdit}
+              onSave={handleTaskUpdate}
+              onCancel={() => setShowEditModal(false)}
+            />
+          </div>
+        )}
     </div>
   );
 };
