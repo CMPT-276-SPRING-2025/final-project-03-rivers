@@ -146,10 +146,17 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
                       {task.content}
                     </span>
                   </div>
+
                   {/* Edit and Delete Buttons */}
                   <div className="flex items-center ml-2">
                     <button className="mr-2" onClick={() => handleEditTask(task)}>
-                      {/* Edit Icon */}
+                      
+                    <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" />
+                        <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+                        <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+                      </svg>
+
                     </button>
                     <button
                       className="cursor-pointer text-red-600 text-2xl font-bold hover:text-red-700"
