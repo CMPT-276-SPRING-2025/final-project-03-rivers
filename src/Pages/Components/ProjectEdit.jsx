@@ -35,18 +35,18 @@ const ProjectEdit = ({ task: initialTask, onSave, onCancel }) => {
         type="text"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="w-full p-2 mb-4 rounded test-black bg-white"
+        className="text black w-full p-2 mb-4 rounded test-black bg-white"
         placeholder="Task name"
       />
       <input
         type="date"
         value={dueDate}
         onChange={(e) => setDueDate(e.target.value)}
-        className="w-full p-2  mb-10 rounded test-black bg-white"
+        className="w-full p-2  mb-10 rounded test-black bg-white text black"
       />
       <div className="flex justify-end gap-2">
         <button
-          className="px-3 py-1 bg-white rounded hover:bg-gray-100"
+          className="text black px-3 py-1 bg-white rounded hover:bg-gray-100"
           onClick={onCancel}
         >
           Cancel

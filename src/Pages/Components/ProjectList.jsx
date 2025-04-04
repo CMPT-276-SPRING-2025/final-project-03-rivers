@@ -155,12 +155,12 @@ const ProjectList = () => {
               <div
                 key={project.id}
                 ref={el => projectRefs.current[project.id] = el}
-                className="task-item rounded-lg relative"
+                className="task-item rounded-lg relative "
                 style={{ height: projectHeights[project.id] || 'auto' }}
               >
                 {/* Project Name and Close Button Container */}
                 <div className="flex justify-between items-center w-full mb-6">
-                  <span className="text-2xl font-bold text-black text-center flex-1">{project.name}</span>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center flex-1">{project.name}</span>
                   
                   <button
                     className="absolute top-4 right-4 text-red-600 text-3xl font-normal cursor-pointer hover:text-red-700"
@@ -216,7 +216,7 @@ const ProjectList = () => {
                           </div>
                         </div>
                         {task.due && (
-                          <div className="due-date ml-4 text-sm rounded-md text-center">
+                          <div className="due-date ml-4 text-sm rounded-md text-center text black">
                             <strong>{task.due.date}</strong>
                           </div>
                         )}
@@ -237,7 +237,7 @@ const ProjectList = () => {
                 Delete Project: {projectToDelete.name}?
               </h3>
               <p className="text-gray-600 mb-4">
-              Are you sure? This action cannot be undone. All tasks in this project will be deleted.
+              Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
               </p>
               <div className="flex justify-end gap-3">
                 <button

@@ -115,7 +115,7 @@ const TaskList = ({ setShowTaskManager }) => {
             &times;
           </button>
         </div>
-
+        
         {showForm && (
           <>
             <div
@@ -182,9 +182,11 @@ const TaskList = ({ setShowTaskManager }) => {
             ))}
           </ul>
         ) : (
-          <p>No Task Available... </p>
+          <p className="text-gray-500 italic text-center mt-6">No Task Available... </p>
         )}
       </div>
+
+      
     )
   );
 };
