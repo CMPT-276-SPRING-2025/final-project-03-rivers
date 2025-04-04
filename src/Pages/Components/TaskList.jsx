@@ -87,7 +87,7 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
           p-6
         `}
       >
-        <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
+        <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
         {/* Form and Delete Buttons */}
         <div className="absolute top-0 left-0 p-4">
           <button
@@ -136,7 +136,7 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
                   <div className="flex items-center flex-grow">
                     <input
                       type="checkbox"
-                      className="mr-2 cursor-pointer"
+                      className="text-black mr-2 cursor-pointer"
                       checked={completedTasks[task.id] || false}
                       onChange={() => handleCompletedTask(task.id)}
                     />
@@ -161,7 +161,7 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
                 </div>
 
                 {task.due && (
-                  <div className="due-date ml-4 text-sm rounded-md text-center">
+                  <div className="text-black due-date ml-4 text-sm rounded-md text-center">
                     <strong>{task.due.date}</strong>
                   </div>
                 )}
@@ -169,7 +169,7 @@ const TaskList = ({ show, setShowTaskManager, tasks: initialTasks }) => {
             ))}
           </ul>
         ) : (
-          <p className="text-center text-gray-500 italic">No Task Available... </p>
+          <p>No Task Available... </p>
         )}
       </div>
     )
