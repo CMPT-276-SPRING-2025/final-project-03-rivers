@@ -117,7 +117,7 @@ const MainP = () => {
     const [showTaskManager, setTaskManager] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showProject, setShowProject] = useState(true);
+    const [showProject, setShowProject] = useState(false);
 
 
     const handleTogglePanel = (currentIsOpen) => {
