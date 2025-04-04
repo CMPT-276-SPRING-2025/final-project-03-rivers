@@ -72,7 +72,7 @@ const NavBar = () => {
     );
 };
 
-const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setTaskManager, setShowProject }) => {
+const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setShowTaskManager, setShowProject }) => {
     return (
         <div className="Sidebar">
             <ul>
@@ -87,7 +87,7 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                                 setShowStickyNotes((prev) => !prev);
                             }
                             else if(val.action === 'toggleTaskManager') {
-                                setTaskManager((prev) => !prev);
+                                setShowTaskManager((prev) => !prev);
                             }
                             else if(val.action === 'toggleProject'){
                                 setShowProject((prev) => !prev);
@@ -114,7 +114,7 @@ const MainP = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showStickyNotes, setShowStickyNotes] = useState(false);
-    const [showTaskManager, setTaskManager] = useState(false);
+    const [showTaskManager, setShowTaskManager] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showProject, setShowProject] = useState(false);
@@ -127,6 +127,10 @@ const MainP = () => {
     const handleToggleExpand = (currentIsExpand) => {
         setIsExpanded(!currentIsExpand)
     }
+
+    const handleToggleTaskManager = () => {
+        setShowTaskManager(prev => !prev); 
+      };
 
     useEffect(() => {
         const checkTasks = async () => {
@@ -160,7 +164,7 @@ const MainP = () => {
                 onToggleChat={handleToggleExpand}
                 isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
-                setTaskManager={setTaskManager}
+                setShowTaskManager={handleToggleTaskManager}
                 setShowProject={setShowProject}
             />
             <Login
@@ -169,9 +173,12 @@ const MainP = () => {
             />
             {showStickyNotes && <StickyNotes />}
 
-            {showTaskManager && (tasks.length === 0 ?
-                <TaskForm newTaskAdded={handleTaskAdded} /> :
-                <TaskList tasks={tasks} />
+            {showTaskManager && (
+                tasks.length === 0 ? (
+                <TaskForm newTaskAdded={handleTaskAdded} />
+                ) : (
+                <TaskList tasks={tasks} setShowTaskManager={handleToggleTaskManager} /> 
+                )
             )}
 
             {showProject && <ProjectList />}
