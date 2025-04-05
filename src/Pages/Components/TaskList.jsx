@@ -1,18 +1,8 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { fetchTasks, deleteTask } from "./Todo";
 import TaskForm from "./TaskForm";
 import "./TaskManager.css";
-import Callback from "./Callback";
-
-// import config from "/config.json";
-const redirectToTodoistLogin = () => {
-  const clientId = "09a61f99ddfe45618be2ffc1e4fba1b4"; // Replace with your Todoist client ID
-  const redirectUri = "http://localhost:5173/callback"; // Replace with your app's redirect URI
-  const authUrl = `https://todoist.com/oauth/authorize?client_id=${clientId}&scope=data:read,data:delete&state=todoist_auth`;
-
-  window.location.href = authUrl;
-};
 
 const TaskList = () => {
   const [tasks, setTasks] = useState([]);
@@ -49,50 +39,7 @@ const TaskList = () => {
     loadTasks();
   }, []);
 
-  // useEffect(() => {
-    const fetchTodoistTasks = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const code = urlParams.get("code");
   
-      if (code) {
-        try {
-          const redirectUri = "http://localhost:5173/callback"; // Replace with your app's redirect URI
-  
-          // Exchange the authorization code for an access token
-          const response = await axios.post("https://todoist.com/oauth/access_token", {
-            client_id: "09a61f99ddfe45618be2ffc1e4fba1b4", // Replace with your Todoist client ID
-            client_secret: "52b4fb169b354697ba7ff9ae197568cf", // Replace with your Todoist client secret
-            code,
-            redirect_uri: redirectUri, // Include the redirect URI
-          });
-  
-          const accessToken = response.data.access_token;
-  
-          // Fetch tasks from Todoist
-          const tasksResponse = await axios.get("https://api.todoist.com/rest/v2/tasks", {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          });
-  
-          setTasks(tasksResponse.data);
-  
-          // Redirect to home page after importing tasks
-          window.history.replaceState({}, document.title, "/home");
-        } catch (error) {
-          console.error("Error fetching Todoist tasks:", error);
-          alert("Failed to fetch tasks from Todoist. Please try again.");
-        }
-      } else {
-        console.error("Authorization code not found in URL.");
-        alert("Authorization code is missing. Please try importing tasks again.");
-      }
-    };
-  
-    // fetchTodoistTasks();
-  
-  // }, []);
-
   const handleNewTaskAdded = (newTask) => {
     setTasks((prevTasks) => [...prevTasks, newTask]);
     setShowForm(false);
@@ -102,12 +49,7 @@ const TaskList = () => {
     showList && ( // Only show the list if showList is true
       <div className="task-list-container p-6 rounded-lg w-1/4 relative">
         <h2 className="text-center text-black text-2xl font-bold mb-4">To-Do List</h2>
-        <div>
-          <button className="btn btn-error" onClick = {redirectToTodoistLogin}>Login</button>
-          <button className="btn btn-wide" onClick={fetchTodoistTasks}>
-            Import from Todoist
-          </button>
-        </div>
+        
         <div className="absolute top-0 left-0 p-4">
           <button
             className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"

@@ -12,6 +12,8 @@ import { fetchTasks } from "./Pages/Components/Todo";
 import TaskManager from "./Pages/Components/TaskManager";
 import { render, fireEvent, screen } from '@testing-library/react';
 import Callback from "./Pages/Components/Callback";
+
+
 // Redirect to Task List if tasks exist, otherwise show Task Form
 const TaskRedirect = () => {
   const [tasks, setTasks] = useState([]);
@@ -57,6 +59,7 @@ function App() {
         <Route path="/loading" element={<LoadingPage />} />
         <Route path="/home" element={<MainP />} />
         {/* <Route path="/home" element={<Music />} /> */}
+
         <Route path="/callback" element={<Callback setTasks={setTasks} />} />
 
       </Routes>

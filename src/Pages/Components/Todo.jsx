@@ -1,10 +1,13 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
-const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_TOKEN);
-
+const getApi = () => {
+  const token = localStorage.getItem("todoist_token");
+  return new TodoistApi(token);
+};
 
 export const addTask = async (taskContent, dueDate, projectId = null) => {
   try {
+    const api = getApi();
     console.log("Adding task with:", taskContent, dueDate, projectId);
     // Add the task to Todoist
     const taskData = {
@@ -27,6 +30,7 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
 // Fetch tasks from Todoist
 export const fetchTasks = async () => {
   try {
+    const api = getApi();
     const tasks = await api.getTasks();
     console.log("Fetched tasks:", tasks);  
     return Array.isArray(tasks.results) ? tasks.results : [];  
@@ -39,6 +43,7 @@ export const fetchTasks = async () => {
 // delete task from Todoist
 export const deleteTask = async (taskId) => {
   try {
+    const api = getApi();
     await api.deleteTask(taskId);
     console.log(`Task with ID ${taskId} deleted successfully.`);
   } catch (error) {
@@ -49,6 +54,7 @@ export const deleteTask = async (taskId) => {
 
 export const addProject = async (projectName) => {
   try {
+    const api = getApi();
     const project = await api.addProject({ name: projectName });
     return project;  i
   } catch (error) {
@@ -60,6 +66,7 @@ export const addProject = async (projectName) => {
 // Fetch projects from Todoist
 export const fetchProjects = async () => {
   try {
+    const api = getApi();
     const projects = await api.getProjects();
     return Array.isArray(projects) ? projects : [];
   } catch (error) {
@@ -70,6 +77,7 @@ export const fetchProjects = async () => {
 
 export const deleteProject = async (projectId) => {
   try {
+    const api = getApi();
     await api.deleteProject(projectId);
     console.log(`Project with ID ${projectId} deleted successfully.`);
   } catch (error) {

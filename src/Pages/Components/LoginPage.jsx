@@ -6,6 +6,7 @@ import logo from '../../assets/logo.png';
 import { signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
 import { auth } from '../Firebase.jsx';
 
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [loginEmail, setLoginEmail] = useState("");
@@ -52,6 +53,22 @@ const LoginPage = () => {
   };
   console.log("LoginPage loaded");
 
+  const handleTodoistAuth = async () => {
+    try {
+        const result = await todoistAuth({
+            action: 'startAuth',
+            clientId: process.env.TODOIST_CLIENT_ID,
+            redirectUri: process.env.TODOIST_REDIRECT_URI
+        });
+        
+        // Handle the OAuth URL
+        window.location.href = result.authorizationUrl;
+    } catch (error) {
+        console.error('Error starting Todoist auth:', error);
+        setError("Failed to start Todoist authentication");
+    }
+};
+
   return (
     <div className="login-container" data-testid="login-container">
       {/* Navigation Bar */}
@@ -70,6 +87,16 @@ const LoginPage = () => {
 
       <div className="box" data-testid="box">
         {/* Login Form Section */}
+        <div className="oauth-section" style={{ textAlign: "center", marginTop: "1rem" }}>
+            <p>Or connect your Todoist account:</p>
+              <a
+                href={`https://todoist.com/oauth/authorize?client_id=09a61f99ddfe45618be2ffc1e4fba1b4&scope=data:read_write&state=focusforge123`}
+              >
+              <button className="btn btn-outline" data-testid="todoist-oauth-button" onClick={handleTodoistAuth}>
+                Connect with Todoist
+              </button>
+            </a>
+          </div>
         <section className="login" data-testid="login-section">
           <form onSubmit={handleLogin} data-testid="login-form">
             <h1 data-testid="login-header" className = "gradient-text">Log In To Your Account</h1>
@@ -91,6 +118,7 @@ const LoginPage = () => {
                 data-testid="password-input"
               />
             </div>
+            
             {error && <p className="error-message" data-testid="error-message">{error}</p>}
             <div className="login-button">
               <button className="btn" disabled={loading} data-testid="login-button">
@@ -114,6 +142,7 @@ const LoginPage = () => {
           </div>
         </section>
       </div>
+      
     </div>
   );
 };
