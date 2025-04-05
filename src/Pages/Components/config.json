@@ -1,0 +1,6 @@
+{
+    "client_id": "09a61f99ddfe45618be2ffc1e4fba1b4",
+    "client_secret": "52b4fb169b354697ba7ff9ae197568cf",
+    "code": "AUTHORIZATION_CODE",
+    "redirect_uri": "http://localhost:5173/callback"
+  }
