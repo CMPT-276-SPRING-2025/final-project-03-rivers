@@ -1,0 +1,15 @@
+/* start.css */
+.start-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #333;
+    color: white;
+    border-radius: 8px;
+    margin-top: 50px; /* Add some space at the top */
+  }
+  
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #fff;
+  }
