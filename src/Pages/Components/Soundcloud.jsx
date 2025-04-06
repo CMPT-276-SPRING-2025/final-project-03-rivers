@@ -210,12 +210,14 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           widgetRef.current.getCurrentSoundIndex((currentIndex) => {
             if (currentIndex < totalSongs - 1) {
               widgetRef.current.next();
+              console.log("Next song");
             }
           });
         } else if (direction === 'prev') {
           widgetRef.current.getCurrentSoundIndex((currentIndex) => {
             if (currentIndex > 0) {
               widgetRef.current.prev();
+              console.log("Previous song");
             }
           });
         }
@@ -287,7 +289,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     <>
       <div>
         {/* Playlist Box */}
-        <div className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+        <div data-testid='playlists' className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="absolute top-4 right-4 bg-transparent text-red-700 text-3xl font-bold"
@@ -313,6 +315,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search playlists..."
                 className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                data-testid="search-input"
               />
             </div>
 
@@ -396,7 +399,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           </div>
           
 
-          <div data-testid = 'song'><h2 className="w-[100%] h-[7.5%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
+          <div data-testid = 'song'><h2 className="w-[100%] h-[7.5%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip" data-testid="songName">{songName}</h2></div>
         </div>
         <div className="fixed bottom-0 left-0 w-full p-4 flex">
         <h2 className="w-[13%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{currentPlaylistName}</h2>
