@@ -97,3 +97,63 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
+
+.top-nav-bar {
+    position: absolute; /* Changed from relative to absolute */
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 100;
+}
+.left-nav {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    margin: 0;
+}
+
+.question {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+}
+
+.popup{
+    width: 300px;
+    height: auto;
+    color: white; 
+    font-family: 'Poppins', sans-serif;
+    background-color: grey;
+    border-radius: 10px;
+    position: fixed; 
+    top: 7%; 
+    right: 40px;
+    padding: 15px;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.right-nav:hover .popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
