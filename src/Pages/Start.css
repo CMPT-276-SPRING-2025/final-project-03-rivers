@@ -1,15 +1,42 @@
-/* start.css */
-.start-container {
-    padding: 20px;
-    text-align: center;
-    background-color: #333;
+.start-page {
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    background: linear-gradient(135deg, #37425D , #748BC3);
+    background-size: 200% 200%;
+    animation: gradientFlow 15s ease infinite;
     color: white;
-    border-radius: 8px;
-    margin-top: 50px; /* Add some space at the top */
   }
   
-  h1 {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #fff;
+  @keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  .floating-icon {
+    position: absolute;
+    bottom: -60px;
+    color: rgba(255, 255, 255, 0.15);
+    animation: riseAndSpin 20s linear infinite;
+    pointer-events: none;
+    opacity: 0;
+  }
+  
+  @keyframes riseAndSpin {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 0;
+    }
+    25% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: translateY(-120vh) rotate(360deg);
+      opacity: 0;
+    }
   }
