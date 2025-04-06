@@ -301,10 +301,10 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             <div className="text-center overflow-y-auto max-h-[60%]">
               <h1 className='text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Playlists</h1>
               <button
-                className = 'btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'
+                className = 'btn btn-outline btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent !border-black'
                 onClick={() => setIsModalOpen(true)}
               >
-                Add Playlist
+                <h1 className = 'text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>Add Playlist</h1>
               </button>
             </div>
             
@@ -323,7 +323,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
-                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
+                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent !border-black"
                   onClick={() => switchToPlaylist(playlist.url, playlist.name)}
                 >
                   {playlist.name}

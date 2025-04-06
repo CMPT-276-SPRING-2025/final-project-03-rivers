@@ -42,14 +42,14 @@ describe('Soundcloud Component', () => {
     it('navigates to the next song', async () => {
         const nextButton = await waitFor(() => screen.getByText('⏭️'));
         fireEvent.click(nextButton);
-        expect(document.body.textContent).not.toBe("I'm The Problem")
+        expect(document.body.textContent).not.toContain("I'm The Problem")
     });
 
     it('navigates to the previous song', async () => {
         const prevButton = await waitFor(() => screen.getByText('⏮️'));
         fireEvent.click(prevButton);
         
-        expect(document.body.textContent).not.toBe("I'm The Problem")
+        expect(document.body.textContent).not.toContain("I'm The Problem")
     });
 
     it('Playlists exist & Search Bar works', async () => {
