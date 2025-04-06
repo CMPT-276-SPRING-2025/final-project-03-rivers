@@ -6,16 +6,9 @@
     justify-content: center;
     align-items: center;
   
-    background: linear-gradient(135deg, #37425D , #748BC3);
-    background-size: 200% 200%;
+    background-image: radial-gradient(circle, #748bc3, #6478a8, #54658e, #455375, #37425d);
     animation: gradientFlow 15s ease infinite;
     color: white;
-  }
-  
-  @keyframes gradientFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
   }
   
   .floating-icon {
