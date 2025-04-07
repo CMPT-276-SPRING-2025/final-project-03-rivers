@@ -13,7 +13,7 @@ html, body, .mainP {
   display: flex;
   position: sticky;
   justify-content: flex-end;
-  height: 8vh; 
+  height: 8.5vh; 
   border-bottom-left-radius: 1.25rem;
   border-bottom-right-radius: 1.25rem;
 }
@@ -67,15 +67,15 @@ ul li {
 
 /* Sidebar Container */
 .Sidebar {
-  margin: 1rem;
-  height: 74vh; 
+  margin: 3vh 2vh;
+  height: 75vh; 
   background-color: #ffffff;
   position: fixed;
   top: 8vh;
   left: 0;
   bottom: 10vh; 
   padding-top: 1.5rem;
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
   border-radius: 1.25rem;
   transition: all 0.3s ease;
 }
