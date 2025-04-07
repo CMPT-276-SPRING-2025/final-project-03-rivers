@@ -1,37 +1,20 @@
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import "./start.css";
-import { useNavigate } from "react-router-dom";
 import question from "../assets/question.png";
 import logo from "../assets/logo.png";
 
 const Start = () => {
-  const [step, setStep] = useState(0); // 0: welcome, 1: connect to todoist
-  const [hasInteracted, setHasInteracted] = useState(false);
-
-  const handleContinue = () => {
-    setHasInteracted(true);
-    setStep(1);
-  };
-
-  const swipeVariants = {
-    initial: { x: hasInteracted ? 300 : 0, opacity: hasInteracted ? 0 : 1 },
-    animate: { x: 0, opacity: 1, transition: { duration: 0.5 } },
-    exit: { x: -300, opacity: 0, transition: { duration: 0.5 } },
-  };
-
   const generateState = () => Math.random().toString(36).substring(2, 15);
-  
+
   const handleTodoist = () => {
     const clientid = import.meta.env.VITE_TODOIST_CLIENT_ID;
     const redirect_uri = import.meta.env.VITE_TODOIST_REDIRECT_URI;
     const state = generateState();
 
-    const authURL =  `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=data:read_write&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
+    const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=data:read_write&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
 
     window.location.href = authURL;
-  } 
-
+  };
 
   return (
     <div className="start-page">
@@ -51,39 +34,25 @@ const Start = () => {
 
       <div className="overlay">
         <div className="overlay-content">
-          <AnimatePresence mode="wait">
-            {step === 0 ? (
-              <motion.div
-                key="welcome"
-                variants={swipeVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="logo-container"
-              >
-                <h1 className="gradient-text">FocusForge</h1>
-                <h3>The Solution To Procrastination!</h3>
-                <button className="start-button" onClick={handleContinue}>
-                  Continue →
-                </button>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="todoist"
-                variants={swipeVariants}
-                initial="initial"
-                animate="animate"
-                exit="exit"
-                className="logo-container"
-              >
-                <h1 className="gradient-text">Connect to Todoist</h1>
+          <div className="logo-container">
+            <h1 className="gradient-text">Welcome to FocusForge</h1>
+
+            <div className="connect-section">
+              <div className="button-with-icon">
                 <button className="start-button" onClick={handleTodoist}>
-                  Connect To Todoist →
+                  Connect to Todoist →
                 </button>
-                <h4>Connect To Todoist And You Will Be Redirected To Our Application</h4>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <div className="inline-question">
+                  <img src={question} alt="question icon about todoist" className="question" />
+                  <div className="popup inline-popup">
+                    Connecting to Todoist lets us access your tasks and projects so we can help you organize your day effectively.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h4>Connect To Todoist And You Will Be Redirected To Our Application</h4>
+          </div>
         </div>
       </div>
     </div>

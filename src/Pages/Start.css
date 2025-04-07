@@ -153,7 +153,7 @@ h1 {
     transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
-.right-nav:hover .popup {
+.popup:hover {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
@@ -168,3 +168,40 @@ h4 {
     padding: 10px 0;
 }
 
+.button-with-icon {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* space between button and question mark */
+    position: relative;
+    left: 15px;
+  }
+  
+  .inline-question {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .inline-question .question {
+    position: relative; /* not absolute, to stay inline */
+    cursor: pointer;
+    top: 15px;
+  }
+  
+  .inline-popup {
+    position: absolute;
+    top: -110px;
+    left: 30px;
+    width: 250px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 20;
+  }
+  
+  .inline-question:hover .inline-popup {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
