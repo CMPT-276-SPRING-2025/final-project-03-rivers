@@ -17,14 +17,14 @@ export const SidebarData = [
         action: "toggleStickyNotes"
     },
     {
-        title: "To-Do List",
+        title: "ToDoList",
         icon: <ChecklistIcon />,
         action: "toggleTaskManager"
     },
     {
         title: "Projects",
         icon: <AssignmentTurnedInIcon/>,
-        action: "toggleProject"
+        link: "projects"
 
     },
     {
