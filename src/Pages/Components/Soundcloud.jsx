@@ -274,6 +274,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       return false;
     }
     const newPlaylistLink = extractSoundCloudUrl(newPlaylist);
+    if (!newPlaylistLink) {
+      return false;
+    }
     setPlaylists(prevPlaylists => [
       ...prevPlaylists,
       {
