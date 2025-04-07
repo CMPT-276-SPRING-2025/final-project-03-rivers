@@ -51,7 +51,7 @@ const NavBar = () => {
                     <img
                     src={logo}
                     alt="Logo"
-                    className="h-13 w-13 object-contain inline-block align-middle"
+                    className="h-12 w-12 object-contain inline-block align-middle"
                     />
                     <span className="text-2xl ml-2.5 font-bold bg-gradient-to-r from-slate-700 to-indigo-400 bg-clip-text text-transparent">
                     FocusForge
