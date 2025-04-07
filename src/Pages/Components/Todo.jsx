@@ -9,8 +9,11 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
     // Add the task to Todoist
     const taskData = {
       content: taskContent,
-      due_date: dueDate || "",
     };
+
+    if (dueDate) {
+      taskData.due_date = dueDate;
+    }
     
     if (projectId) {
       taskData.project_id = projectId; 
@@ -54,18 +57,20 @@ export const updateTask = async (task) => {
 
     const updatedTask = await api.updateTask(task.id, {
       content: task.content,
-      due_date: task.due_date || null,
-      project_id: task.project_id || null
+      due_string: task.due_date === null ? "no date" : undefined,
+      due_date: task.due_date || undefined,
+      project_id: task.project_id || null,
     });
 
     console.log("Updated task:", updatedTask);
-    
     return updatedTask;
+
   } catch (error) {
     console.error("Error updating task in Todoist:", error);
     throw error;
   }
 };
+
 
 export const closeTask = async(taskId) => {
   try {
@@ -102,6 +107,7 @@ export const addProject = async (projectName) => {
 export const fetchProjects = async () => {
   try {
     const projects = await api.getProjects();
+    
     console.log("Projects from todoist:", projects);
     return projects.results;
   } catch (error) {
