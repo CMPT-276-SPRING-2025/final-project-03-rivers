@@ -13,7 +13,6 @@ import TaskManager from './Components/TaskManager';
 import { fetchTasks } from './Components/Todo';
 import TaskForm from "./Components/TaskForm";
 import TaskList from "./Components/TaskList";
-import ProjectList from './Components/ProjectList.jsx';
 
 const Login = ({ isOpen, setIsOpen }) => {
     return (
@@ -47,7 +46,9 @@ const NavBar = () => {
                 <ul className="focusF">
                     <li className='focusFtext'>FocusForge</li>
                 </ul>
-                
+                <ul className="themes">
+                    <li>Themes</li>
+                </ul>
                 <div
                     className="logout-container"
                     onClick={handleLogout}
@@ -70,9 +71,7 @@ const NavBar = () => {
     );
 };
 
-const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setShowTaskManager, setShowProject }) => {
-    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-    
+const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setTaskManager }) => {
     return (
         <div className="Sidebar">
             <ul>
@@ -87,10 +86,7 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                                 setShowStickyNotes((prev) => !prev);
                             }
                             else if(val.action === 'toggleTaskManager') {
-                                setShowTaskManager((prev) => !prev);
-                            }
-                            else if(val.action === 'toggleProject'){
-                                setShowProject((prev) => !prev);
+                                setTaskManager((prev) => !prev);
                             }
                             else if(val.title === 'Chatbot'){
                                 onToggleChat(isExpanded);
@@ -114,11 +110,9 @@ const MainP = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
     const [showStickyNotes, setShowStickyNotes] = useState(false);
-    const [showTaskManager, setShowTaskManager] = useState(false);
+    const [showTaskManager, setTaskManager] = useState(false);
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [showProject, setShowProject] = useState(false);
-
 
     const handleTogglePanel = (currentIsOpen) => {
         setIsOpen(!currentIsOpen);
@@ -127,10 +121,6 @@ const MainP = () => {
     const handleToggleExpand = (currentIsExpand) => {
         setIsExpanded(!currentIsExpand)
     }
-
-    const handleToggleTaskManager = () => {
-        setShowTaskManager(prev => !prev); 
-      };
 
     useEffect(() => {
         const checkTasks = async () => {
@@ -164,25 +154,17 @@ const MainP = () => {
                 onToggleChat={handleToggleExpand}
                 isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
-                setShowTaskManager={setShowTaskManager} handleToggleTaskManager={handleToggleTaskManager}
-                setShowProject={setShowProject}
+                setTaskManager={setTaskManager}
             />
             <Login
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
             />
-
-            <div className="content-area">
-                {showStickyNotes && <StickyNotes />}
-
-                {showTaskManager && (tasks.length === 0 ?
-                    <TaskForm newTaskAdded={handleTaskAdded} /> :
-                    <TaskList tasks={tasks} />
-                )}
-
-                {showProject && <ProjectList />}
-            </div>
-            
+            {showStickyNotes && <StickyNotes />}
+            {showTaskManager && (tasks.length === 0 ?
+                <TaskForm newTaskAdded={handleTaskAdded} /> :
+                <TaskList tasks={tasks} />
+            )}
         </div>
     );
 };
