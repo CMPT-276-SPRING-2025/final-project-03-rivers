@@ -11,6 +11,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [showCreateProject, setShowCreateProject] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
+  const [showWarning, setShowWarning] = useState(false);
 
   const handleDeleteProject = async (project) => {
     try {
@@ -71,7 +72,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       const updatedTask = {
         id: taskToEdit.id,
         content: task || taskToEdit.content,
-        due_date: dueDate || taskToEdit.dueDate,
+        due_date: dueDate === "" ? null : dueDate,
         project_id: projectId || taskToEdit.projectId
       };
 
@@ -118,13 +119,16 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       setProjectId(newProject.id);
       setShowCreateProject(false);
       setNewProjectName(""); // Clear input after saving project
+
+      setTimeout(() => setShowWarning(true), 0);
+
     } catch (error) {
       console.error("Error creating project:", error);
     }
   };
 
   return (
-    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
+    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl bg-black/50">
       <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent">
         {taskToEdit ? "Edit Task" : "Create Task"}
       </h2>
@@ -139,45 +143,101 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       </div>
 
       <div className="mb-2 flex items-center gap-2">
-        <select
-          className="p-2 rounded w-full bg-white text-black"
-          value={projectId}
-          onChange={(e) => setProjectId(e.target.value)}
-        >
-          <option value="">Select Project</option>
-          {projects.length === 0 ? (
-            <option disabled>No projects found</option>
-          ) : (
-            projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))
-          )}
-        </select>
-
-        <button
-          className="add-project-btn p-2 bg-white text-black rounded "
-          onClick={() => setShowCreateProject(true)}
-        >
-          <span className="text-xl">+</span>
-        </button>
-
-        {projectId && (
-            <button
-              className="delete-project-btn p-2 bg-white text-red-600 rounded"
-              onClick={() => {
-                const projectToDelete = projects.find(p => p.id === projectId);
-                if (projectToDelete) {
-                  handleDeleteProject(projectToDelete);
+        {!taskToEdit ? (
+          <>
+            {/* Project Select Dropdown */}
+            <select
+              className="p-2 rounded w-full bg-white text-black"
+              value={projectId}
+              onChange={(e) => {
+                const selectedProjectId = e.target.value;
+                setProjectId(selectedProjectId);
+                if (selectedProjectId !== "") {
+                  setShowWarning(true);
                 }
               }}
             >
-              <span className="text-xl">×</span>
-            </button>
-          )}
+              <option value="">Select Project</option>
+              {projects.length === 0 ? (
+                <option disabled>No projects found</option>
+              ) : (
+                projects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name}
+                  </option>
+                ))
+              )}
+            </select>
 
+            {/* Add Project Button */}
+            <button
+              className="add-project-btn p-2 bg-white text-black rounded"
+              onClick={() => setShowCreateProject(true)}
+            >
+              <span className="text-xl">+</span>
+            </button>
+
+            {/* Delete Project Button */}
+            {projectId && (
+              <button
+                className="delete-project-btn p-2 bg-white text-red-600 rounded"
+                onClick={() => {
+                  const projectToDelete = projects.find(p => p.id === projectId);
+                  if (projectToDelete) {
+                    handleDeleteProject(projectToDelete);
+                  }
+                }}
+              >
+                <span className="text-xl">×</span>
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <div className="p-2 rounded w-full bg-white text-black">
+              <strong>Project:</strong>{" "}
+              {projects.find((p) => p.id === projectId)?.name || "Unknown"}
+            </div>
+
+            <p className="ml-5 text-sm text-gray-500 italic">
+              Project cannot be changed after assignment.
+            </p>
+          </>
+        )}
       </div>
+
+      {showWarning && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
+            <h3 className="text-lg font-semibold mb-4 text-red-600">
+              Project Assignment Notice
+            </h3>
+            <p className="text-gray-700 mb-4">
+              After a task is assigned to a project, it cannot be reassigned later.
+              Are you sure you want to continue?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                onClick={() => {
+                  setProjectId(""); // reset project selection if canceled
+                  setShowWarning(false);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                onClick={() => {
+                  setShowWarning(false); // confirm and keep selection
+                }}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showCreateProject && (
         <div className="mb-2 flex items-center gap-2">
@@ -204,7 +264,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
               Delete Project: {projectToDelete.name}?
             </h3>
             <p className="text-gray-600 mb-4">
-              This action cannot be undone. Task in this project can be view in To-Do List Tab.
+              Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
             </p>
             <div className="flex justify-end gap-3">
               <button

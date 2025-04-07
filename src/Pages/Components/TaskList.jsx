@@ -102,7 +102,7 @@ const TaskList = () => {
               className="modal-overlay fixed inset-0 z-40"
               onClick={() => setShowForm(false)} // Close form if overlay is clicked
             />
-            <div className="modal-form fixed inset-0 flex justify-center items-center z-50">
+            <div className="modal-form fixed inset-0 flex justify-center items-center z-50 bg-black/50">
               <TaskForm 
                 newTaskAdded={handleNewTaskAdded} 
                 setShowForm={setShowForm} 

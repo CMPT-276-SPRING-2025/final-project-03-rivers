@@ -146,6 +146,10 @@ const MainP = () => {
         checkTasks();
     }, []);
 
+    const handleTaskAdded = (newTask) => {
+        setTasks((prevTasks) => [...prevTasks, newTask]);
+    };
+
     return (
         <div className="mainP">
             <NavBar />
