@@ -34,7 +34,7 @@ const NavBar = () => {
         try {
             await signOut(auth);
             console.log("User logged out");
-            navigate("/login"); // Redirect to login page after logout
+            navigate("/start"); // Redirect to login page after logout
         } catch (error) {
             console.error("Logout failed:", error.message);
         }

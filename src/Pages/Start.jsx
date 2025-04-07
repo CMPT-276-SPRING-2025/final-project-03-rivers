@@ -21,8 +21,7 @@ const Start = () => {
     const redirect_uri = import.meta.env.VITE_TODOIST_REDIRECT_URI;
     const state = Math.random().toString(36).substring(2, 15);
     const scope = encodeURIComponent("data:read_write");
-
-    const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=${scope}&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
+const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=${scope}&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
 
     console.log("Auth URL:", authURL);
 
