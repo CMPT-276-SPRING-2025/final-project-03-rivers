@@ -171,14 +171,17 @@ const MainP = () => {
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
             />
-            {showStickyNotes && <StickyNotes />}
 
-            {showTaskManager && (tasks.length === 0 ?
-                <TaskForm newTaskAdded={handleTaskAdded} /> :
-                <TaskList tasks={tasks} />
-            )}
+            <div className="content-area">
+                {showStickyNotes && <StickyNotes />}
 
-            {showProject && <ProjectList />}
+                {showTaskManager && (tasks.length === 0 ?
+                    <TaskForm newTaskAdded={handleTaskAdded} /> :
+                    <TaskList tasks={tasks} />
+                )}
+
+                {showProject && <ProjectList />}
+            </div>
             
         </div>
     );

@@ -17,7 +17,7 @@ export const SidebarData = [
         action: "toggleStickyNotes"
     },
     {
-        title: "ToDoList",
+        title: "To-Do List",
         icon: <ChecklistIcon />,
         action: "toggleTaskManager"
     },

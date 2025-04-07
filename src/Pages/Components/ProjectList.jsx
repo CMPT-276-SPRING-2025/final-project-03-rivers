@@ -152,8 +152,8 @@ const ProjectList = () => {
               <div
                 key={project.id}
                 ref={el => projectRefs.current[project.id] = el}
-                className="task-item rounded-lg relative "
-                style={{ height: projectHeights[project.id] || 'auto' }}
+                className="task-item rounded-lg relative overflow-y-auto"
+                style={{ maxHeight: '70vh', height: projectHeights[project.id] || 'auto' }}
               >
                 {/* Project Name and Close Button Container */}
                 <div className="flex justify-between items-center w-full mb-6">
