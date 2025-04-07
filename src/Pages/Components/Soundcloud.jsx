@@ -312,7 +312,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search playlists..."
-                className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                className="w-full px-[2.5vw] py-[1vh] rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
 
@@ -320,7 +320,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
-                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
+                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent !py-[1%] !text-[70%] overflow-x-auto overflow-y-auto"
                   onClick={() => switchToPlaylist(playlist.url, playlist.name)}
                 >
                   {playlist.name}
