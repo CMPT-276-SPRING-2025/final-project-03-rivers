@@ -58,11 +58,8 @@ const ProjectList = () => {
     try {
       await updateTask(updatedTask); 
   
-      setTasks((prevTasks) =>
-        prevTasks.map((task) =>
-          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
-        )
-      );
+      const newTasks = await fetchTasks(); 
+      setTasks(newTasks); 
   
       setShowEditModal(false);
     } catch (error) {

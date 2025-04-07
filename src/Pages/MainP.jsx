@@ -47,9 +47,7 @@ const NavBar = () => {
                 <ul className="focusF">
                     <li className='focusFtext'>FocusForge</li>
                 </ul>
-                <ul className="themes">
-                    <li>Themes</li>
-                </ul>
+                
                 <div
                     className="logout-container"
                     onClick={handleLogout}
@@ -73,6 +71,8 @@ const NavBar = () => {
 };
 
 const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStickyNotes, setShowTaskManager, setShowProject }) => {
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+    
     return (
         <div className="Sidebar">
             <ul>

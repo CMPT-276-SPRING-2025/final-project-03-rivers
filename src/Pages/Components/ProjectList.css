@@ -1,70 +1,41 @@
-.project-list-container {
-    margin-left: 220px;
-    max-width: 80vw;
+.task-item {
+  background: linear-gradient(#C1E5FB, #E5EDF2);
+  width: 25vw;
+  padding: 20px;
+}
+
+.task-item ul {
+  flex: 1;
+  min-height: 0;
+}
+
+.task-item li {
+  padding: 5px 10px;
+  margin-bottom: 8px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
   }
-  
-  .project-list {
+
+.project-list-container {
+  max-width: 80vw;
+}
+    
+.project-list {
     display: flex;
     flex-wrap: wrap;
     gap: 2.5vw;
-  }
-  
-  .task-item {
+}
+
+.no-projects {
+    margin-top: 30vh;
+}
+
+.project-edit-container {
     background: linear-gradient(#C1E5FB, #E5EDF2);
-    width: 25vw;
-    padding: 20px;
-  }
-  
-  .task-item ul {
-    flex: 1;
-    min-height: 0;.project-list-container {
-        margin-left: 220px;
-        max-width: 80vw;
-      }
-      
-    .project-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2.5vw;
-    }
-    
-    .task-item {
-        background: linear-gradient(#C1E5FB, #E5EDF2);
-        width: 25vw;
-        padding: 20px;
-    }
-    
-    .task-item ul {
-        flex: 1;
-        min-height: 0;
-    }
-    
-    .task-item li {
-        padding: 5px 10px;
-        margin-bottom: 8px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        display: flex;
-        justify-content: space-between;
-    }
-    
-    .no-projects {
-        margin-top: 30vh;
-    }
-    
-    .project-edit-container {
-        background: linear-gradient(#C1E5FB, #E5EDF2);
-        width: 25vw;
-        height: 30vh;
-        padding: 25px;
-    }
-  }
-  
-  .task-item li {
-    padding: 5px 10px;
-    margin-bottom: 8px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-  }
+    width: 20vw;
+    height: 30vh;
+    padding: 25px;
+}
+

@@ -128,7 +128,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   };
 
   return (
-    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl bg-black/50">
+    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl">
       <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent">
         {taskToEdit ? "Edit Task" : "Create Task"}
       </h2>
@@ -138,8 +138,12 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           className="task-input bg-white p-2 w-full h-32 rounded-lg text-black"
           placeholder="Enter task..."
           value={task}
+          maxLength={100}
           onChange={(e) => setTask(e.target.value)}
         />
+      </div>
+      <div className="text-right text-sm text-gray-500 mb-4">
+        {task.length}/100 characters
       </div>
 
       <div className="mb-2 flex items-center gap-2">

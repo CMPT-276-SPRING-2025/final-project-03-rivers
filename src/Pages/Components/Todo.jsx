@@ -58,8 +58,8 @@ export const updateTask = async (task) => {
     const updatedTask = await api.updateTask(task.id, {
       content: task.content,
       due_string: task.due_date === null ? "no date" : undefined,
-      due_date: task.due_date !== null ? task.due_date : undefined,
-      project_id: task.project_id === "" ? null : task.project_id,
+      due_date: task.due_date || undefined,
+      project_id: task.project_id || null,
     });
 
     console.log("Updated task:", updatedTask);
@@ -70,6 +70,7 @@ export const updateTask = async (task) => {
     throw error;
   }
 };
+
 
 export const closeTask = async(taskId) => {
   try {

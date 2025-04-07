@@ -18,10 +18,8 @@ const TaskList = () => {
   const handleTaskUpdate = async (updatedTask) => {
     try {
       const response = await updateTask(updatedTask);
-      
-      setTasks(prevTasks =>
-        prevTasks.map(t => t.id === updatedTask.id ? response : t)
-      );
+      const newTasks = await fetchTasks(); 
+      setTasks(newTasks);            
       setShowForm(false);
     } catch (error) {
       console.error("Error updating task:", error);
@@ -69,55 +67,61 @@ const TaskList = () => {
     setShowForm(false);  
   };
 
-  return (
-    showList && ( // Only show the list if showList is true
-      <div className="task-list-container p-6 rounded-lg w-1/4 max-h-[65vh] overflow-y-auto shadow-xl relative">
-        <h2 className="text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-2xl font-bold mb-4">To-Do List</h2>
+ return (
+  showList && (
+    <div className="task-list-container p-6 rounded-lg w-1/3 max-h-[60vh] shadow-xl relative ml-20 flex flex-col bg-white">
+      
+      {/* Sticky Header */}
+      <div className="sticky top-0 flex items-center justify-between">
+        {/* Left: Add Task Button */}
+        <button
+          className="text-green-600 text-3xl mb-6 font-semibold hover:cursor-pointer"
+          onClick={() => {
+            setShowForm(true);
+            setEditTask(null);
+          }}
+        >
+          +
+        </button>
 
-        <div className="absolute top-0 left-0 p-4">
-          <button
-            className="text-green-600 text-4xl font-medium top-0 left-0 rounded hover:cursor-pointer mb-2"
-            onClick={() => {
-              setShowForm(true); 
-              setEditTask(null);
+        {/* Center: Title */}
+        <h2 className="text-3xl mt-3 mb-4 font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center">
+          To-Do List
+        </h2>
 
-            }} // Show form when clicked and reset edittassk state
-          >
-            +
-          </button>
-        </div>
+        {/* Right: Close Button */}
+        <button
+          className="text-red-600 text-3xl font-semibold mb-6 hover:cursor-pointer"
+          onClick={() => setShowList(false)}
+        >
+          &times;
+        </button>
+      </div>
 
-        <div className="absolute top-0 right-0 p-4">
-          <button
-            className="text-red-600 text-4xl font-medium top-0 right-0 rounded hover:cursor-pointer mb-2"
-            onClick={() => setShowList(false)} // Hide task list when clicked
-          >
-            &times;
-          </button>
-        </div>
-
-        {showForm && (
-          <>
-            <div
-              className="modal-overlay fixed inset-0 z-40"
-              onClick={() => setShowForm(false)} // Close form if overlay is clicked
+      {/* Task Form Modal */}
+      {showForm && (
+        <>
+          <div
+            className="modal-overlay fixed inset-0 z-40"
+            onClick={() => setShowForm(false)}
+          />
+          <div className="modal-form fixed inset-0 flex justify-center items-center z-50 bg-black/50">
+            <TaskForm
+              newTaskAdded={handleNewTaskAdded}
+              setShowForm={setShowForm}
+              taskToEdit={editTask}
+              onSave={handleTaskUpdate}
             />
-            <div className="modal-form fixed inset-0 flex justify-center items-center z-50 bg-black/50">
-              <TaskForm 
-                newTaskAdded={handleNewTaskAdded} 
-                setShowForm={setShowForm} 
-                taskToEdit={editTask} 
-                onSave={handleTaskUpdate}
-              />
-            </div>
-          </>
-        )}
+          </div>
+        </>
+      )}
 
+      {/* Scrollable Task Area */}
+      <div className="overflow-y-auto mt-2 pr-2 flex-1 min-h-0">
         {tasks.length > 0 ? (
           <ul>
             {tasks.map((task) => (
               <li key={task.id} className="mt-2 flex items-center justify-between relative p-4">
-                {/* Task Name and Edit Features in one box */}
                 <div className="flex items-center w-full">
                   <div className="flex items-center flex-grow">
                     <input
@@ -129,19 +133,29 @@ const TaskList = () => {
                     <span
                       className={`text-sm ${
                         completedTasks[task.id] ? "line-through text-gray-500" : "text-black"
-                      }`}
+                      } break-words overflow-hidden w-full`}
+                      style={{ wordBreak: "break-word" }}
                     >
                       {task.content}
                     </span>
                   </div>
 
-                  {/* Edit and Delete options */}
                   <div className="flex items-center ml-2">
                     <button
                       className="mr-2"
                       onClick={() => handleEditTask(task)}
                     >
-                      <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                      <svg
+                        className="cursor-pointer h-6 w-6 text-gray-500"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="currentColor"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
                         <path stroke="none" d="M0 0h24v24H0z" />
                         <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
                         <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
@@ -166,13 +180,13 @@ const TaskList = () => {
             ))}
           </ul>
         ) : (
-          <p className="text-black"ck>No Task Available... </p>
+          <p className="text-black">No Task Available...</p>
         )}
-
-
       </div>
-    )
-  );
+    </div>
+  )
+);
+
 };
 
 export default TaskList;
