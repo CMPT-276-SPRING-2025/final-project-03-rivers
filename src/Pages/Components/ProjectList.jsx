@@ -142,7 +142,7 @@ const ProjectList = () => {
           <p>No projects yet</p>
         </div>
       ) : (
-        <div className="project-list">
+        <div className="project-list task-item-animate">
           {projects.map((project) => {
             const projectTasks = tasks.filter((task) => task.projectId === project.id);
             return (

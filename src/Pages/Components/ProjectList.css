@@ -40,3 +40,21 @@
     padding: 25px;
 }
 
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  80% {
+    opacity: .5;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-item-animate {
+  animation: fadeSlideIn 0.3s ease-out both;
+}
