@@ -288,11 +288,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     <>
       <div>
         {/* Playlist Box */}
-<<<<<<< HEAD
         <div data-testid='panel' className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
-=======
-        <div data-testid='playlists' className={`fixed z-[60] left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
->>>>>>> 839b8496ab46c11de9fd24f37cf8c17b65aba9ac
           <button
             data-testid="close-panel"
             onClick={() => setIsOpen(!isOpen)}
