@@ -1,10 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./AuthCallBack.css";
 import question from "../../assets/question.png";
 import logo from "../../assets/logo.png";
 
 const AuthCallback = () => {
-  const [loading] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [message, setMessage] = useState("Authenticating...");
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const code = query.get("code");
+    const error = query.get("error");
+
+    if (error) {
+      setMessage("Authorization denied");
+      return;
+    }
+
+    if (code) {
+      axios
+        .post("http://localhost:4000/auth/token", { code })
+        .then((res) => {
+          localStorage.setItem("access_token", res.data.access_token);
+          setMessage("Authentication successful! Redirecting...");
+          setTimeout(() => {
+            navigate("/home", { replace: true });
+          }, 2000);
+        })
+        .catch((err) => {
+          console.error(err);
+          setMessage("Authentication failed");
+        });
+    }
+  }, [location, navigate]);
 
   return (
     <div className="start-page">
@@ -29,17 +60,17 @@ const AuthCallback = () => {
           <div className="connect-section">
             <div className="button-with-icon">
               <button className="start-button" disabled>
-                Back From Authentication
+                {message}
               </button>
               <div className="inline-question">
                 <img src={question} alt="question icon" className="question" />
                 <div className="popup inline-popup">
-                  This is just a temporary callback page. No redirection occurs here.
+                  Connecting to Todoist lets us access your tasks to help organize your day.
                 </div>
               </div>
             </div>
           </div>
-          <h4>This is the callback screen after Todoist authentication.</h4>
+          <h4>{message}</h4>
         </div>
       </div>
     </div>
@@ -47,4 +78,3 @@ const AuthCallback = () => {
 };
 
 export default AuthCallback;
-
