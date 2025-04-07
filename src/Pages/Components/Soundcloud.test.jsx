@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import Soundcloud from './Soundcloud';
+import '@testing-library/jest-dom/vitest';
 
 // Mock SC object
 global.SC = {
@@ -21,36 +22,39 @@ describe('Soundcloud Component', () => {
     });
 
     it('renders without crashing', async () => {
-        render(<Soundcloud />);
+        const mockSetIsOpen = vi.fn();
+        render(<Soundcloud isOpen={true} setIsOpen={mockSetIsOpen} />);
         await waitFor(() => expect(document.body.textContent).not.toBe(''));
     });
 
     it('changes volume', async () => {
-        render(<Soundcloud />);
-        const volumeControl = await waitFor(() => screen.getAllByRole('slider')[0]);
+        const volumeControl = await waitFor(() => screen.getByRole('slider'));
         fireEvent.change(volumeControl, { target: { value: 50 } });
         expect(volumeControl.value).toBe('50');
     });
 
     it('seeks to a new position on progress bar click', async () => {
-        render(<Soundcloud />);
-        const progressBar = await waitFor(() => screen.getAllByRole('progressbar')[0]);
+        const progressBar = await waitFor(() => screen.getByRole('progressbar'));
         fireEvent.click(progressBar, { clientX: 50 });
         expect(progressBar.value).not.toBe('0');
     });
 
     it('navigates to the next song', async () => {
-        render(<Soundcloud />);
-        const nextButton = await waitFor(() => screen.getAllByText('⏭️')[0]);
+        const nextButton = await waitFor(() => screen.getByText('⏭️'));
         fireEvent.click(nextButton);
         expect(document.body.textContent).not.toBe("I'm The Problem")
     });
 
     it('navigates to the previous song', async () => {
-        render(<Soundcloud />);
-        const prevButton = await waitFor(() => screen.getAllByText('⏮️')[0]);
+        const prevButton = await waitFor(() => screen.getByText('⏮️'));
         fireEvent.click(prevButton);
         
         expect(document.body.textContent).not.toBe("I'm The Problem")
+    });
+
+    it('closes playlist', async () => {
+        const closeButton = await waitFor(() => screen.getByTestId('close-panel'));
+        fireEvent.click(closeButton);
+        expect(screen.getByTestId('panel')).toHaveClass('opacity-100');
     });
 });

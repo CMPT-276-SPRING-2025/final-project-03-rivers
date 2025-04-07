@@ -3,6 +3,7 @@ import React, { useEffect, useState, useRef } from 'react';
 const togglePanel = (isOpen, setIsOpen) => {
     setIsOpen(!isOpen)
   }
+
 export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [volume, setVolume] = useState(100);
   const [progress, setProgress] = useState(0);
@@ -287,8 +288,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     <>
       <div>
         {/* Playlist Box */}
-        <div className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+        <div data-testid='panel' className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
           <button
+            data-testid="close-panel"
             onClick={() => setIsOpen(!isOpen)}
             className="absolute top-4 right-4 bg-transparent text-red-700 text-3xl font-bold"
             aria-label="Close panel"
@@ -312,7 +314,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search playlists..."
-                className="w-full px-3 py-2 rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                className="w-full px-[2.5vw] py-[1vh] rounded-md bg-white text-zinc-400 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
               />
             </div>
 
@@ -320,7 +322,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               {filteredPlaylists.map(playlist => (
                 <button
                   key={playlist.name}
-                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
+                  className="btn btn-soft text-center bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent !py-[1%] !text-[70%] overflow-x-auto overflow-y-auto"
                   onClick={() => switchToPlaylist(playlist.url, playlist.name)}
                 >
                   {playlist.name}
