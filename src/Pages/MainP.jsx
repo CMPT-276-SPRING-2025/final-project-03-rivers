@@ -44,8 +44,8 @@ const NavBar = () => {
     return (
         <nav className="navBar">
             <div className="tabs">
-                <ul className="focusF">
-                    <li className='focusFtext'>FocusForge</li>
+                <ul className="focusF ">
+                    <li className='focusFtext font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>FocusForge</li>
                 </ul>
                 
                 <div
