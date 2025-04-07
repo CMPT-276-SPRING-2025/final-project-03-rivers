@@ -136,6 +136,7 @@ const MainP = () => {
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showProject, setShowProject] = useState(false);
+    const [isExitingTaskList, setIsExitingTaskList] = useState(false);
 
 
     const handleTogglePanel = (currentIsOpen) => {
@@ -147,7 +148,15 @@ const MainP = () => {
     }
 
     const handleToggleTaskManager = () => {
-        setShowTaskManager(prev => !prev); 
+        if (showTaskManager) {
+          setIsExitingTaskList(true);
+          setTimeout(() => {
+            setShowTaskManager(false);
+            setIsExitingTaskList(false);
+          }, 500); 
+        } else {
+          setShowTaskManager(true);
+        }
       };
 
     useEffect(() => {
@@ -182,7 +191,8 @@ const MainP = () => {
                 onToggleChat={handleToggleExpand}
                 isExpanded={isExpanded}
                 setShowStickyNotes={setShowStickyNotes}
-                setShowTaskManager={setShowTaskManager} handleToggleTaskManager={handleToggleTaskManager}
+                setShowTaskManager={setShowTaskManager} 
+                handleToggleTaskManager={handleToggleTaskManager}
                 setShowProject={setShowProject}
             />
             <Login
@@ -193,11 +203,18 @@ const MainP = () => {
             <div className="content-area">
                 {showStickyNotes && <StickyNotes />}
 
-                {showTaskManager && (tasks.length === 0 ?
-                    <TaskForm newTaskAdded={handleTaskAdded} /> :
-                    <TaskList tasks={tasks} />
+                {(showTaskManager || isExitingTaskList) && (
+                tasks.length === 0 ? (
+                    <TaskForm newTaskAdded={handleTaskAdded} />
+                ) : (
+                    <TaskList
+                    tasks={tasks}
+                    isExiting={isExitingTaskList}
+                    setShowTaskManager={handleToggleTaskManager}
+                    />
+                )
                 )}
-
+                
                 {showProject && <ProjectList />}
             </div>
             
