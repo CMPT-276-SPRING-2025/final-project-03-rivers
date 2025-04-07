@@ -108,13 +108,41 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
               <li
                 key={val.title}
                 onClick={() => {
-                  if (val.title === 'Music') onTogglePanel(isOpen);
-                  else if (val.action === 'toggleStickyNotes') setShowStickyNotes(p => !p);
-                  else if (val.action === 'toggleTaskManager') setShowTaskManager(p => !p);
-                  else if (val.action === 'toggleProject') setShowProject(p => !p);
-                  else if (val.title === 'Chatbot') onToggleChat(isExpanded);
-                  else window.location.pathname = val.link;
-                }}
+                    if (val.title === 'Music') {
+                      onTogglePanel(isOpen);
+                    } else if (val.action === 'toggleStickyNotes') {
+                      setShowStickyNotes(p => {
+                        const next = !p;
+                        if (next) {
+                          setShowTaskManager(false);
+                          setShowProject(false);
+                        }
+                        return next;
+                      });
+                    } else if (val.action === 'toggleTaskManager') {
+                      setShowTaskManager(p => {
+                        const next = !p;
+                        if (next) {
+                          setShowStickyNotes(false);
+                          setShowProject(false);
+                        }
+                        return next;
+                      });
+                    } else if (val.action === 'toggleProject') {
+                      setShowProject(p => {
+                        const next = !p;
+                        if (next) {
+                          setShowStickyNotes(false);
+                          setShowTaskManager(false);
+                        }
+                        return next;
+                      });
+                    } else if (val.title === 'Chatbot') {
+                      onToggleChat(isExpanded);
+                    } else {
+                      window.location.pathname = val.link;
+                    }
+                  }}
                 className="sidebar-item"
                 title={isSidebarCollapsed ? val.title : ''}
               >
@@ -137,7 +165,6 @@ const MainP = () => {
     const [loading, setLoading] = useState(true);
     const [showProject, setShowProject] = useState(false);
     const [isExitingTaskList, setIsExitingTaskList] = useState(false);
-
 
     const handleTogglePanel = (currentIsOpen) => {
         setIsOpen(!currentIsOpen);
