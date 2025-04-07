@@ -14,6 +14,7 @@ import { fetchTasks } from './Components/Todo';
 import TaskForm from "./Components/TaskForm";
 import TaskList from "./Components/TaskList";
 import ProjectList from './Components/ProjectList.jsx';
+import logo from '../assets/logo.png';
 
 const Login = ({ isOpen, setIsOpen }) => {
     return (
@@ -44,9 +45,19 @@ const NavBar = () => {
     return (
         <nav className="navBar">
             <div className="tabs">
-                <ul className="focusF ">
-                    <li className='focusFtext font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent'>FocusForge</li>
-                </ul>
+
+            <ul className="focusF flex items-center gap-2 ml-8">
+                <li className="flex items-center gap-2">
+                    <img
+                    src={logo}
+                    alt="Logo"
+                    className="h-13 w-13 object-contain inline-block align-middle"
+                    />
+                    <span className="text-2xl ml-2.5 font-bold bg-gradient-to-r from-slate-700 to-indigo-400 bg-clip-text text-transparent">
+                    FocusForge
+                    </span>
+                </li>
+            </ul>
                 
                 <div
                     className="logout-container"
