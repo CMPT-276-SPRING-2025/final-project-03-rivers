@@ -85,41 +85,48 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     
     return (
-        <div className="Sidebar">
-            <ul>
-                {SidebarData.map((val, index) => (
-                    <li
-                        key={val.title}
-                        onClick={() => {
-                            if (val.title === 'Music') {
-                                onTogglePanel(isOpen);
-                            }
-                            else if (val.action === 'toggleStickyNotes') {
-                                setShowStickyNotes((prev) => !prev);
-                            }
-                            else if(val.action === 'toggleTaskManager') {
-                                setShowTaskManager((prev) => !prev);
-                            }
-                            else if(val.action === 'toggleProject'){
-                                setShowProject((prev) => !prev);
-                            }
-                            else if(val.title === 'Chatbot'){
-                                onToggleChat(isExpanded);
-                            }
-                            else {
-                                window.location.pathname = val.link;
-                            }
-                        }}
-                        className="sidebar-item"
-                    >
-                        <div className="sidebar-icon">{val.icon}</div>
-                        <div className="sidebar-title">{val.title}</div>
-                    </li>
-                ))}
-            </ul>
+        <div className={`Sidebar transition-all duration-300 ${isSidebarCollapsed ? 'w-16' : 'w-44'}`}>
+          <ul>
+            {/* Toggle Button */}
+            <li
+              className="sidebar-item"
+              onClick={() => setIsSidebarCollapsed(prev => !prev)}
+            >
+              <div className="sidebar-icon">
+                <svg className="h-6 w-6 text-gray-600" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" />
+                  <line x1="4" y1="6" x2="20" y2="6" />
+                  <line x1="4" y1="12" x2="20" y2="12" />
+                  <line x1="4" y1="18" x2="20" y2="18" />
+                </svg>
+              </div>
+              {!isSidebarCollapsed && <div className="sidebar-title">Menu</div>}
+            </li>
+    
+            {/* Sidebar Data Items */}
+            {SidebarData.map((val) => (
+              <li
+                key={val.title}
+                onClick={() => {
+                  if (val.title === 'Music') onTogglePanel(isOpen);
+                  else if (val.action === 'toggleStickyNotes') setShowStickyNotes(p => !p);
+                  else if (val.action === 'toggleTaskManager') setShowTaskManager(p => !p);
+                  else if (val.action === 'toggleProject') setShowProject(p => !p);
+                  else if (val.title === 'Chatbot') onToggleChat(isExpanded);
+                  else window.location.pathname = val.link;
+                }}
+                className="sidebar-item"
+                title={isSidebarCollapsed ? val.title : ''}
+              >
+                <div className="sidebar-icon">{val.icon}</div>
+                {!isSidebarCollapsed && <div className="sidebar-title">{val.title}</div>}
+              </li>
+            ))}
+          </ul>
         </div>
-    );
+      );
 };
+
 
 const MainP = () => {
     const [isOpen, setIsOpen] = useState(true);
