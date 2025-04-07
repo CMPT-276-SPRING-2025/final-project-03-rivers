@@ -171,7 +171,7 @@ h4 {
 .button-with-icon {
     display: flex;
     align-items: center;
-    gap: 10px; /* space between button and question mark */
+    gap: 10px;
     position: relative;
     left: 15px;
   }
@@ -183,7 +183,7 @@ h4 {
   }
   
   .inline-question .question {
-    position: relative; /* not absolute, to stay inline */
+    position: relative;
     cursor: pointer;
     top: 15px;
   }
