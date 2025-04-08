@@ -16,23 +16,28 @@ const TaskManager = () => {
   
   useEffect(() => {
     const loadData = async () => {
+      const token = localStorage.getItem("access_token");
+      if (!token) {
+        // Redirect or display error
+        console.error("No access token found. Redirecting to login.");
+        navigate("/"); // or show a message instead
+        return;
+      }
+  
       try {
-        // Fetch tasks and projects from Todoist
         const fetchedTasks = await fetchTasks();
-        console.log("fetched tasks in task manager", fetchedTasks);
         const fetchedProjects = await fetchProjects();
-        
-        setTasks(fetchedTasks); 
-        setProjects(fetchedProjects); 
-        setLoading(false);  
+        setTasks(fetchedTasks);
+        setProjects(fetchedProjects);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         setLoading(false);
       }
     };
-
-    loadData();  
-  }, []); 
+  
+    loadData();
+  }, []);
 
   const handleCreateProject = async () => {
     if (newProjectName.trim() === "") return; // Ensure the project name isn't empty

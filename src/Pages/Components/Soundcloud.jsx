@@ -288,7 +288,13 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     <>
       <div>
         {/* Playlist Box */}
-        <div data-testid='panel' className={`fixed left-[35vw] top-1/3 -translate-x-1/2 -translate-y-1/2 h-5/12 w-1/4 rounded-lg transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`}>
+        <div 
+        className={`fixed z-[60] left-[30vw] top-1/3 -translate-x-1/2 -translate-y-1/3 h-1/2 w-1/4 rounded-lg 
+        transition-all duration-300 ease-in-out
+        ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`
+        }
+        data-testid="panel"
+        >
           <button
             data-testid="close-panel"
             onClick={() => setIsOpen(!isOpen)}
@@ -346,14 +352,25 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       </div>
 
       {/* This is the Control Bar */}
-      <div className="fixed bottom-0 w-full h-[70vh] bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex items-center" style={{ height: '150px' }}>
-        <div className="flex items-center w-full">
+      <div className="
+        fixed bottom-0 w-full h-[50vh] 
+        bg-gradient-to-b from-sky-200 to-slate-200 p-4 flex items-center
+        rounded-t-3xl" 
+        style={{ height: '11vh' }
+      }>
+        <div className="flex items-center justify-between w-full">
+
         <span className="text-2xl">🔊</span>
         <input
             type="range"
             min="0"
             max="100"
-            className="range range-xs text-black [--range-bg:white]"
+            className="z-20 range range-xs mx-2 [--range-bg:white]" 
+            style={{
+              width: '9vw',
+              height: '1vh',
+              color: '#37425D'
+            }}
             value={volume}
             data-testid = "volumeControl"
             onChange={(e) => {
@@ -364,9 +381,10 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
               }
             }}
           />
-          <div className='justify-center flex gap-2 m-auto'>
+
+          <div className="flex gap-3 justify-center items-center mb-5 mx-auto">
             <button
-              className="btn btn-soft btn-primary"
+              className="btn btn-soft btn-primary btn-xs sm:btn-sm md:btn-sm lg:btn-md 2xl:btn-lg"
               data-testid="previous"
               onClick={() => handleTrackChange('prev')}
             >
@@ -374,14 +392,14 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </button>
             
             <button
-              className="btn btn-soft btn-info"
+              className="btn btn-soft btn-info btn-xs sm:btn-sm md:btn-sm lg:btn-md 2xl:btn-lg"
               data-testid="pausePlay"
               onClick={handlePlayPause}
             >
               {isPlaying ? '⏸️' : '▶️'}
             </button>
             <button
-              className="btn btn-soft btn-info"
+              className="btn btn-soft btn-info btn-xs sm:btn-sm md:btn-sm lg:btn-md 2xl:btn-lg"
               data-testid="next"
               onClick={() => handleTrackChange('next')}
             >
@@ -389,7 +407,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </button>
 
             <button
-              className={`btn px-[5%] py-[10%] ${isShuffled ? 'btn-warning' : 'btn-soft btn-info'}`}
+              className={`btn btn-xs sm:btn-sm md:btn-sm lg:btn-md 2xl:btn-lg ${isShuffled ? 'btn-warning' : 'btn-soft btn-info'}`}
               onClick={handleToggleShuffle}
               aria-label="Toggle shuffle"
             >
@@ -397,13 +415,35 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
             </button>
           </div>
           
+          <div 
+            data-testid="song" 
+            className="pr-8 flex items-center justify-center text-center"
+            style={{
+              width: '16vw',
+              height: '7vh',
+            }}
+          >
+            <h2 
+              className="text-sm break-words leading-snug bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent"
+              style={{
+                fontSize: '2vh',
+                fontWeight: 'bold'
+              }}
+            >
+              {songName}
+            </h2>
+          </div>
 
-          <div data-testid = 'song'><h2 className="w-[100%] h-[7.5%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{songName}</h2></div>
         </div>
-        <div className="fixed bottom-0 left-0 w-full p-4 flex">
-        <h2 className="w-[13%] bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center overflow-clip">{currentPlaylistName}</h2>
+
+        <div className="absolute bottom-1 left-0 w-full px-4 flex items-center justify-center gap-4">
           <progress
-              className="progress progress-info w-1/2 ml-[12%]"
+              className="progress progress-info w-1/2 h-1 rounded-full" 
+              style={{
+                width: '1/2vw', 
+                height: '1vh',
+                color: '#748BC3'
+              }}
               data-testid="progress"
               max="100"
               value={progress}
@@ -419,7 +459,13 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
                 }
               }}
             />
-            <p className="!text-left text-black ml-4">{formatTime(currentTime)} / {formatTime(curduration)}</p>
+            <p className="!text-left text-slate-700 ml-4"
+                style={{
+                  fontSize: '1.8vh'
+                }}
+            >
+              {formatTime(currentTime)} / {formatTime(curduration)}
+            </p>
         </div>
 
       </div>
