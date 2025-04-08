@@ -239,6 +239,22 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     {
       name: "Kpop",
       url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/283568798&'
+    },
+    {
+      name: "Chill",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/751456812'
+    },
+    {
+      name: "Lofi",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1782755097' 
+    },
+    {
+      name: "Gibli",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/1314537706'
+    },
+    {
+      name: "Piano",
+      url: 'https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/212475169'
     }
   ];
 
