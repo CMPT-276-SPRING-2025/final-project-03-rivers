@@ -29,7 +29,7 @@ const ProjectEdit = ({ task: initialTask, onSave, onCancel }) => {
 
   return (
     <div
-      className="project-edit-container p-4 rounded-lg shadow-md w-80"
+      className="project-edit-container p-4 rounded-lg shadow-md w-full"
       data-testid="project-edit-container"
     >
       <h3
@@ -53,9 +53,10 @@ const ProjectEdit = ({ task: initialTask, onSave, onCancel }) => {
         className="w-full p-2 mb-10 rounded test-black bg-white text black"
         data-testid="task-date-input"
       />
+      
       <div className="flex justify-end gap-2" data-testid="edit-task-buttons">
         <button
-          className="text black px-3 py-1 bg-white rounded hover:bg-gray-100"
+          className="text-black px-3 py-1 bg-white rounded hover:bg-gray-100"
           onClick={onCancel}
           data-testid="cancel-button"
         >

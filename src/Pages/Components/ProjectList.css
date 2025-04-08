@@ -36,7 +36,7 @@
 .project-edit-container {
     background: linear-gradient(#C1E5FB, #E5EDF2);
     width: 20vw;
-    height: 30vh;
+    min-height: 30vh;
     padding: 25px;
 }
 

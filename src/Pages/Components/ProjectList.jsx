@@ -56,10 +56,13 @@ const ProjectList = () => {
 
   const handleTaskUpdate = async (updatedTask) => {
     try {
-      await updateTask(updatedTask); 
-  
-      const newTasks = await fetchTasks(); 
-      setTasks(newTasks); 
+      await updateTask(updatedTask);
+      
+      setTasks(prevTasks =>
+        prevTasks.map(task =>
+          task.id === updatedTask.id ? { ...task, ...updatedTask } : task
+        )
+      );  
   
       setShowEditModal(false);
     } catch (error) {
@@ -136,199 +139,130 @@ const ProjectList = () => {
   };
 
   return (
-    <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl" data-testid="task-form">
-    <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent" data-testid="task-form-title">
-      {taskToEdit ? "Edit Task" : "Create Task"}
-    </h2>
-  
-    <div className="mb-2">
-      <textarea
-        className="task-input bg-white p-2 w-full h-32 rounded-lg text-black"
-        placeholder="Enter task..."
-        value={task}
-        maxLength={100}
-        onChange={(e) => setTask(e.target.value)}
-        data-testid="task-input"
-      />
-    </div>
-    <div className="text-right text-sm text-gray-500 mb-4" data-testid="char-count">
-      {task.length}/100 characters
-    </div>
-  
-    <div className="mb-2 flex items-center gap-2">
-      {!taskToEdit ? (
-        <>
-          <select
-            className="p-2 rounded w-full bg-white text-black"
-            value={projectId}
-            onChange={(e) => {
-              const selectedProjectId = e.target.value;
-              setProjectId(selectedProjectId);
-              if (selectedProjectId !== "") {
-                setShowWarning(true);
-              }
-            }}
-            data-testid="project-select"
-          >
-            <option value="">Select Project</option>
-            {projects.length === 0 ? (
-              <option disabled>No projects found</option>
-            ) : (
-              projects.map((project) => (
-                <option key={project.id} value={project.id}>
-                  {project.name}
-                </option>
-              ))
-            )}
-          </select>
-  
-          <button
-            className="add-project-btn p-2 bg-white text-black rounded"
-            onClick={() => setShowCreateProject(true)}
-            data-testid="add-project-button"
-          >
-            <span className="text-xl">+</span>
-          </button>
-  
-          {projectId && (
-            <button
-              className="delete-project-btn p-2 bg-white text-red-600 rounded"
-              onClick={() => {
-                const projectToDelete = projects.find(p => p.id === projectId);
-                if (projectToDelete) {
-                  handleDeleteProject(projectToDelete);
-                }
-              }}
-              data-testid="delete-project-button"
-            >
-              <span className="text-xl">×</span>
-            </button>
-          )}
-        </>
+    <div className="project-list-container">
+      {projects.length === 0 ? (
+        <div className="no-projects text-center text-black text-2xl">
+          <p>No projects yet</p>
+        </div>
       ) : (
-        <>
-          <div className="p-2 rounded w-full bg-white text-black" data-testid="assigned-project-display">
-            <strong>Project:</strong>{" "}
-            {projects.find((p) => p.id === projectId)?.name || "Unknown"}
-          </div>
-          <p className="ml-5 text-sm text-gray-500 italic" data-testid="project-warning-text">
-            Project cannot be changed after assignment.
-          </p>
-        </>
+        <div className="project-list task-item-animate">
+          {projects.map((project) => {
+            const projectTasks = tasks.filter((task) => task.projectId === project.id);
+            return (
+              <div
+                key={project.id}
+                ref={el => projectRefs.current[project.id] = el}
+                className="task-item rounded-lg relative overflow-y-auto"
+                style={{ maxHeight: '70vh', height: projectHeights[project.id] || 'auto' }}
+              >
+                {/* Project Name and Close Button Container */}
+                <div className="flex justify-between items-center w-full mb-6">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center flex-1">{project.name}</span>
+                  
+                  <button
+                    className="absolute top-4 right-4 text-red-600 text-3xl font-normal cursor-pointer hover:text-red-700"
+                    onClick={() => handleDeleteProject(project)}
+                  >
+                    &times;
+                  </button>
+                </div>
+                
+                {/* Task list or "No tasks assigned..." */}
+                {projectTasks.length === 0 ? (
+                  <div className="no-tasks text-center text-gray-500 italic">
+                    No tasks assigned...
+                  </div>
+                ) : (
+                  <ul className="flex flex-col gap-2">
+                    {projectTasks.map((task) => (
+                      <li
+                        key={task.id}
+                        className="flex items-center justify-between relative p-4"
+                      >
+                        {/* Task Name and Edit Features */}
+                        <div className="flex items-center w-full">
+                          <div className="flex items-center w-full">
+                            <input
+                              type="checkbox"
+                              className="mr-2 cursor-pointer"
+                              checked={task.completed || false}
+                              onChange={() => handleCompletedTask(task.id, task.completed)}
+                            />
+                            <span
+                              className={`text-sm ${task.completed ? "line-through text-gray-500" : "text-black"}`}
+                            >
+                              {task.content}
+                            </span>
+                          </div>
+                          {/* Edit and Delete options */}
+                          <div className="flex items-center ml-2">
+                            <button className="mr-2" onClick={() => handleEditTask(task)}>
+                              {/* Edit Icon */}
+                              <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" />
+                                <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4" />
+                                <line x1="13.5" y1="6.5" x2="17.5" y2="10.5" />
+                              </svg>
+                            </button>
+                            <button
+                              className="cursor-pointer text-red-600 text-2xl font-bold hover:text-red-700"
+                              onClick={() => handleDeleteTask(task.id)}
+                            >
+                              &times;
+                            </button>
+                          </div>
+                        </div>
+                        {task.due && (
+                          <div className="due-date ml-4 text-sm rounded-md text-center text black">
+                            <strong>{task.due.date}</strong>
+                          </div>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+            
+          })}
+        </div>
       )}
-    </div>
-  
-    {showWarning && (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="project-warning-modal">
-        <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
-          <h3 className="text-lg font-semibold mb-4 text-red-600">Project Assignment Notice</h3>
-          <p className="text-gray-700 mb-4">
-            After a task is assigned to a project, it cannot be reassigned later.
-            Are you sure you want to continue?
-          </p>
-          <div className="flex justify-end gap-3">
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-900"
-              onClick={() => {
-                setProjectId("");
-                setShowWarning(false);
-              }}
-              data-testid="project-warning-cancel"
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              onClick={() => setShowWarning(false)}
-              data-testid="project-warning-confirm"
-            >
-              OK
-            </button>
+        {showDeleteConfirm && projectToDelete && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 shadow-lg">
+              <h3 className="text-lg font-semibold mb-4">
+                Delete Project: {projectToDelete.name}?
+              </h3>
+              <p className="text-gray-600 mb-4">
+              Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
+              </p>
+              <div className="flex justify-end gap-3">
+                <button
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                  onClick={handleCancelDelete}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                  onClick={confirmDeleteProject}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    )}
-  
-    {showCreateProject && (
-      <div className="mb-2 flex items-center gap-2" data-testid="create-project-section">
-        <input
-          type="text"
-          className="p-2 rounded w-full bg-white text-black"
-          placeholder="Enter new project name"
-          value={newProjectName}
-          onChange={(e) => setNewProjectName(e.target.value)}
-          data-testid="new-project-input"
-        />
-        <button
-          className="save-project-btn p-2 bg-blue-600 text-white rounded"
-          onClick={handleCreateProject}
-          data-testid="create-project-button"
-        >
-          Create
-        </button>
-      </div>
-    )}
-  
-    {showDeleteConfirm && projectToDelete && (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="delete-project-modal">
-        <div className="bg-white rounded-lg p-6 shadow-lg">
-          <h3 className="text-lg font-semibold mb-4">
-            Delete Project: {projectToDelete.name}?
-          </h3>
-          <p className="text-gray-600 mb-4">
-            Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
-          </p>
-          <div className="flex justify-end gap-3">
-            <button
-              className="px-4 py-2 text-gray-600 hover:text-gray-900"
-              onClick={handleCancelDelete}
-              data-testid="cancel-delete-project"
-            >
-              Cancel
-            </button>
-            <button
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              onClick={confirmDeleteProject}
-              data-testid="confirm-delete-project"
-            >
-              Delete
-            </button>
+        )}
+        {showEditModal && taskToEdit && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <ProjectEdit
+              task={taskToEdit}
+              onSave={handleTaskUpdate}
+              onCancel={() => setShowEditModal(false)}
+            />
           </div>
-        </div>
-      </div>
-    )}
-  
-    <div className="relative mt-2 h-24">
-      <div className="absolute bottom-0 left-0 flex flex-col gap-3">
-        <button
-          className="create-task-btn bg-blue-400 text-gray px-4 py-2 rounded-lg hover:bg-blue-500 w-32"
-          onClick={taskToEdit ? handleEditTask : handleAddTask}
-          data-testid="submit-task-button"
-        >
-          {taskToEdit ? "Edit Task" : "Create Task"}
-        </button>
-  
-        <button
-          className="cancel-btn bg-red-400 text-black px-4 py-2 rounded-lg hover:bg-red-500 w-32"
-          onClick={handleCancel}
-          data-testid="cancel-task-button"
-        >
-          Cancel
-        </button>
-      </div>
-  
-      <div className="absolute bottom-0 right-0">
-        <input
-          type="date"
-          className="due-date-btn p-7 w-56 h-24 bg-white rounded-lg border border-gray-300 text-lg text-black"
-          value={dueDate}
-          onChange={(e) => setDueDate(e.target.value)}
-          data-testid="due-date-input"
-        />
-      </div>
+        )}
     </div>
-  </div>
-  
   );
 };
 
