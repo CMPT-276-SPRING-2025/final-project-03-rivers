@@ -1,12 +1,7 @@
 import { TodoistApi } from "@doist/todoist-api-typescript";
 
-const getApi = () => {
-  const token = localStorage.getItem("access_token");
-  if (!token) throw new Error("No access token found");
-  return new TodoistApi(token);
-};
+const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_TOKEN);
 
-const api = getApi();
 
 export const addTask = async (taskContent, dueDate, projectId = null) => {
   try {

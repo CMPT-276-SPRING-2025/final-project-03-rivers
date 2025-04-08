@@ -11,8 +11,6 @@ import TaskList from "./Pages/Components/TaskList";
 import { fetchTasks } from "./Pages/Components/Todo";
 import TaskManager from "./Pages/Components/TaskManager";
 import { render, fireEvent, screen } from '@testing-library/react';
-import Start from "./Pages/Start";
-import AuthCallback from "./Pages/Components/AuthCallback";
 
 // Redirect to Task List if tasks exist, otherwise show Task Form
 const TaskRedirect = () => {
@@ -52,9 +50,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Default route redirects to SignupPage */}
-        <Route path="/" element={<Navigate to="/start" />} />
-        <Route path="/start" element={<Start />} />
-        <Route path="/auth/callback" element={<AuthCallback />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/loading" element={<LoadingPage />} />
