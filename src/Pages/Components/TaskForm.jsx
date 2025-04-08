@@ -51,9 +51,16 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       try {
         const fetchedProjects = await fetchProjects();
         console.log("Projects received:", fetchedProjects); 
-        setProjects(fetchedProjects);
+        // Ensure we're working with an array
+        if (Array.isArray(fetchedProjects)) {
+          setProjects(fetchedProjects);
+        } else {
+          console.error("fetchProjects did not return an array:", fetchedProjects);
+          setProjects([]); // Fallback to empty array
+        }
       } catch (error) {
         console.error("Error fetching projects:", error);
+        setProjects([]); // Fallback to empty array on error
       }
     };
 
@@ -136,22 +143,22 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       </div>
 
       <div className="mb-2 flex items-center gap-2">
-        <select
-          className="p-2 rounded w-full bg-white text-black"
-          value={projectId}
-          onChange={(e) => setProjectId(e.target.value)}
-        >
-          <option value="">Select Project</option>
-          {projects.length === 0 ? (
-            <option disabled>No projects found</option>
-          ) : (
-            projects.map((project) => (
-              <option key={project.id} value={project.id}>
-                {project.name}
-              </option>
-            ))
-          )}
-        </select>
+      <select
+        className="p-2 rounded w-full bg-white text-black"
+        value={projectId}
+        onChange={(e) => setProjectId(e.target.value)}
+      >
+        <option value="">Select Project</option>
+        {!Array.isArray(projects) || projects.length === 0 ? (
+          <option disabled>No projects found</option>
+        ) : (
+          projects.map((project) => (
+            <option key={project.id} value={project.id}>
+              {project.name}
+            </option>
+          ))
+        )}
+      </select>
 
         <button
           className="add-project-btn p-2 bg-white text-black rounded "
