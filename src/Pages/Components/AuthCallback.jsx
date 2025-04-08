@@ -36,8 +36,8 @@ const AuthCallback = () => {
     if (code && !isProcessing) {
       setIsProcessing(true);
       const baseUrl = import.meta.env.VITE_APP_BASE_URL;
-      const fullUrl = `${baseUrl}/api/auth-token`;
-
+      {/* const fullUrl = `${baseUrl}/api/auth-token`; */}
+      const fullUrl = `${process.env.REACT_APP_VERCEL_URL}/api/auth-token`;
       axios
         .post(fullUrl, { code })
         .then((res) => {
