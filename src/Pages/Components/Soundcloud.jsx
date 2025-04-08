@@ -292,9 +292,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
         className={`fixed z-[60] left-[30vw] top-1/3 -translate-x-1/2 -translate-y-1/3 h-1/2 w-1/4 rounded-lg 
         transition-all duration-300 ease-in-out
         ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none'}`
-        }
-        data-testid="panel"
-        >
+        }>
           <button
             data-testid="close-panel"
             onClick={() => setIsOpen(!isOpen)}
