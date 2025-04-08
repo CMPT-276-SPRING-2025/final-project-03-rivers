@@ -136,13 +136,13 @@ const ProjectList = () => {
   };
 
   return (
-    <div className="project-list-container">
+    <div className="project-list-container" data-testid="project-list-container">
       {projects.length === 0 ? (
-        <div className="no-projects text-center text-black text-2xl">
+        <div className="no-projects text-center text-black text-2xl" data-testid="no-projects-text">
           <p>No projects yet</p>
         </div>
       ) : (
-        <div className="project-list task-item-animate">
+        <div className="project-list task-item-animate" data-testid="project-list">
           {projects.map((project) => {
             const projectTasks = tasks.filter((task) => task.projectId === project.id);
             return (
@@ -151,32 +151,33 @@ const ProjectList = () => {
                 ref={el => projectRefs.current[project.id] = el}
                 className="task-item rounded-lg relative overflow-y-auto"
                 style={{ maxHeight: '70vh', height: projectHeights[project.id] || 'auto' }}
+                data-testid={`project-${project.id}`}
               >
-                {/* Project Name and Close Button Container */}
-                <div className="flex justify-between items-center w-full mb-6">
-                  <span className="text-2xl font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center flex-1">{project.name}</span>
-                  
+                <div className="flex justify-between items-center w-full mb-6" data-testid="project-header">
+                  <span className="text-2xl font-bold bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent text-center flex-1" data-testid="project-name">
+                    {project.name}
+                  </span>
                   <button
                     className="absolute top-4 right-4 text-red-600 text-3xl font-normal cursor-pointer hover:text-red-700"
                     onClick={() => handleDeleteProject(project)}
+                    data-testid="delete-project-button"
                   >
                     &times;
                   </button>
                 </div>
-                
-                {/* Task list or "No tasks assigned..." */}
+  
                 {projectTasks.length === 0 ? (
-                  <div className="no-tasks text-center text-gray-500 italic">
+                  <div className="no-tasks text-center text-gray-500 italic" data-testid="no-tasks-text">
                     No tasks assigned...
                   </div>
                 ) : (
-                  <ul className="flex flex-col gap-2">
+                  <ul className="flex flex-col gap-2" data-testid="task-list">
                     {projectTasks.map((task) => (
                       <li
                         key={task.id}
                         className="flex items-center justify-between relative p-4"
+                        data-testid={`task-${task.id}`}
                       >
-                        {/* Task Name and Edit Features */}
                         <div className="flex items-center w-full">
                           <div className="flex items-center w-full">
                             <input
@@ -184,16 +185,21 @@ const ProjectList = () => {
                               className="mr-2 cursor-pointer"
                               checked={task.completed || false}
                               onChange={() => handleCompletedTask(task.id, task.completed)}
+                              data-testid={`task-checkbox-${task.id}`}
                             />
                             <span
                               className={`text-sm ${task.completed ? "line-through text-gray-500" : "text-black"}`}
+                              data-testid={`task-content-${task.id}`}
                             >
                               {task.content}
                             </span>
                           </div>
-                          {/* Edit and Delete options */}
                           <div className="flex items-center ml-2">
-                            <button className="mr-2" onClick={() => handleEditTask(task)}>
+                            <button
+                              className="mr-2"
+                              onClick={() => handleEditTask(task)}
+                              data-testid={`edit-task-button-${task.id}`}
+                            >
                               {/* Edit Icon */}
                               <svg className="cursor-pointer h-6 w-6 text-gray-500" width="24" height="24" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" />
@@ -204,13 +210,14 @@ const ProjectList = () => {
                             <button
                               className="cursor-pointer text-red-600 text-2xl font-bold hover:text-red-700"
                               onClick={() => handleDeleteTask(task.id)}
+                              data-testid={`delete-task-button-${task.id}`}
                             >
                               &times;
                             </button>
                           </div>
                         </div>
                         {task.due && (
-                          <div className="due-date ml-4 text-sm rounded-md text-center text black">
+                          <div className="due-date ml-4 text-sm rounded-md text-center text black" data-testid={`task-due-${task.id}`}>
                             <strong>{task.due.date}</strong>
                           </div>
                         )}
@@ -220,45 +227,48 @@ const ProjectList = () => {
                 )}
               </div>
             );
-            
           })}
         </div>
       )}
-        {showDeleteConfirm && projectToDelete && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 shadow-lg">
-              <h3 className="text-lg font-semibold mb-4">
-                Delete Project: {projectToDelete.name}?
-              </h3>
-              <p className="text-gray-600 mb-4">
+  
+      {showDeleteConfirm && projectToDelete && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="delete-confirm-modal">
+          <div className="bg-white rounded-lg p-6 shadow-lg">
+            <h3 className="text-lg font-semibold mb-4">
+              Delete Project: {projectToDelete.name}?
+            </h3>
+            <p className="text-gray-600 mb-4">
               Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
-              </p>
-              <div className="flex justify-end gap-3">
-                <button
-                  className="px-4 py-2 text-gray-600 hover:text-gray-900"
-                  onClick={handleCancelDelete}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                  onClick={confirmDeleteProject}
-                >
-                  Delete
-                </button>
-              </div>
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 text-gray-600 hover:text-gray-900"
+                onClick={handleCancelDelete}
+                data-testid="cancel-delete-project-button"
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                onClick={confirmDeleteProject}
+                data-testid="confirm-delete-project-button"
+              >
+                Delete
+              </button>
             </div>
           </div>
-        )}
-        {showEditModal && taskToEdit && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <ProjectEdit
-              task={taskToEdit}
-              onSave={handleTaskUpdate}
-              onCancel={() => setShowEditModal(false)}
-            />
-          </div>
-        )}
+        </div>
+      )}
+  
+      {showEditModal && taskToEdit && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="edit-task-modal">
+          <ProjectEdit
+            task={taskToEdit}
+            onSave={handleTaskUpdate}
+            onCancel={() => setShowEditModal(false)}
+          />
+        </div>
+      )}
     </div>
   );
 };
