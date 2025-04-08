@@ -142,9 +142,10 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           onChange={(e) => setProjectId(e.target.value)}
         >
           <option value="">Select Project</option>
-          {projects.length === 0 ? (
+                    {Array.isArray(projects) && projects.length === 0 ? (
             <option disabled>No projects found</option>
           ) : (
+            Array.isArray(projects) &&
             projects.map((project) => (
               <option key={project.id} value={project.id}>
                 {project.name}
