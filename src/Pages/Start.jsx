@@ -5,16 +5,9 @@ import question from "../assets/question.png";
 import logo from "../assets/logo.png";
 
 const Start = () => {
-<<<<<<< HEAD
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(0);
-  const [hasInteracted, setHasInteracted] = useState(false);
-  const navigate = useNavigate();
-=======
   const [loading, setLoading] = useState(false); // <-- Add this
   const [step, setStep] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
->>>>>>> newlink
 
   const handleContinue = () => {
     setHasInteracted(true);
@@ -22,25 +15,12 @@ const Start = () => {
   };
 
   const handleTodoist = () => {
-<<<<<<< HEAD
-    setLoading(true);
-=======
     setLoading(true); // <-- Set loading to true right before redirect
 
->>>>>>> newlink
     const clientid = import.meta.env.VITE_TODOIST_CLIENT_ID;
     const redirect_uri = import.meta.env.VITE_TODOIST_REDIRECT_URI;
     const state = Math.random().toString(36).substring(2, 15);
     const scope = encodeURIComponent("data:read_write");
-<<<<<<< HEAD
-    
-    const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=${scope}&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
-    
-    console.log("Auth URL:", authURL);
-    setTimeout(() => {
-      window.location.href = authURL;
-    }, 800);
-=======
 const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=${scope}&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
 
     console.log("Auth URL:", authURL);
@@ -48,7 +28,6 @@ const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope
     setTimeout(() => {
       window.location.href = authURL;
     }, 800); // Optional small delay so "Redirecting..." is visible
->>>>>>> newlink
   };
 
   return (
@@ -73,15 +52,7 @@ const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope
           <h1 className="gradient-text">Welcome to FocusForge</h1>
           <div className="connect-section">
             <div className="button-with-icon">
-<<<<<<< HEAD
-              <button 
-                className="start-button" 
-                onClick={handleTodoist} 
-                disabled={loading}
-              >
-=======
               <button className="start-button" onClick={handleTodoist} disabled={loading}>
->>>>>>> newlink
                 {loading ? "Redirecting..." : "Connect to Todoist →"}
               </button>
               <div className="inline-question">
@@ -99,8 +70,4 @@ const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope
   );
 };
 
-<<<<<<< HEAD
 export default Start;
-=======
-export default Start;
->>>>>>> newlink
