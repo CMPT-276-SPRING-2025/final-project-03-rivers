@@ -9,15 +9,14 @@ const AuthCallback = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [message, setMessage] = useState("Authenticating...");
-  const [isProcessing, setIsProcessing] = useState(false); // prevent duplicate calls
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const code = query.get("code");
     const error = query.get("error");
-  
     const token = localStorage.getItem("access_token");
-  
+
     if (token) {
       setMessage("Welcome back! Redirecting...");
       setTimeout(() => {
@@ -25,7 +24,7 @@ const AuthCallback = () => {
       }, 1500);
       return;
     }
-  
+
     if (error) {
       setMessage("Authorization denied");
       setTimeout(() => {
@@ -33,17 +32,18 @@ const AuthCallback = () => {
       }, 3000);
       return;
     }
-  
-    if (code) {
+
+    if (code && !isProcessing) {
+      setIsProcessing(true);
+      const baseUrl = import.meta.env.VITE_APP_BASE_URL;
+      const fullUrl = `${baseUrl}/api/auth-token`;
+
       axios
-        .post("/api/auth-token", { code })
+        .post(fullUrl, { code })
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
-  
-          // Clean URL
           window.history.replaceState(null, "", window.location.pathname);
-  
           setTimeout(() => {
             navigate("/home", { replace: true });
           }, 2000);
@@ -54,15 +54,18 @@ const AuthCallback = () => {
           setTimeout(() => {
             navigate("/", { replace: true });
           }, 6000);
+        })
+        .finally(() => {
+          setIsProcessing(false);
         });
     } else {
-      // No code and no token = direct access to /callback
       setMessage("Invalid access. Redirecting...");
       setTimeout(() => {
         navigate("/", { replace: true });
       }, 2000);
     }
   }, [location, navigate]);
+
   return (
     <div className="start-page">
       {/* Top Nav */}
