@@ -36,7 +36,8 @@ const AuthCallback = () => {
   
     if (code) {
       axios
-        .post("api/auth-token", { code })
+        .post("https://your-backend-name.up.railway.app/api/auth-token", { code })
+
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
