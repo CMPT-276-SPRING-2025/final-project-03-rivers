@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Start.css";
+import "./start.css";
 import { useNavigate } from "react-router-dom";
 import question from "../assets/question.png";
 import logo from "../assets/logo.png";
