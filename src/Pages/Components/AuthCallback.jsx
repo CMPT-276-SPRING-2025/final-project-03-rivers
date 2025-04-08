@@ -9,14 +9,24 @@ const AuthCallback = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [message, setMessage] = useState("Authenticating...");
+<<<<<<< HEAD
   const [isProcessing, setIsProcessing] = useState(false);
+=======
+  const [isProcessing, setIsProcessing] = useState(false); // prevent duplicate calls
+>>>>>>> newlink
 
   useEffect(() => {
     const query = new URLSearchParams(location.search);
     const code = query.get("code");
     const error = query.get("error");
+<<<<<<< HEAD
     const token = localStorage.getItem("access_token");
 
+=======
+  
+    const token = localStorage.getItem("access_token");
+  
+>>>>>>> newlink
     if (token) {
       setMessage("Welcome back! Redirecting...");
       setTimeout(() => {
@@ -24,7 +34,11 @@ const AuthCallback = () => {
       }, 1500);
       return;
     }
+<<<<<<< HEAD
 
+=======
+  
+>>>>>>> newlink
     if (error) {
       setMessage("Authorization denied");
       setTimeout(() => {
@@ -32,6 +46,7 @@ const AuthCallback = () => {
       }, 3000);
       return;
     }
+<<<<<<< HEAD
 
     if (code && !isProcessing) {
       setIsProcessing(true);
@@ -44,6 +59,19 @@ const AuthCallback = () => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
           window.history.replaceState(null, "", window.location.pathname);
+=======
+  
+    if (code) {
+      axios
+        .post("http://localhost:4000/auth/token", { code })
+        .then((res) => {
+          localStorage.setItem("access_token", res.data.access_token);
+          setMessage("Authentication successful!");
+  
+          // Clean URL
+          window.history.replaceState(null, "", window.location.pathname);
+  
+>>>>>>> newlink
           setTimeout(() => {
             navigate("/home", { replace: true });
           }, 2000);
@@ -54,18 +82,27 @@ const AuthCallback = () => {
           setTimeout(() => {
             navigate("/", { replace: true });
           }, 6000);
+<<<<<<< HEAD
         })
         .finally(() => {
           setIsProcessing(false);
         });
     } else {
+=======
+        });
+    } else {
+      // No code and no token = direct access to /callback
+>>>>>>> newlink
       setMessage("Invalid access. Redirecting...");
       setTimeout(() => {
         navigate("/", { replace: true });
       }, 2000);
     }
   }, [location, navigate]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> newlink
   return (
     <div className="start-page">
       {/* Top Nav */}

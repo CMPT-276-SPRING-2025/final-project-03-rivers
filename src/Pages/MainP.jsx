@@ -116,6 +116,9 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                         if (next) {
                           setShowTaskManager(false);
                           setShowProject(false);
+                          if(isOpen){
+                            onTogglePanel(isOpen);
+                          }
                         }
                         return next;
                       });
@@ -125,6 +128,9 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                         if (next) {
                           setShowStickyNotes(false);
                           setShowProject(false);
+                          if(isOpen){
+                            onTogglePanel(isOpen);
+                          }
                         }
                         return next;
                       });
@@ -134,6 +140,9 @@ const SideBar = ({ isOpen, onTogglePanel, isExpanded, onToggleChat, setShowStick
                         if (next) {
                           setShowStickyNotes(false);
                           setShowTaskManager(false);
+                          if(isOpen){
+                            onTogglePanel(isOpen);
+                          }
                         }
                         return next;
                       });
