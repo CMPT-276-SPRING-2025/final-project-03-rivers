@@ -39,7 +39,7 @@ const AuthCallback = () => {
       {/* const fullUrl = `${baseUrl}/api/auth-token`; */}
       const fullUrl = `${process.env.REACT_APP_VERCEL_URL}/api/auth-token`;
       axios
-        .post(fullUrl, { code })
+        .post("fullUrl", { code })
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
