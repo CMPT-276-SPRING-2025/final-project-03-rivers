@@ -36,7 +36,7 @@ const AuthCallback = () => {
   
     if (code) {
       axios
-        .post("/api/auth-token", { code })
+        .post("api/auth-token", { code })
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
