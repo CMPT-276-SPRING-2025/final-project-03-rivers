@@ -1,5 +1,8 @@
 import axios from "axios";
 export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
   const { code } = req.body;
   const { CLIENT_ID, CLIENT_SECRET, REDIRECT_URI } = process.env;
   console.log("🔐 Received code:", code);
