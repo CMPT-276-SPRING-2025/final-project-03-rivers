@@ -1,1 +1,15 @@
-{ "rewrites": [{ "source": "/(.*)", "destination": "/" }]}
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "pages/api/auth-token.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/auth-token",
+        "dest": "pages/api/auth-token.js"
+      }
+    ]
+  }
