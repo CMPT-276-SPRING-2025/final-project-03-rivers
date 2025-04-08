@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./AuthCallback.css";
+import "./AuthCallBack.css";
 import question from "../../assets/question.png";
 import logo from "../../assets/logo.png";
 
