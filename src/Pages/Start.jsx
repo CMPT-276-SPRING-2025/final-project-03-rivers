@@ -17,8 +17,8 @@ const Start = () => {
   const handleTodoist = () => {
     setLoading(true); // <-- Set loading to true right before redirect
 
-    const clientid = import.meta.env.VITE_TODOIST_CLIENT_ID;
-    const redirect_uri = import.meta.env.VITE_TODOIST_REDIRECT_URI;
+    const clientid = import.meta.env.TODOIST_CLIENT_ID;
+    const redirect_uri = import.meta.env.TODOIST_REDIRECT_URI;
     const state = Math.random().toString(36).substring(2, 15);
     const scope = encodeURIComponent("data:read_write");
 const authURL = `https://todoist.com/oauth/authorize?client_id=${clientid}&scope=${scope}&state=${state}&redirect_uri=${redirect_uri}&response_type=code&force_confirm=true`;
