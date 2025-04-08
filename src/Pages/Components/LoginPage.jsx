@@ -3,54 +3,54 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import question from "../../assets/question.png";
 import logo from '../../assets/logo.png';
-import { signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
-import { auth } from '../Firebase.jsx';
+// import { signInWithEmailAndPassword, onAuthStateChanged } from '@firebase/auth';
+// import { auth } from '../Firebase.jsx';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [loginEmail, setLoginEmail] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Added loading state
-  const [user, setUser] = useState(null);
+  // const [loginEmail, setLoginEmail] = useState("");
+  // const [loginPassword, setLoginPassword] = useState("");
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(false); // Added loading state
+  // const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+  // useEffect(() => {
+  //   const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+  //     setUser(currentUser);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  // const isValidEmail = (email) => {
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   return emailRegex.test(email);
+  // };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  //   e.preventDefault();
+  //   setError("");
 
-    if (!isValidEmail(loginEmail)) {
-      alert("Invalid email format. Please enter a valid email.");
-      return;
-    }
+  //   if (!isValidEmail(loginEmail)) {
+  //     alert("Invalid email format. Please enter a valid email.");
+  //     return;
+  //   }
 
-    setLoading(true); // Start loading state
+    // setLoading(true); // Start loading state
 
-    try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
-      console.log("User logged in: ", auth.currentUser);
+  //   try {
+  //     await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+  //     console.log("User logged in: ", auth.currentUser);
   
         navigate('/home'); // Redirect after a short delay
  
-    } catch (error) {
+  //   } catch (error) {
       
-      setError("Failed to log in. Please check your credentials.");
-      console.error(error.message);
-      setLoading(false); // Stop loading if login fails
-    }
+  //     // setError("Failed to log in. Please check your credentials.");
+  //     // console.error(error.message);
+  //     setLoading(false); // Stop loading if login fails
+  //   }
   };
-  console.log("LoginPage loaded");
+  // console.log("LoginPage loaded");
 
   return (
     <div className="login-container" data-testid="login-container">
@@ -71,30 +71,34 @@ const LoginPage = () => {
       <div className="box" data-testid="box">
         {/* Login Form Section */}
         <section className="login" data-testid="login-section">
-          <form onSubmit={handleLogin} data-testid="login-form">
+          {/* <form onSubmit={handleLogin} data-testid="login-form"> */}
+          <form onSubmit = {handleLogin}data-testid="login-form">
+
             <h1 data-testid="login-header" className = "gradient-text">Log In To Your Account</h1>
             <div className="input-group">
               <input
                 type="text"
                 placeholder="Email"
-                onChange={(e) => setLoginEmail(e.target.value)}
+                // onChange={(e) => setLoginEmail(e.target.value)}
                 className="input"
-                required
+                // required
                 data-testid="email-input"
               />
               <input
                 type="password"
                 placeholder="Password"
-                onChange={(e) => setLoginPassword(e.target.value)}
+                // onChange={(e) => setLoginPassword(e.target.value)}
                 className="input"
-                required
+                // required
                 data-testid="password-input"
               />
             </div>
-            {error && <p className="error-message" data-testid="error-message">{error}</p>}
+            {/* {error && <p className="error-message" data-testid="error-message">{error}</p>} */}
             <div className="login-button">
-              <button className="btn" disabled={loading} data-testid="login-button">
-                {loading ? "Logging in..." : "Login"}
+              {/* <button className="btn" disabled={loading} data-testid="login-button"> */}
+              <button className="btn" data-testid="login-button">
+                Login
+                {/* {loading ? "Logging in..." : "Login"} */}
               </button>
             </div>
           </form>
