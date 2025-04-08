@@ -1,0 +1,60 @@
+.task-item {
+  background: linear-gradient(#C1E5FB, #E5EDF2);
+  width: 25vw;
+  padding: 20px;
+}
+
+.task-item ul {
+  flex: 1;
+  min-height: 0;
+}
+
+.task-item li {
+  padding: 5px 10px;
+  margin-bottom: 8px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  }
+
+.project-list-container {
+  max-width: 80vw;
+  max-height: 73vh;
+}
+    
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2vw;
+}
+
+.no-projects {
+    margin-top: 30vh;
+}
+
+.project-edit-container {
+    background: linear-gradient(#C1E5FB, #E5EDF2);
+    width: 20vw;
+    height: 30vh;
+    padding: 25px;
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  80% {
+    opacity: .5;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-item-animate {
+  animation: fadeSlideIn 0.3s ease-out both;
+}
