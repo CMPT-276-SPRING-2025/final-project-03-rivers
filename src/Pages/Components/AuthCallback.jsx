@@ -36,7 +36,7 @@ const AuthCallback = () => {
   
     if (code) {
       axios
-        .post("http://localhost:4000/auth/token", { code })
+        .post("https://backend-production-c640.up.railway.app/auth/token", { code })
         .then((res) => {
           localStorage.setItem("access_token", res.data.access_token);
           setMessage("Authentication successful!");
