@@ -38,14 +38,16 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
 export const fetchTasks = async () => {
   try {
     const api = ensureApi();
-    const tasks = await api.getTasks();
-    console.log("Fetched tasks:", tasks);
-    return Array.isArray(tasks) ? tasks : [];
+    const response = await api.getTasks();
+    console.log("Fetched tasks:", response);
+    return response.results; // <-- Correct!
   } catch (error) {
     console.error("Error fetching tasks:", error);
     throw error;
   }
 };
+
+
 
 // Delete Task
 export const deleteTask = async (taskId) => {
@@ -106,25 +108,26 @@ export const addProject = async (projectName) => {
   try {
     const api = ensureApi();
     const project = await api.addProject({ name: projectName });
-    return project;
+    return project; // just one project
   } catch (error) {
     console.error("Error adding project:", error);
     throw error;
   }
 };
 
+
 // Fetch Projects
 export const fetchProjects = async () => {
   try {
-    const api = ensureApi();
     const projects = await api.getProjects();
-    console.log("Projects from Todoist:", projects);
-    return projects;
+    console.log("Projects from todoist:", projects);
+    return projects.results;
   } catch (error) {
     console.error("Error fetching projects:", error);
     throw error;
   }
 };
+
 
 // Delete Project
 export const deleteProject = async (projectId) => {
@@ -137,3 +140,18 @@ export const deleteProject = async (projectId) => {
     throw error;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
