@@ -11,9 +11,9 @@ Figma Design: [Figma Page](https://www.figma.com/design/dH6NLgerBP1vvqAxHzDxas/F
 5. AI Assistant
 
 ## **Tech Stack:**
-React + Vite (Frontend)
-Railway (Backend)
-Tailwind, DaisyUI, plain CSS (Styling)
+React + Vite (Frontend)  
+Railway (Backend)  
+Tailwind, DaisyUI, plain CSS (Styling)  
 
 ## Documentations
 
