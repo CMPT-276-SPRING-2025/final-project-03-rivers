@@ -128,7 +128,16 @@ export const deleteProject = async (projectId) => {
   }
 };
 
-
+export const mapTodoistTaskToBackendFormat = (task) => ({
+  content: task.content,
+  assignerId: task.assigner_id || "",
+  assigneeId: task.responsible_uid || "",
+  order: task.order || 0,
+  isCompleted: task.is_completed || false,
+  creatorId: task.creator_id || "",
+  createdAt: task.created_at || new Date().toISOString(),
+  url: task.url || "",
+});
 
 
 
