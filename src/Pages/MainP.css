@@ -33,6 +33,7 @@ ul li {
 
 .logout:hover {
   background-color: #9fb3cf;
+  transition: 0.4s ease;
 }
 
 .tabs {
