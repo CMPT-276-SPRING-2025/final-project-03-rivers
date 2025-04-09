@@ -531,7 +531,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
           <div className="modal-body">
             
             <textarea
-              placeholder="Enter Playlist embed link (Go onto Soundcloud -> Embed -> copy the whole link)"
+              placeholder="Enter Playlist embed link (Go onto Soundcloud -> Playlist you want to add -> Share -> Embed -> copy the whole link)"
               className="w-full p-2 border rounded text-black bg-blue-50 resize-vertical"
               style={{
                 minHeight: "40px",
