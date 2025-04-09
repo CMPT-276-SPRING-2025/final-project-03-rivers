@@ -19,7 +19,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       setProjectToDelete(project);
       setShowDeleteConfirm(true);
     } catch (error) {
-      console.error("Error preparing project deletion:", error);
+      throw error;
     }
   };
 
@@ -34,7 +34,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       setShowDeleteConfirm(false);
       setProjectToDelete(null);
     } catch (error) {
-      console.error("Error deleting project:", error);
+      throw error;
     }
   };
 
@@ -61,10 +61,9 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
           (project) => project.name.toLowerCase() !== "inbox"
         );
     
-        console.log("Filtered projects:", filteredProjects);
         setProjects(filteredProjects);
       } catch (error) {
-        console.error("Error fetching projects:", error);
+        throw error;
       }
     };
 
@@ -81,12 +80,11 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         project_id: projectId || taskToEdit.projectId
       };
 
-      console.log("Updating task:", updatedTask);
       await onSave(updatedTask);
       setShowForm(false);
 
     } catch (error) {
-      console.error("Error editing task:", error);
+      throw error;
     }
   };
   
@@ -102,7 +100,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
       newTaskAdded(newTask);
     } catch (error) {
-      console.error("Error adding task:", error);
+      throw error;
     }
   };
 
@@ -131,7 +129,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       setTimeout(() => setShowWarning(true), 0);
 
     } catch (error) {
-      console.error("Error creating project:", error);
+      throw error;
     }
   };
 

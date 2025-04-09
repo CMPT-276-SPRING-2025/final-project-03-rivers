@@ -23,7 +23,7 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
       setTasks(newTasks);
       setShowForm(false);
     } catch (error) {
-      console.error("Error updating task:", error);
+      throw error;
     }
   };
 
@@ -47,7 +47,7 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
       await deleteTask(taskId);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
-      console.error("Error deleting task:", error);
+      throw error;
     }
   };
   
@@ -58,7 +58,7 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
         const fetchedTasks = await fetchTasks();
         setTasks(fetchedTasks);
       } catch (error) {
-        console.error("Error fetching tasks:", error);
+        throw error;
       }
     };
 

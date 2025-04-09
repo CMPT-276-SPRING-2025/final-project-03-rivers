@@ -24,7 +24,7 @@ const ProjectEdit = ({ task: initialTask, onSave, onCancel }) => {
       onCancel();  
 
     } catch (error) {
-      console.error("Error editing task:", error);
+      throw error;
     }
   };
 

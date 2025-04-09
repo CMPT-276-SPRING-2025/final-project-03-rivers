@@ -26,7 +26,7 @@ const ProjectList = () => {
         const fetchedTasks = await fetchTasks();
         setTasks(fetchedTasks);
       } catch (error) {
-        console.error("Error fetching projects or tasks:", error);
+        throw error;
       }
     };
     getProjectsAndTasks();
@@ -69,7 +69,7 @@ const ProjectList = () => {
   
       setShowEditModal(false);
     } catch (error) {
-      console.error('Error updating task:', error);
+      throw error;
     }
   };
 
@@ -87,7 +87,7 @@ const ProjectList = () => {
         )
       );
     } catch (error) {
-      console.error("Error updating task status:", error);
+      throw error;
     }
   };
 
@@ -97,7 +97,7 @@ const ProjectList = () => {
       await deleteTask(taskId);
       setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
     } catch (error) {
-      console.error("Error deleting task:", error);
+      throw error;
     }
   };
 
@@ -112,7 +112,7 @@ const ProjectList = () => {
       setProjectToDelete(project);
       setShowDeleteConfirm(true);
     } catch (error) {
-      console.error("Error preparing project deletion:", error);
+      throw error;
     }
   };
 
@@ -135,7 +135,7 @@ const ProjectList = () => {
       setShowDeleteConfirm(false);
       setProjectToDelete(null);
     } catch (error) {
-      console.error("Error deleting project and its tasks:", error);
+      throw error;
     }
   };
 

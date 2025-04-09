@@ -5,7 +5,6 @@ const api = new TodoistApi(import.meta.env.VITE_TODOIST_API_TOKEN);
 
 export const addTask = async (taskContent, dueDate, projectId = null) => {
   try {
-    console.log("Adding task with:", taskContent, dueDate, projectId);
     // Add the task to Todoist
     const taskData = {
       content: taskContent,
@@ -19,11 +18,9 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
       taskData.project_id = projectId; 
     }
     const task = await api.addTask(taskData);
-    console.log("Adding task in Todoist:", taskData);
 
     return task;  
   } catch (error) {
-    console.error("Error adding task:", error);
     throw error;
   }
 };
@@ -32,10 +29,8 @@ export const addTask = async (taskContent, dueDate, projectId = null) => {
 export const fetchTasks = async () => {
   try {
     const tasks = await api.getTasks();
-    console.log("Fetched tasks:", tasks);  
     return Array.isArray(tasks.results) ? tasks.results : [];  
   } catch (error) {
-    console.error("Error fetching tasks:", error);
     throw error;
   }
 };
@@ -44,9 +39,7 @@ export const fetchTasks = async () => {
 export const deleteTask = async (taskId) => {
   try {
     await api.deleteTask(taskId);
-    console.log(`Task with ID ${taskId} deleted successfully.`);
   } catch (error) {
-    console.error("Error deleting task:", error);
     throw error;
   }
 };
@@ -62,11 +55,9 @@ export const updateTask = async (task) => {
       project_id: task.project_id || null,
     });
 
-    console.log("Updated task:", updatedTask);
     return updatedTask;
 
   } catch (error) {
-    console.error("Error updating task in Todoist:", error);
     throw error;
   }
 };
@@ -75,9 +66,7 @@ export const updateTask = async (task) => {
 export const closeTask = async(taskId) => {
   try {
     await api.closeTask(taskId);
-    console.log(`Task with ID ${taskId} close successfully.`);
   } catch (error) {
-    console.error("Error deleting task:", error);
     throw error;
   }
 };
@@ -86,9 +75,7 @@ export const closeTask = async(taskId) => {
 export const reopenTask = async(taskId) => {
   try {
     await api.reopenTask(taskId);
-    console.log(`Task with ID ${taskId} reopen successfully.`);
   } catch (error) {
-    console.error("Error deleting task:", error);
     throw error;
   }
 };
@@ -98,7 +85,6 @@ export const addProject = async (projectName) => {
     const project = await api.addProject({ name: projectName });
     return project;  
   } catch (error) {
-    console.error("Error adding project:", error);
     throw error;
   }
 };
@@ -108,10 +94,8 @@ export const fetchProjects = async () => {
   try {
     const projects = await api.getProjects();
     
-    console.log("Projects from todoist:", projects);
     return projects.results;
   } catch (error) {
-    console.error("Error fetching projects:", error);
     throw error;
   }
 };
@@ -119,9 +103,7 @@ export const fetchProjects = async () => {
 export const deleteProject = async (projectId) => {
   try {
     await api.deleteProject(projectId);
-    console.log(`Project with ID ${projectId} deleted successfully.`);
   } catch (error) {
-    console.error("Error deleting project:", error);
     throw error;
   }
 };
