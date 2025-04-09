@@ -1,5 +1,6 @@
 # **Focus Forge**
 Website: [https://final-project-03-rivers.vercel.app/start](https://final-project-03-rivers.vercel.app/start)
+
 Figma Design: [Figma Page](https://www.figma.com/design/dH6NLgerBP1vvqAxHzDxas/Focus-Force-Mid-Fidelity?node-id=0-1&p=f&t=cRtf8g8fpjwZk1J3-0)
 
 ## **Features:**
@@ -122,4 +123,5 @@ npm test (if you want to run tests)
 
 ## **File Structure**
 The file structure is several thousand lines long.  As such, we will be putting it in a separate file for those who want to see it
+
 [File Structure](./docs/FileStructure.md)
