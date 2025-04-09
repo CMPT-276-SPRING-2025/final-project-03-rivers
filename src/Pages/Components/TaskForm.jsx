@@ -13,7 +13,9 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
+<<<<<<< HEAD
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+=======
   const [error, setError] = useState("");
   const [errorTimer, setErrorTimer] = useState(5);  // Timer for the error message
 
@@ -30,6 +32,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       setError(""); // Close the error message
     }
   }, [error, errorTimer]);
+>>>>>>> 26-error-message
 
   // handles deletion of project
   const handleDeleteProject = async (project) => {
