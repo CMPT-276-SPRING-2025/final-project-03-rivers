@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './StickyNotes.css';
 import ErrorMessage from './ErrorMessage';  // Import the ErrorMessage component
 
 const StickyNotes = ({ setShowStickyNotes }) => {
@@ -16,6 +15,11 @@ const StickyNotes = ({ setShowStickyNotes }) => {
                 setErrorTimer(prev => prev - 1);
             }, 1000);
             return () => clearInterval(timer);
+        }
+
+        // If the timer reaches 0, close the error message automatically
+        if (errorTimer === 0) {
+            setError(""); // Close the error message
         }
     }, [error, errorTimer]);
 
