@@ -71,9 +71,9 @@ const NavBar = () => {
                             alt="Logout"
                             style={{ width: '35px', height: '35px' }}
                         />
-                        {showDropdown && (
+                        {/* {showDropdown && ( */}
                             <span className="logout-text">Logout</span>
-                        )}
+                        {/* )} */}
                     </button>
                 </div>
             </div>
