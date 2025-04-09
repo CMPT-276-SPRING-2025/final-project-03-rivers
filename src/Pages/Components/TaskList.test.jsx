@@ -64,7 +64,6 @@ describe('TaskList Component', () => {
     expect(screen.getAllByTestId('delete-task-button-101')[0]).toBeInTheDocument();
   });
 
-  {/*
   it('opens TaskForm modal when + button is clicked', async () => {
     setup();
 
@@ -73,7 +72,6 @@ describe('TaskList Component', () => {
 
     expect(await screen.findByTestId('task-form')).toBeInTheDocument(); // or 'task-form-modal' if that’s what you named it
   });
-  */}
 
   it('displays fallback message if no tasks exist', async () => {
     TodoAPI.fetchTasks.mockResolvedValue([]);
