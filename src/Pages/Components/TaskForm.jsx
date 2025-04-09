@@ -13,6 +13,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
 
+  // handles deletion of project
   const handleDeleteProject = async (project) => {
     try {
       setProjectToDelete(project);
@@ -22,6 +23,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     }
   };
 
+  // cofirms if user wants to delete projects and tasks assigned to it
   const confirmDeleteProject = async () => {
     try {
       await deleteProject(projectToDelete.id);
@@ -36,11 +38,13 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     }
   };
 
+  // cancle project deletion action
   const handleCancelDelete = () => {
     setShowDeleteConfirm(false);
     setProjectToDelete(null);
   }; 
   
+  // fetch projects and tasks then display on list
   useEffect(() => {
     if (taskToEdit) {
       setTask(taskToEdit.content);
@@ -67,6 +71,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     loadProjects();
   }, [taskToEdit]);
 
+  // handle editing task 
   const handleEditTask = async () => {
     try {
       const updatedTask = {
@@ -85,6 +90,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     }
   };
   
+  // add new task to list 
   const handleAddTask = async () => {
     if (task.trim() === "") return; 
 
@@ -100,6 +106,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     }
   };
 
+  // cancel task creation and close form
   const handleCancel = () => {
     setTask("");
     setDueDate("");
@@ -110,6 +117,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     
   };
 
+  // handle create project
   const handleCreateProject = async () => {
     if (newProjectName.trim() === "") return;
 
@@ -214,7 +222,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="project-warning-modal">
           <div className="bg-white rounded-lg p-6 shadow-lg max-w-sm w-full">
             <h3 className="text-lg font-semibold mb-4 text-red-600" data-testid="project-assignment-notice">Project Assignment Notice</h3>
-            <p className="text-gray-700 mb-4">
+            <p className="text-gray-700 mb-4" data-testid="project-modal-notice">
               After a task is assigned to a project, it cannot be reassigned later.
               Are you sure you want to continue?
             </p>
@@ -264,10 +272,10 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       {showDeleteConfirm && projectToDelete && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" data-testid="delete-project-modal">
           <div className="bg-white rounded-lg p-6 shadow-lg">
-            <h3 className="text-lg font-semibold mb-4">
+            <h3 className="text-lg font-semibold mb-4" data-testid="delete-project-title">
               Delete Project: {projectToDelete.name}?
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 mb-4" data-testid="delete-project-warning">
               Are you sure? This action cannot be undone. All tasks will be unassigned from this project.
             </p>
             <div className="flex justify-end gap-3">

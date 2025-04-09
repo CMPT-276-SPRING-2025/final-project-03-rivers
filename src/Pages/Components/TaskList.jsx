@@ -9,11 +9,13 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
   const [completedTasks, setCompletedTasks] = useState({});
   const [editTask, setEditTask] = useState(null);
 
+  // when user edit task, handle that action by showing the modal and get the task to be edited
   const handleEditTask = (task) => {
     setEditTask(task);
     setShowForm(true);
   };
 
+  // update task with new task name or due dates 
   const handleTaskUpdate = async (updatedTask) => {
     try {
       const response = await updateTask(updatedTask);
@@ -25,6 +27,7 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
     }
   };
 
+  // handle tassk completion if user tick or unticks the checkbox
   const handleCompletedTask = (taskId) => {
     setCompletedTasks((prev) => ({
       ...prev,
@@ -38,6 +41,7 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
     }
   };
 
+  // delete task
   const handleDeleteTask = async (taskId) => {
     try {
       await deleteTask(taskId);
@@ -46,7 +50,8 @@ const TaskList = ({ isExiting, setShowTaskManager }) => {
       console.error("Error deleting task:", error);
     }
   };
-
+  
+  // load task into project
   useEffect(() => {
     const loadTasks = async () => {
       try {

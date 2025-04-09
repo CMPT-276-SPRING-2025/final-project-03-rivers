@@ -10,12 +10,13 @@ const ProjectEdit = ({ task: initialTask, onSave, onCancel }) => {
     setDueDate(initialTask.due?.date || '');
   }, [initialTask]);
 
+  // handle retrieving new task info and updates it
   const handleEditTask = async () => {
     try {
       const updatedTask = {
         id: initialTask.id,
-        content: content || initialTask.content,
-        due_date: dueDate || initialTask.dueDate,
+        content: content,
+        due_date: dueDate,
       };
 
       console.log("Updating task:", updatedTask);
