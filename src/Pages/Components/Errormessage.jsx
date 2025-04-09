@@ -1,5 +1,5 @@
 import React from "react";
-
+// Renamed it to ErrorMessage cuz I named it wrong
 const ErrorMessage = ({ message, seconds, onClose }) => {
     if (!message) return null;
 
