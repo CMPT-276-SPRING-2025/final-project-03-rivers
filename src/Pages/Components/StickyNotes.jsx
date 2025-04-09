@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ErrorMessage from './ErrorMessage';  // Import the ErrorMessage component
 
 const StickyNotes = ({ setShowStickyNotes }) => {
@@ -9,7 +9,7 @@ const StickyNotes = ({ setShowStickyNotes }) => {
     const MAX_LENGTH = 100;
 
     // Function to handle timer countdown
-    React.useEffect(() => {
+    useEffect(() => {
         if (error && errorTimer > 0) {
             const timer = setInterval(() => {
                 setErrorTimer(prev => prev - 1);
