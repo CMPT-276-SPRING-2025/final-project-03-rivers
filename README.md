@@ -1,4 +1,4 @@
-### **Focus Forge**
+# **Focus Forge**
 Website: [https://final-project-03-rivers.vercel.app/start](https://final-project-03-rivers.vercel.app/start)
 Figma Design: [Figma Page](https://www.figma.com/design/dH6NLgerBP1vvqAxHzDxas/Focus-Force-Mid-Fidelity?node-id=0-1&p=f&t=cRtf8g8fpjwZk1J3-0)
 
@@ -13,6 +13,8 @@ Figma Design: [Figma Page](https://www.figma.com/design/dH6NLgerBP1vvqAxHzDxas/F
 React + Vite (Frontend)
 Railway (Backend)
 Tailwind, DaisyUI, plain CSS (Styling)
+
+## Documentations
 
 ### **Non Technical Documentation**
 
@@ -107,7 +109,7 @@ Tailwind, DaisyUI, plain CSS (Styling)
          1. Holds multiple playlists  
    5. AI Assistant
 
-### **Deploying Locally**
+## **Deploying Locally**
 ```
 git clone git@github.com:CMPT-276-SPRING-2025/final-project-03-rivers.git
 cd final-project-03-rivers
@@ -118,6 +120,6 @@ Go to whichever port the VSCode opens for you
 npm test (if you want to run tests)
 ```
 
-### **File Structure**
+## **File Structure**
 The file structure is several thousand lines long.  As such, we will be putting it in a separate file for those who want to see it
 [File Structure](./docs/FileStructure.md)
