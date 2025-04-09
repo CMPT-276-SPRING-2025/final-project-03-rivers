@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import ErrorMessage from './ErrorMessage';  // Import the ErrorMessage component
+import ErrorMessage from './ErrorMessage';
 
 const StickyNotes = ({ setShowStickyNotes }) => {
     const [notes, setNotes] = useState([{ id: Date.now(), text: '' }]);
     const [error, setError] = useState("");
-    const [errorTimer, setErrorTimer] = useState(5);  // Timer for the error message
+    const [errorTimer, setErrorTimer] = useState(5);
+    const [isExiting, setIsExiting] = useState(false); // 👈 added for animation
     const MAX_NOTES = 5;
     const MAX_LENGTH = 100;
 
-    // Function to handle timer countdown
     useEffect(() => {
         if (error && errorTimer > 0) {
             const timer = setInterval(() => {
@@ -17,22 +17,21 @@ const StickyNotes = ({ setShowStickyNotes }) => {
             return () => clearInterval(timer);
         }
 
-        // If the timer reaches 0, close the error message automatically
         if (errorTimer === 0) {
-            setError(""); // Close the error message
+            setError("");
         }
     }, [error, errorTimer]);
 
     const createNote = () => {
         if (notes.length >= MAX_NOTES) {
             setError("You can only create 5 sticky notes.");
-            setErrorTimer(5);  // Reset the timer when error appears
+            setErrorTimer(5);
             return;
         }
         const newNote = { id: Date.now(), text: '' };
         setNotes((prevNotes) => [...prevNotes, newNote]);
-        setError(""); // Clear error if note is created successfully
-        setErrorTimer(5); // Reset timer on successful creation
+        setError("");
+        setErrorTimer(5);
     };
 
     const updateNote = (id, newText) => {
@@ -43,18 +42,25 @@ const StickyNotes = ({ setShowStickyNotes }) => {
 
     const deleteNote = (id) => {
         setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
-        setError(""); // Clear error if a note is deleted
-        setErrorTimer(5); // Reset timer on note delete
+        setError("");
+        setErrorTimer(5);
     };
 
-    // Function to handle closing the error message
     const closeErrorMessage = () => {
-        setError("");  // Clear error state when the "X" is clicked
-        setErrorTimer(5); // Reset the timer
+        setError("");
+        setErrorTimer(5);
+    };
+
+    // ✅ Exit animation and unmount
+    const handleCloseStickyNotes = () => {
+        setIsExiting(true); // Trigger exit animation
+        setTimeout(() => {
+            setShowStickyNotes(false); // Unmount after animation ends
+        }, 300); // Duration matches your .list-popup-exit
     };
 
     return (
-        <div className="task-list-container p-6 rounded-lg w-1/3 max-h-[60vh] shadow-xl relative ml-20 flex flex-col">
+        <div className={`task-list-container p-6 rounded-lg w-1/3 max-h-[60vh] shadow-xl relative ml-20 flex flex-col ${isExiting ? 'list-popup-exit' : 'list-popup'}`}>
             {/* Header */}
             <div className="sticky top-0 flex items-center justify-between">
                 <button
@@ -68,22 +74,23 @@ const StickyNotes = ({ setShowStickyNotes }) => {
                     Sticky Notes
                 </h2>
 
+                {/* Close button */}
                 <button
-                    onClick={() => setShowStickyNotes(false)}
+                    onClick={handleCloseStickyNotes}
                     className="text-red-600 text-3xl font-semibold hover:cursor-pointer mb-6"
                 >
                     &times;
                 </button>
             </div>
 
-            {/* Error Message with timer and close button */}
+            {/* Error Message */}
             <ErrorMessage
                 message={error}
                 seconds={errorTimer}
-                onClose={closeErrorMessage}  // Passing close function to the ErrorMessage component
+                onClose={closeErrorMessage}
             />
 
-            {/* Notes list */}
+            {/* Notes List */}
             <div className="overflow-y-auto mt-2 pr-2 flex-1 min-h-0">
                 {notes.length === 0 ? (
                     <p className="text-black">No Notes Yet...</p>
