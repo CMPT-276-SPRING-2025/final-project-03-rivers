@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-
+// Function to toggle the panel open and closed (for the sidebar)
 const togglePanel = (isOpen, setIsOpen) => {
     setIsOpen(!isOpen)
   }
@@ -26,6 +26,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
   const [newPlaylist, setNewPlaylist] = useState('');
   const [newName, setNewName] = useState('');
 
+  // This turns milliseconds into a time format of mm:ss, seconds is the variable because I took this from Phind.com
   function formatTime(seconds) {
     if (seconds === null || isNaN(seconds)) return '--:--';
     const minutes = Math.floor(seconds / 60 / 1000);
@@ -33,7 +34,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   }
 
+  // This is the useEffect that sets up the SoundCloud player and handles events
   useEffect(() => {
+    // This is the function that sets up the SoundCloud player
     const setupPlayer = async () => {
       const iframeElement = document.createElement('iframe');
       iframeElement.id = 'soundcloud-player';
@@ -44,11 +47,13 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       document.body.appendChild(iframeElement);
       iframeRef.current = iframeElement;
 
+      // This is the function that loads the SoundCloud API script
       const script = document.createElement('script');
       script.src = "https://w.soundcloud.com/player/api.js";
       script.async = true;
       document.body.appendChild(script);
 
+      // This is the function that sets up the SoundCloud widget
       script.onload = () => {
         if (iframeRef.current) {
           widgetRef.current = SC.Widget(iframeRef.current);
@@ -64,6 +69,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     };
   }, [currentPlaylistUrl]);
 
+  // This is the function that sets up the event listeners for the SoundCloud player
   const setupEventListeners = () => {
     const handleReady = () => {
       isWidgetReady.current = true;
@@ -73,6 +79,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       });
     };
 
+    // This is the function that handles the play progress event
     const handlePlayProgress = () => {
       if (widgetRef.current && isWidgetReady.current) {
         widgetRef.current.getDuration((duration) => {
@@ -88,15 +95,19 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       }
     }
 
+    // This is the function that handles the play event, set the playing to true and update the song name
     const handlePlay = () => {
       setIsPlaying(true);
       updateCurrentSong();
     };
 
+    // This is the function that handles the pause event, set the playing to false
     const handlePause = () => {
       setIsPlaying(false);
     };
 
+    // This is the function that handles the finish event, skip to the next track
+    // When shuffled, jump to a random track
     const handleFinish = () => {
       if (widgetRef.current && isWidgetReady.current) {
         if (isShuffled) {
@@ -111,6 +122,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       }
     };
 
+    // bind the events to the widget so they actually happen
     eventsRef.current.add(
       widgetRef.current.bind(SC.Widget.Events.READY, handleReady),
       widgetRef.current.bind(SC.Widget.Events.PLAY, handlePlay),
@@ -120,6 +132,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     );
   };
 
+  // This is the function that cleans up the SoundCloud player and removes the iframe
   const cleanupPlayer = () => {
     if (widgetRef.current) {
       eventsRef.current.forEach(eventId => {
@@ -137,6 +150,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     isWidgetReady.current = false;
   };
 
+  // This is the function that updates the current song name
   const updateCurrentSong = () => {
     if (widgetRef.current && isWidgetReady.current) {
       widgetRef.current.getCurrentSound((sound) => {
@@ -147,6 +161,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
+  // This is the function that switches to a new playlist
   const switchToPlaylist = (playlistUrl, playlistName) => {
     if(playlistUrl !== currentPlaylistUrl){
       console.log("Changing playlists");
@@ -165,6 +180,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
+  // This is the function that handles the play/pause button
   const handlePlayPause = () => {
     if (widgetRef.current && isWidgetReady.current) {
       if (isPlaying) {
@@ -176,6 +192,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
+  // This is the function that handles the shuffle button
+  // When shuffled, jump to a random track (when turning on shuffle, it moves to the next song)
   const handleToggleShuffle = () => {
     setIsShuffled(!isShuffled);
     
@@ -198,6 +216,9 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   };
 
+  // This is the function that handles the next/previous buttons
+  // When shuffled, jump to a random track.
+  // Has a delay on song name change, so that Soundcloud has time to update me on the song name (if you remove it, it breaks)
   const handleTrackChange = (direction) => {
     if (widgetRef.current && isWidgetReady.current) {
       if (isShuffled) {
@@ -224,6 +245,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
       }
     }
   };
+
+  // My playlists, it's a useState so it can be changed to add playlists by the user
   const [playlists,setPlaylists] = useState([
     {
       name: 'Mori',
@@ -263,6 +286,7 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     }
   ]);
 
+  // uses regex to grab SoundCloud URL from the embed link
   function extractSoundCloudUrl(iframeString) {
     // Use regex to find the src attribute value
     const srcMatch = iframeString.match(/src="([^"]+)"/);
@@ -280,15 +304,23 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     return baseUrl;
   }
 
+
+  // Filter the playlists based on the search term
   const filteredPlaylists = playlists.filter(playlist =>
     playlist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // This is the function that handles adding a new playlist
   const handlePlaylistAdd = (newPlaylist, newName) => {
     if (!newPlaylist || !newName) {
       return false;
     }
+    // Check if my playlist is a valid SoundCloud URL
+    // If it is, add it to the list of playlists, if not, return false so it doesn't break my code (again -_-)
     const newPlaylistLink = extractSoundCloudUrl(newPlaylist);
+    if(!newPlaylistLink) {
+      return false;
+    }
     setPlaylists(prevPlaylists => [
       ...prevPlaylists,
       {
@@ -300,6 +332,8 @@ export const Soundcloud = ({ isOpen, setIsOpen}) => {
     return true;
   };
 
+  // This renders my Soundcloud component, which is the main part of the page
+  // It contains the playlist box, the control bar, and the song add modal
   return (
     <>
       <div>
