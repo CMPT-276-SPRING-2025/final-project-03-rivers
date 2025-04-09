@@ -78,7 +78,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
         const fetchedProjects = await fetchProjects();
         
         // Filter out the Inbox (default Todoist project)
-        const filteredProjects = fetchedProjects.filter(
+        const filteredProjects = (fetchedProjects || []).filter(
           (project) => project.name.toLowerCase() !== "inbox"
         );
     

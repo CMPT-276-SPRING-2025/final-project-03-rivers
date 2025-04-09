@@ -36,7 +36,7 @@ const NavBar = () => {
         try {
             await signOut(auth);
             console.log("User logged out");
-            navigate("/start"); // Redirect to login page after logout
+            navigate("/login"); // Redirect to login page after logout
         } catch (error) {
             console.error("Logout failed:", error.message);
         }
@@ -71,9 +71,9 @@ const NavBar = () => {
                             alt="Logout"
                             style={{ width: '35px', height: '35px' }}
                         />
-                        {/* {showDropdown && ( */}
+                        {showDropdown && (
                             <span className="logout-text">Logout</span>
-                        {/* )} */}
+                        )}
                     </button>
                 </div>
             </div>
