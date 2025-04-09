@@ -28,10 +28,12 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
   const startXRef = useRef(0)
   const startWidthRef = useRef(width)
 
+  // this handles the input for the user when inputted
   const handleUserInput = (e) => {
     setUserInput(e.target.value)
   }
 
+  // this handles personality for the AI when inputted
   const handleAiPersonalityInput = (e) => {
     setAiPersonality(e.target.value)
     if (personalityInputRef.current) {
@@ -40,6 +42,7 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
     }
   }
 
+  // this handles the clear button when clicked
   const handleClear = () => {
     setUserInput("")
     setAiPersonality("")
@@ -47,6 +50,7 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
     setIsLoading(false)
   }
 
+  // this handles the submit message button when clicked
   const handleSubmit = async () => {
     if (!userInput.trim()) {
       setResponse([
@@ -80,12 +84,14 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
     }
   }
 
+  // this handles the enter key when pressed
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit()
     }
   }
 
+  // this handles the resize of the sidebar when dragged at the start
   const handleResizeStart = (e) => {
     setIsDragging(true)
     startXRef.current = e.clientX
@@ -95,6 +101,7 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
     document.addEventListener("mouseup", handleResizeEnd)
   }
 
+  // this handles the resize of the sidebar when dragged
   const handleResizeMove = (e) => {
     if (!isDragging) return
 
@@ -106,6 +113,7 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
     setWidth(newWidth)
   }
 
+  // this handles the resize of the sidebar when dragged at the end (mouseup basically)
   const handleResizeEnd = () => {
     setIsDragging(false)
     document.removeEventListener("mousemove", handleResizeMove)
@@ -226,6 +234,8 @@ export default function Chatbot({ isExpanded, setIsExpanded }) {
               ×
             </button>
           </div>
+
+          {/* Modal Body */}
           <div className="modal-body">
             <textarea
               value={aiPersonality}
