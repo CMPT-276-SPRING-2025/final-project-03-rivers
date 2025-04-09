@@ -237,9 +237,7 @@ const MainP = () => {
             />
 
             <div className="content-area">
-                {showStickyNotes && (
-                  <StickyNotes setShowStickyNotes={setShowStickyNotes}/>
-                )}
+                {showStickyNotes && <StickyNotes />}
 
                 {(showTaskManager || isExitingTaskList) && (
                 tasks.length === 0 ? (
