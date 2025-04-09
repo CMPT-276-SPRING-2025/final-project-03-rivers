@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { addTask, updateTask, addProject, fetchProjects, deleteProject } from "./Todo";  
 import "./TaskManager.css"
+import ErrorMessage from "./ErrorMessage";  // Import the ErrorMessage component
 
 const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [task, setTask] = useState("");  
@@ -12,7 +13,26 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
+<<<<<<< HEAD
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+=======
+  const [error, setError] = useState("");
+  const [errorTimer, setErrorTimer] = useState(5);  // Timer for the error message
+
+  useEffect(() => {
+    if (error && errorTimer > 0) {
+      const timer = setInterval(() => {
+        setErrorTimer(prev => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+
+    // If the timer reaches 0, close the error message automatically
+    if (errorTimer === 0) {
+      setError(""); // Close the error message
+    }
+  }, [error, errorTimer]);
+>>>>>>> 26-error-message
 
   // handles deletion of project
   const handleDeleteProject = async (project) => {
@@ -97,7 +117,11 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   
   // add new task to list 
   const handleAddTask = async () => {
-    if (task.trim() === "") return; 
+    if (task.trim() === "") {
+      setError("Enter text to create a task");
+      setErrorTimer(5); // Reset timer if needed
+      return;
+    }  
 
     setIsButtonDisabled(true);
 
@@ -130,6 +154,12 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const handleCreateProject = async () => {
     if (newProjectName.trim() === "") return;
 
+    if (projects.length >= 5) {
+      setErrorTimer(5);
+      setError("Project limit is 5. Delete one before creating another.");
+      return;
+    }
+
     try {
       const newProject = await addProject(newProjectName);
       setProjects((prevProjects) => [...prevProjects, newProject]);
@@ -144,11 +174,22 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
     }
   };
 
+    // Function to handle closing the error message
+    const closeErrorMessage = () => {
+      setError("");  // Clear error state when the "X" is clicked
+      setErrorTimer(5); // Reset the timer
+    };
+
   return (
     <div className="task-form-container p-6 shadow-xl rounded-lg w-md mx-auto max-w-xl" data-testid="task-form">
       <h2 className="text-center text-3xl font-bold mb-6 bg-gradient-to-r from-slate-700 to-indigo-400 !bg-clip-text !text-transparent" data-testid="task-form-title">
         {taskToEdit ? "Edit Task" : "Create Task"}
       </h2>
+      <ErrorMessage
+        message={error}
+        seconds={errorTimer}
+        onClose={closeErrorMessage}  // Passing close function to the ErrorMessage component
+      />  
 
       <div className="mb-2">
         <textarea
