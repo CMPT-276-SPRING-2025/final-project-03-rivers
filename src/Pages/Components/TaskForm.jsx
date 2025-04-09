@@ -12,6 +12,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   // handles deletion of project
   const handleDeleteProject = async (project) => {
@@ -72,6 +73,10 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
   // handle editing task 
   const handleEditTask = async () => {
+    if (isButtonDisabled) return;  
+
+    setIsButtonDisabled(true);
+
     try {
       const updatedTask = {
         id: taskToEdit.id,
@@ -85,12 +90,16 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
 
     } catch (error) {
       throw error;
+    } finally {
+    setIsButtonDisabled(false);  
     }
   };
   
   // add new task to list 
   const handleAddTask = async () => {
     if (task.trim() === "") return; 
+
+    setIsButtonDisabled(true);
 
     try {
       const newTask = await addTask(task, dueDate, projectId);  
@@ -101,7 +110,9 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
       newTaskAdded(newTask);
     } catch (error) {
       throw error;
-    }
+    } finally {
+      setIsButtonDisabled(false);  
+      }
   };
 
   // cancel task creation and close form
@@ -302,6 +313,7 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
             className="create-task-btn bg-blue-400 text-gray px-4 py-2 rounded-lg hover:bg-blue-500 w-32"
             onClick={taskToEdit ? handleEditTask : handleAddTask}
             data-testid="submit-task-button"
+            disabled={isButtonDisabled} 
           >
             {taskToEdit ? "Edit Task" : "Create Task"}
           </button>
