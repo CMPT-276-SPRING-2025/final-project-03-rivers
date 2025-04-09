@@ -25,6 +25,7 @@ vi.mock('./Todo', async () => {
     updateTask: vi.fn(),
     closeTask: vi.fn(),
     reopenTask: vi.fn(),
+    fetchProjects: vi.fn()
   };
 });
 
