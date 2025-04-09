@@ -14,22 +14,6 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [showWarning, setShowWarning] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [error, setError] = useState("");
-  const [errorTimer, setErrorTimer] = useState(5);  // Timer for the error message
-
-  useEffect(() => {
-    if (error && errorTimer > 0) {
-      const timer = setInterval(() => {
-        setErrorTimer(prev => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-
-    // If the timer reaches 0, close the error message automatically
-    if (errorTimer === 0) {
-      setError(""); // Close the error message
-    }
-  }, [error, errorTimer]);
 
   // handles deletion of project
   const handleDeleteProject = async (project) => {
