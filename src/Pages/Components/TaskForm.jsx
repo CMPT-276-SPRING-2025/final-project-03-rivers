@@ -134,6 +134,12 @@ const TaskForm = ({ newTaskAdded, setShowForm, taskToEdit, onSave }) => {
   const handleCreateProject = async () => {
     if (newProjectName.trim() === "") return;
 
+    if (projects.length >= 5) {
+      setErrorTimer(5);
+      setError("Project limit is 5. Delete one before creating another.");
+      return;
+    }
+
     try {
       const newProject = await addProject(newProjectName);
       setProjects((prevProjects) => [...prevProjects, newProject]);
