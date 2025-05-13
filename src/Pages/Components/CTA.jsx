@@ -1,24 +1,24 @@
 import React from 'react';
-
+import { useNavigate} from 'react-router-dom';
 
 export default function CTA() {
-    
+     const navigate = useNavigate();
+
     const handleLogin = () => {
-        Navigate()
+       navigate('/start');
             
     }
     const arrow = '\u2192';
   return (
-        <section>
-		<section className="ezy__cta16 py-14 md:py-24 bg-black dark:bg-[#0b1727] text-white z-[1] relative">
-			<span className=" flex justify-end p4 absolute w-full h-[8%] -z-[1] top-0 right-0 bg-black dark:bg-opacity-80">
+		<section className="ezy__cta16 py-14 md:py-24 bg-white dark:bg-[#0b1727] text-white z-[1] relative">
+			<span className=" flex justify-end p4 absolute w-full h-[39%] -z-[1] top-0 right-0 bg-black dark:bg-opacity-80">
                 <div className='my-3 mx-4'>
-                <button onClick = {handleLogin} className='px-10 py-2 mx-5 rounded hover:text-white hover:bg-blue-600'>Login</button>
+                <button onClick={handleLogin} className='px-10 py-2 mx-5 rounded hover:text-white hover:bg-blue-600'>Login</button>
                 <button className = 'bg-blue-600 px-10 py-2  rounded'>Signup</button>
                 </div>
                 </span>
 
-			<span className="absolute w-full h-[39%] -z-[1] bottom-0 left-0 bg-white dark:bg-opacity-80"></span>
+			{/* <span className="absolute w-full h-[39%] -z-[1] bottom-0 left-0 bg-white dark:bg-opacity-80"></span> */}
 
 			{/* <div className="container relative px-4"> */}
 				<div className="grid grid-cols-12 justify-center items-center">
@@ -41,13 +41,28 @@ export default function CTA() {
 						</div>
 					</div>
 				</div>
+            <div className="text-center mt-20 text-blue-600">
+                <h1 className="text-3xl font-bold !text-blue-600 pb-10">Our mission</h1>
+                <p className='text-black px-8'>
+At FocusForge, our mission is simple yet powerful: to help people do their best work without burning out.
+
+We believe productivity isn’t about doing more—it’s about doing what matters, efficiently and mindfully. In a world overwhelmed by distractions and to-do lists, we’re building a focused environment where clarity, action, and balance come together.
+
+Whether you're a student juggling deadlines, a creator managing multiple projects, or a team striving for seamless collaboration, our app is designed to empower you with smart tools, intuitive design, and thoughtful automation—so you can focus on progress, not process.
+
+We’re here to redefine what productivity means: less chaos, more intention.
+
+Let’s build better days, together.
+
+                </p>
+            </div>
+            <div>
+                <h1 className=' pt-15 text-center !text-blue-600'>Founders</h1>
+
+            </div>
                 </section>
-			{/* </div> */}
-            <section>
-            <h1>Who we are</h1>
-            </section>
-		</section>
-	);
+			// {/* </div> */}
+  );
 };
 
 
