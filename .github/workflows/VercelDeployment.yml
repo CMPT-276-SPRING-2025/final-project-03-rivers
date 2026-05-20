@@ -9,21 +9,22 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: '20'
+          
       - name: Install dependencies
         run: npm install
-      - name: Load environment variables
-        run: |
-          npm install dotenv
-          echo "VERCEL_TOKEN=$(grep VERCEL_TOKEN .env | cut -d '=' -f2)" >> $GITHUB_ENV
+        
       - name: Run tests
         run: npm test
+        
       - name: Build project
         run: npm run build
+        
       - name: Deploy to Vercel
         env:
-          SUPER_SECRET: ${{ secrets.VERCEL_TOKEN }}
-        run: npx vercel --prod --token "$SUPER_SECRET" --yes
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: npx vercel --prod --yes
