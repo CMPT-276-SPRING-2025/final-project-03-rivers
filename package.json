@@ -41,7 +41,8 @@
     "soundcloud": "^0.2.0",
     "soundcloud-widget": "^0.2.1",
     "tailwind": "^2.3.1",
-    "uuid": "^11.1.0"
+    "uuid": "^11.1.0",
+    "vercel": "^54.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
